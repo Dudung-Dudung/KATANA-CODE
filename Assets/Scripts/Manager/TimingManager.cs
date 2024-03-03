@@ -35,7 +35,7 @@ public class TimingManager : MonoBehaviour
 
                     if (note != null)
                     {
-                        if (note.direction == BaseNote.NoteDirection.Left)
+/*                        if (note.direction == BaseNote.NoteDirection.Left)
                         {
                             // Left 노트와 상호작용하는 코드
                             Debug.Log("Left Hit");
@@ -48,7 +48,11 @@ public class TimingManager : MonoBehaviour
                             Debug.Log("Right Hit");
                             boxNoteList.RemoveAt(i);
                             Destroy(t_note);
-                        }
+                        }*/
+
+                        Debug.Log("Hit");
+                        boxNoteList.RemoveAt(i);
+                        Destroy(t_note);
                     }
 
                     return;

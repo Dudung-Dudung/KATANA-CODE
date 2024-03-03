@@ -510,8 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b292f18bd40f084fb23eb33a4701a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocityAverageFrames: 5
-  angularVelocityAverageFrames: 11
+  velocityAverageFrames: 10
+  angularVelocityAverageFrames: 20
   estimateOnAwake: 1
 --- !u!1 &815288937
 GameObject:
@@ -757,6 +757,18 @@ PrefabInstance:
     - target: {fileID: 576534630436914254, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
       propertyPath: m_Name
       value: Stick_Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 576534631146683976, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 576534631146683976, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 576534631146683976, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
+      propertyPath: m_Size.z
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
@@ -1166,6 +1178,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2115806489}
     m_Modifications:
+    - target: {fileID: 5727287100650732324, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727287100650732324, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727287100650732324, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
+      propertyPath: m_Size.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5727287100650732331, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2227,8 +2251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b292f18bd40f084fb23eb33a4701a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocityAverageFrames: 5
-  angularVelocityAverageFrames: 11
+  velocityAverageFrames: 10
+  angularVelocityAverageFrames: 20
   estimateOnAwake: 1
 --- !u!1 &2115806488
 GameObject:
@@ -3030,7 +3054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5628755500339622738
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3621,6 +3645,16 @@ MonoBehaviour:
   doubleNotePrefab: {fileID: 7736547319385112132, guid: 085b6d2c9df42ed4087176ddd082220f, type: 3}
   cubePrefab: {fileID: 4782495331452311101, guid: aca1b0fc1f905b446bdd3e99e517dc9f, type: 3}
   notesJsonPath: Assets/Notes/notes.json
+  cubePositions:
+  - {x: -1, y: 3, z: 30}
+  - {x: 0, y: 3, z: 30}
+  - {x: 1, y: 3, z: 30}
+  - {x: -1, y: 2, z: 30}
+  - {x: 0, y: 2, z: 30}
+  - {x: 1, y: 2, z: 30}
+  - {x: -1, y: 1, z: 30}
+  - {x: 0, y: 1, z: 30}
+  - {x: 1, y: 1, z: 30}
 --- !u!114 &5628755501351907942
 MonoBehaviour:
   m_ObjectHideFlags: 0

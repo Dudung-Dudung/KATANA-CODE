@@ -7,6 +7,7 @@ public class NoteData
 {
     public float time;
     public string type;
+    public int pos;
 }
 
 [System.Serializable]
@@ -26,10 +27,13 @@ public class NoteManager : MonoBehaviour
     [SerializeField] GameObject doubleNotePrefab = null; // 프리팹 설정
     [SerializeField] GameObject cubePrefab;
 
+    public string notesJsonPath = "Assets/Notes/notes.json"; // JSON 파일의 경로
+
+    [SerializeField] Vector3[] cubePositions;
+
     TimingManager timingManager;
     CubeGenerator cubeGenerator;
 
-    public string notesJsonPath = "Assets/Notes/notes.json"; // JSON 파일의 경로
 
     void Start()
     {
@@ -46,18 +50,18 @@ public class NoteManager : MonoBehaviour
 
         foreach (NoteData noteData in noteList.notes)
         {
-            StartCoroutine(CreateNoteDelayed(noteData.time, noteData.type));
+            StartCoroutine(CreateNoteDelayed(noteData.time, noteData.type, noteData.pos));
         }
     }
 
-    IEnumerator CreateNoteDelayed(float time, string type)
+    IEnumerator CreateNoteDelayed(float time, string type, int pos)
     {
         yield return new WaitForSeconds(time);
 
-        CreateNote(type);
+        CreateNote(type,pos);
     }
 
-    void CreateNote(string type)
+    void CreateNote(string type, int pos)
     {
         GameObject t_note = null;
 
@@ -65,12 +69,12 @@ public class NoteManager : MonoBehaviour
         if (type == "lt")
         {
             t_note = Instantiate(singleNotePrefab, LeftNoteAppearLocation.position, Quaternion.identity);
-            cubeGenerator.Create_Cube_Lt(new Vector3(0, -50, 500));
+            cubeGenerator.Create_Cube_Lt(cubePositions[pos]);
         }
         else if (type == "rt")
         {
             t_note = Instantiate(doubleNotePrefab, RightNoteAppearLocation.position, Quaternion.identity);
-            cubeGenerator.Create_Cube_Rt(new Vector3(0, -50, 500));
+            cubeGenerator.Create_Cube_Rt(cubePositions[pos]);
         }
 
         if (t_note != null)
