@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class StartSceneManager : MonoBehaviour
+{
+    public float startDelay;
+
+    public static StartSceneManager instance;
+
+    GameObject Warning;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        Warning = GameObject.Find("Warning");
+    }
+
+    private void Start()
+    {
+        Invoke("StartGame", startDelay);
+    }
+
+    private void StartGame()
+    {
+        Warning.GetComponent<Fade>().StartFade();
+    }
+
+    //¾À ·Îµå¿ë
+    public string nextScene;
+    public void SetMainScene()
+    {
+        SceneManager.LoadScene(nextScene);
+    }
+}
