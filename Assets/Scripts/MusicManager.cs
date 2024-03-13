@@ -38,6 +38,9 @@ public class MusicManager : MonoBehaviour
     bool isLeft = false;
     bool isFirst = true;
 
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI artist;
+
     int countNext = 0;
 
     SongData songData;
@@ -55,11 +58,11 @@ public class MusicManager : MonoBehaviour
 
         //Instantiate(panelPrefab, questPanelPosition[1], GameObject.Find("QuestPanelList").transform);
         
-        Instantiate(panelPrefab, questPanelPosition[0].position, Quaternion.identity, QuestPanelList.transform);
-        Instantiate(panelPrefab, questPanelPosition[1].position, Quaternion.identity, QuestPanelList.transform);
-        Instantiate(panelPrefab, questPanelPosition[2].position, Quaternion.identity, QuestPanelList.transform);
-        Instantiate(panelPrefab, questPanelPosition[3].position, Quaternion.identity, QuestPanelList.transform);
-        Instantiate(panelPrefab, questPanelPosition[4].position, Quaternion.identity, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[1].position, questPanelPosition[1].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[2].position, questPanelPosition[2].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[3].position, questPanelPosition[3].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
         
           UpdateSongInfo();
         
@@ -129,13 +132,17 @@ public class MusicManager : MonoBehaviour
             if (count >= songData.songs.Length) count = 0;
             else if (count < 0) count = songData.songs.Length + count;
             Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title); //musicList[count].title);
-            QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;
-            QuestPanelList.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;
+            //QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;
+            //QuestPanelList.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
-            QuestPanelList.transform.GetChild(i).GetChild(2).GetComponent<Image>().sprite = coverImage;
+
+            QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
             if (i == 2)
             {
                 AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
+                Debug.Log(songData.songs[count].title);
+                title.text = songData.songs[count].title;
+                artist.text = songData.songs[count].artist;
                 songAudio.clip = musicClip;//musicList[count].audioClip;
                 songAudio.Play();
             }
@@ -209,7 +216,7 @@ public class MusicManager : MonoBehaviour
         isTweening = true;
 
         // 새로운 패널 생성
-        GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, Quaternion.identity, QuestPanelList.transform);
+        GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
 
         //새로운 패널에 정보 넣기
         for (int i = 0; i < 3; i++)
@@ -219,11 +226,12 @@ public class MusicManager : MonoBehaviour
             else if (count < 0) count = songData.songs.Length + count;
         }
 
-
-        newPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;//musicList[count].title;
-        newPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;//musicList[count].artist;
+        
+//        newPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;//musicList[count].title;
+  //      newPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;//musicList[count].artist;
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
-        newPanel.transform.GetChild(2).GetComponent<Image>().sprite = coverImage;//musicList[count].album;
+
+        newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;//musicList[count].album;
 
        // QuestPanelList.transform.GetChild(count).GetChild(0).GetComponent<TextMeshProUGUI>().text);
         // 음악 바꾸기
@@ -239,13 +247,64 @@ public class MusicManager : MonoBehaviour
 
         Debug.Log("audio_file_path : " + songData.songs[count].audio_file_path);
         songAudio.Play();
+        title.text = songData.songs[count].title;
+        artist.text = songData.songs[count].artist;
         //패널 이동
         int movedPanels = 0;
         for (int i = 0; i <= 4; i++)
         {
 
             RectTransform rectTransform = QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
-            
+
+           // if (i == 1) rectTransform.DOLocalRotate(new Vector3(0f, 0f, 13f), 0.5f, RotateMode.Fast);
+           // else if (i == 2) rectTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f, RotateMode.Fast);
+           // else if (i == 3) rectTransform.DOLocalRotate(new Vector3(0f, 0f, -13f), 0.5f, RotateMode.Fast);
+            DG.Tweening.Sequence sequence = DOTween.Sequence();
+
+            float rotate = 13;
+            Debug.Log(rectTransform.position.x);
+            int yposition = 0;
+            if (rectTransform.position.x == -101.5) { rotate = 0f; yposition = 100; }
+            else if (rectTransform.position.x == 0) { rotate = -13f; yposition = -100; }
+            else if (rectTransform.position.x == 650) { rotate = 13f; yposition = 0; }
+
+            sequence.Append(rectTransform.DOLocalRotate(new Vector3(0f, 0f, 0f ), 0.5f, RotateMode.Fast));
+            DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x + 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
+                .OnComplete(() =>
+                {
+                    movedPanels++;
+
+                    if (movedPanels == 4)
+                    {
+                        //  Debug.Log("delete : " + delete + " | " + QuestPanelList.transform.GetChild(delete).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+
+                        Destroy(QuestPanelList.transform.GetChild(delete).gameObject);
+                        if (delete > 0) delete--;
+
+                        isTweening = false;
+                    }
+                }));
+            /*
+             DG.Tweening.Sequence sequence = DOTween.Sequence();
+
+            if (i == 1) sequence.Append(rectTransform.DOLocalRotate(new Vector3(0f, 0f, 13f), 0.5f, RotateMode.Fast));
+            else if (i == 2) sequence.Append(rectTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f, RotateMode.Fast));
+            else if (i == 3) sequence.Append(rectTransform.DOLocalRotate(new Vector3(0f, 0f, -13f), 0.5f, RotateMode.Fast));
+
+            sequence.Join(rectTransform.DOAnchorPos3D(questPanelPosition[i].anchoredPosition3D, 0.5f)
+                .OnComplete(() =>
+                {
+                    movedPanels++;
+
+                    if (movedPanels == 4)
+                    {
+                        //  Debug.Log("delete : " + delete + " | " + QuestPanelList.transform.GetChild(delete).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+
+                        Destroy(QuestPanelList.transform.GetChild(delete).gameObject);
+                        isTweening = false;
+                    }
+                }));
+              
             if (rectTransform != newPanel)
             {
 
@@ -264,9 +323,9 @@ public class MusicManager : MonoBehaviour
                             isTweening = false;
                         }
                     });
-            }
+            }*/
         }
-        if(countNext < 4) countNext++;
+        if (countNext < 4) countNext++;
        // Debug.Log("countNext : " + countNext);
     }
 
@@ -317,7 +376,7 @@ public class MusicManager : MonoBehaviour
             
         }
         // 새로운 패널 생성
-        GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[4].position, Quaternion.identity, QuestPanelList.transform);
+        GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
 
         //새로운 패널에 정보 넣기
         for (int i = 0; i < 3; i++)
@@ -328,11 +387,12 @@ public class MusicManager : MonoBehaviour
         }
         //Debug.Log("count : " + songData.songs[count].title);// QuestPanelList.transform.GetChild(count).GetChild(0).GetComponent<TextMeshProUGUI>().text);
 
-        newPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;
-        newPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;
+        //newPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = songData.songs[count].title;
+        //newPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = songData.songs[count].artist;
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
 
-        newPanel.transform.GetChild(2).GetComponent<Image>().sprite = coverImage;
+        newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
+
         // 음악 바꾸기
 
         for (int i = 0; i < 2; i++)
@@ -344,6 +404,8 @@ public class MusicManager : MonoBehaviour
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
         songAudio.clip = musicClip;
         songAudio.Play();
+        title.text = songData.songs[count].title;
+        artist.text = songData.songs[count].artist;
         Debug.Log("songData.songs[count].title : " + songData.songs[count].title);
 
         Debug.Log("audio_file_path : " + songData.songs[count].audio_file_path);
@@ -358,7 +420,32 @@ public class MusicManager : MonoBehaviour
             if (rectTransform != newPanel)
             {
 
-                rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 400, rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
+                //   rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 700, rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
+                DG.Tweening.Sequence sequence = DOTween.Sequence();
+                float rotate = -13;
+                
+                int yposition = 0;
+                if (i == 1) { rotate = -13f; yposition = 0; }
+                else if (i == 2) { rotate = 13f; yposition = -100; }
+                else if (i == 3) { rotate = 0f; yposition = 100; }
+
+                sequence.Append(rectTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f, RotateMode.Fast));
+                DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)                   
+                    .OnComplete(() =>
+                    {
+                        movedPanels++;
+
+                        if (movedPanels == 4)
+                        {
+                          //  Debug.Log("delete : " + delete + " | " + QuestPanelList.transform.GetChild(delete).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+                            
+                            Destroy(QuestPanelList.transform.GetChild(delete).gameObject);
+                            isTweening = false;
+                        }
+                    }));
+                /*
+                 rectTransform.DOAnchorPos3D(questPanelPosition[i+1].anchoredPosition3D, 0.5f)
+
                     .OnComplete(() =>
                     {
                         movedPanels++;
@@ -371,6 +458,8 @@ public class MusicManager : MonoBehaviour
                             isTweening = false;
                         }
                     });
+                 */
+
             }
         }
     }
