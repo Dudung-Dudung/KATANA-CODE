@@ -155,8 +155,8 @@ public class StickController : MonoBehaviour
             {
                 Vector3 startRaycast = startSlicePoint.position;
                 Vector3 endRaycast = endSlicePoint.position;
-                startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
-                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)
+                /*startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
+                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*/
                 hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
 
                 if (hasHit)
