@@ -1,29 +1,9 @@
 fileFormatVersion: 2
-guid: 641ed23a5adbc3d4f805e77f60e9c841
+guid: 0db55479712253048991bb41f11e7cee
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Black murble
-    second: {fileID: 2100000, guid: 5e7dbca0cf4d2414c82e7665b3f67497, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.002
-    second: {fileID: 2100000, guid: cb8942096772cfa4392a7a65dbec78be, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.003
-    second: {fileID: 2100000, guid: c2a512aa9cccc0e4b987503e28ce8e0a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.004
-    second: {fileID: 2100000, guid: 16239745c3ca8ae4d98cafe2cc90ae14, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
