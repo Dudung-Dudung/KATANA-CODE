@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class StickController : MonoBehaviour
 {
     public float stickSpeed = 3f;
+
+
     private Vector3 initialPosition;
     private bool isSwingingLt = false;
     private bool isSwingingRt = false;
@@ -16,6 +18,8 @@ public class StickController : MonoBehaviour
     private float targetAngle = -135f;
     private float swingTime = 0.3f;
     private float progress = 0f;
+
+    public float score = 0;
 
     TimingManager timingManager;
 
@@ -110,6 +114,7 @@ public class StickController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Cube_lt") && gameObject.tag == "Stick_Red")
         {
+
             /*            Rigidbody cubeRb = other.gameObject.GetComponent<Rigidbody>();*/
             timingManager.CheckTiming();
             bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -121,12 +126,13 @@ public class StickController : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
-            else if (!hasHit)
+            //판정 안고쳐져서 일단 주석
+            /*else if (!hasHit)
             {
                 Vector3 startRaycast = startSlicePoint.position;
                 Vector3 endRaycast = endSlicePoint.position;
-/*                startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
-                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*/
+*//*                startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
+                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
                 hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
 
                 if (hasHit)
@@ -135,11 +141,13 @@ public class StickController : MonoBehaviour
                     Slice(target);
                     Destroy(other.gameObject);
                 }
-            }
+            }*/
 
         }
+
         else if (other.gameObject.CompareTag("Cube_rt") && gameObject.tag == "Stick_Blue")
         {
+
             /*            Rigidbody cubeRb = other.gameObject.GetComponent<Rigidbody>();*/
             timingManager.CheckTiming();
             bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -151,12 +159,13 @@ public class StickController : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
-            else if (!hasHit)
+            // 판정 안고쳐져서 일단 주석
+/*            else if (!hasHit)
             {
                 Vector3 startRaycast = startSlicePoint.position;
                 Vector3 endRaycast = endSlicePoint.position;
-                /*startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
-                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*/
+                *//*startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
+                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
                 hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
 
                 if (hasHit)
@@ -165,18 +174,19 @@ public class StickController : MonoBehaviour
                     Slice(target);
                     Destroy(other.gameObject);
                 }
-            }
+            }*/
 
         }
     }
 
     public void Slice(GameObject target)
     {
-        Debug.Log(target.name + " 슬라이스");
+
+
+/*        Debug.Log(target.name + " 슬라이스");*/
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
-
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeDebug.up);
 

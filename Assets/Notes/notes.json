@@ -1,4 +1,8 @@
 {
+  "title": "Do You Want To Build A Snowman",
+  "length" : 20,
+  "noteCount" : 40,
+  "hitNoteCount" : 0,
   "notes": 
     [
       {"time": 0, "type": "rt", "pos": 0},

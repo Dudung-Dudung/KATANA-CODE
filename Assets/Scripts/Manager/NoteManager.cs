@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+
 
 [System.Serializable]
 public class NoteData
@@ -14,6 +16,9 @@ public class NoteData
 public class NoteList
 {
     public List<NoteData> notes;
+    public float length;
+    public int noteCount;
+    public int hitNoteCount;
 }
 
 public class NoteManager : MonoBehaviour
@@ -28,14 +33,26 @@ public class NoteManager : MonoBehaviour
     [SerializeField] GameObject cubePrefab;
 
     public string notesJsonPath = "Assets/Notes/notes.json"; // JSON 파일의 경로
+    public string musicDataJsonPath = "Assets/Resources/MusicData.json"; // JSON 파일의 경로
 
     [SerializeField] Vector3[] cubePositions;
 
     TimingManager timingManager;
     CubeGenerator cubeGenerator;
 
+    [SerializeField]
+    float songLength = 0;
 
-    void Start()
+    [SerializeField] // 전체 노트 갯수
+    public static int songNoteCount;
+
+    [SerializeField] // 맞춘 노트 갯수
+    public static int songMissNoteCount;
+
+    [SerializeField]
+    float score = 0f;
+
+    private void Awake()
     {
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
@@ -47,6 +64,13 @@ public class NoteManager : MonoBehaviour
     {
         string json = System.IO.File.ReadAllText(notesJsonPath);
         NoteList noteList = JsonUtility.FromJson<NoteList>(json);
+
+        songLength = noteList.length;
+        songNoteCount = noteList.noteCount;
+        songMissNoteCount = noteList.hitNoteCount;
+        Debug.Log(songNoteCount);
+        Debug.Log(songMissNoteCount);
+
 
         foreach (NoteData noteData in noteList.notes)
         {
@@ -85,6 +109,9 @@ public class NoteManager : MonoBehaviour
 
     }
 
+
+
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Note"))
@@ -92,6 +119,37 @@ public class NoteManager : MonoBehaviour
             timingManager.boxNoteList.Remove(collision.gameObject);
             Destroy(collision.gameObject);
         }
+    }
+
+    //게임 클리어, 오버시 띄우는 ui용
+
+    public void GameClear()
+    {
+        score = ((float)songNoteCount - songMissNoteCount) / songNoteCount * 100f;
+        Debug.Log(score);
+
+        // SongScoreManager를 찾거나 연결합니다.
+        SongScoreManager songScoreManager = FindObjectOfType<SongScoreManager>();
+        if (songScoreManager != null)
+        {
+            // 곡 목록을 순회하여 해당 곡을 찾고 점수를 갱신합니다.
+            foreach (SongData song in songScoreManager.songs)
+            {
+                if (song.title == "Do You Want To Build A Snowman")
+                {
+                    songScoreManager.UpdateScore(song.title, score);
+                    break; // 원하는 곡을 찾았으므로 루프 종료
+                }
+            }
+        }
+    }
+
+
+
+
+    public void GameOver()
+    {
+
     }
 
 }
