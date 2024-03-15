@@ -52,6 +52,10 @@ public class NoteManager : MonoBehaviour
     [SerializeField]
     float score = 0f;
 
+
+    private float runningTime = 0f;
+    private bool isRunning = false;
+
     private void Awake()
     {
         timingManager = GetComponent<TimingManager>();
@@ -60,12 +64,18 @@ public class NoteManager : MonoBehaviour
         LoadNotes();
     }
 
+    private void Start()
+    {
+        Debug.Log(runningTime);
+        StartCoroutine(StartTimer(runningTime));
+    }
+
     void LoadNotes()
     {
         string json = System.IO.File.ReadAllText(notesJsonPath);
         NoteList noteList = JsonUtility.FromJson<NoteList>(json);
 
-        songLength = noteList.length;
+        runningTime = noteList.length;
         songNoteCount = noteList.noteCount;
         songMissNoteCount = noteList.hitNoteCount;
         Debug.Log(songNoteCount);
@@ -142,6 +152,22 @@ public class NoteManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator StartTimer(float duration)
+    {
+        isRunning = true;
+        runningTime = 0f;
+
+        while (runningTime < duration)
+        {
+            yield return null; // 한 프레임 대기
+            runningTime += Time.deltaTime; // 경과 시간 업데이트
+        }
+
+        // 타임아웃 발생
+        Debug.Log("타임아웃");
+        isRunning = false;
     }
 
 
