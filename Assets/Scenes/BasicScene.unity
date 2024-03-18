@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18306622, g: 0.2287434, b: 0.30669293, a: 1}
+  m_IndirectSpecularColor: {r: 0.18306595, g: 0.2287429, b: 0.3066922, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Fail!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -524,7 +524,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Pause
 --- !u!222 &467309129
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1940,7 +1940,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Clear!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2135,7 +2135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1295007203
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2200,19 +2200,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1295007205}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5628755501351907941}
-        m_TargetAssemblyTypeName: NoteManager, Assembly-CSharp
-        m_MethodName: GameClear
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1295007205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4592,6 +4580,11 @@ MonoBehaviour:
   singleNotePrefab: {fileID: 7736547319385112132, guid: 76c414211478f3b48a8ee6ba1afe948c, type: 3}
   doubleNotePrefab: {fileID: 7736547319385112132, guid: 085b6d2c9df42ed4087176ddd082220f, type: 3}
   cubePrefab: {fileID: 4782495331452311101, guid: aca1b0fc1f905b446bdd3e99e517dc9f, type: 3}
+  gameClearBtn: {fileID: 1295007202}
+  gameOverBtn: {fileID: 1075250730}
+  gameClearBtnText: {fileID: 467309128}
+  gameOverBtnText: {fileID: 0}
+  isGameOver: 0
   notesJsonPath: Assets/Notes/notes.json
   musicDataJsonPath: Assets/Notes/notes.json
   cubePositions:
@@ -4652,6 +4645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   songsJsonPath: Assets/Resources/MusicData.json
+  songs: []
 --- !u!224 &5628755501592401080
 RectTransform:
   m_ObjectHideFlags: 0

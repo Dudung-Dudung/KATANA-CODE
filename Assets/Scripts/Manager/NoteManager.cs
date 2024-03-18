@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 
 [System.Serializable]
@@ -31,6 +33,14 @@ public class NoteManager : MonoBehaviour
     [SerializeField] GameObject singleNotePrefab = null; // 프리팹 설정
     [SerializeField] GameObject doubleNotePrefab = null; // 프리팹 설정
     [SerializeField] GameObject cubePrefab;
+
+    public GameObject gameClearBtn;
+    public GameObject gameOverBtn;
+
+    public Text gameClearBtnText;
+    public Text gameOverBtnText;
+
+    public bool isGameOver = false; //게임 시간 지나고 ui 중복되는거 막기 위한 불리언 변수
 
     public string notesJsonPath = "Assets/Notes/notes.json"; // JSON 파일의 경로
     public string musicDataJsonPath = "Assets/Resources/MusicData.json"; // JSON 파일의 경로
@@ -68,6 +78,14 @@ public class NoteManager : MonoBehaviour
     {
         Debug.Log(runningTime);
         StartCoroutine(StartTimer(runningTime));
+    }
+
+    private void Update()
+    {
+        if((songMissNoteCount >= songNoteCount / 2) && !isGameOver )
+        {
+            GameOver();
+        }
     }
 
     void LoadNotes()
@@ -167,14 +185,43 @@ public class NoteManager : MonoBehaviour
 
         // 타임아웃 발생
         Debug.Log("타임아웃");
+        GameFinish();
         isRunning = false;
     }
 
 
+    public void GameFinish()
+    {
+        if (!isGameOver)
+        {
+            gameClearBtn.SetActive(true);
+            GameClear();
 
+            Button buttonComponent = gameClearBtn.GetComponent<Button>();
+
+            // Button 컴포넌트로부터 Text 컴포넌트를 가져옴
+            TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
+
+            // 텍스트 변경
+            tmpText.text = "Game Clear! " + score.ToString();
+        }
+    }
 
     public void GameOver()
     {
+        isGameOver = true;
+        gameOverBtn.SetActive(true);
+        GameClear();
+
+        Button buttonComponent = gameOverBtn.GetComponent<Button>();
+
+        // Button 컴포넌트로부터 Text 컴포넌트를 가져옴
+
+        TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
+
+        // 텍스트 변경
+        tmpText.text = "Game Clear! " + score.ToString();
+
 
     }
 
