@@ -70,18 +70,18 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        // Resources Æú´õ¿¡ ÀÖ´Â JSON ÆÄÀÏÀ» ÀĞ¾î¿É´Ï´Ù.
+        // Resources í´ë”ì— ìˆëŠ” JSON íŒŒì¼ì„ ì½ì–´ì˜µë‹ˆë‹¤.
         TextAsset jsonFile = Resources.Load<TextAsset>("MusicData");
 
         if (jsonFile != null)
         {
-            // JSON ÆÄÀÏ ³»¿ëÀ» ¹®ÀÚ¿­·Î ÀĞ¾î¿É´Ï´Ù.
+            // JSON íŒŒì¼ ë‚´ìš©ì„ ë¬¸ìì—´ë¡œ ì½ì–´ì˜µë‹ˆë‹¤.
             string jsonString = jsonFile.text;
 
-            // JSON ¹®ÀÚ¿­À» ÆÄ½ÌÇÏ¿© SongData °´Ã¼·Î º¯È¯ÇÕ´Ï´Ù.
+            // JSON ë¬¸ìì—´ì„ íŒŒì‹±í•˜ì—¬ SongData ê°ì²´ë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
             songData = JsonUtility.FromJson<SongData>(jsonString);
             
-            // SongData °´Ã¼¸¦ »ç¿ëÇÕ´Ï´Ù.
+            // SongData ê°ì²´ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.
             foreach (Song song in songData.songs)
             {
                 Debug.Log("Title: " + song.title);
@@ -92,7 +92,7 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("JSON ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù: " + MusicDataFile);
+            Debug.LogError("JSON íŒŒì¼ì„ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + MusicDataFile);
         }
     }
     [System.Serializable]
@@ -118,10 +118,10 @@ public class MusicManager : MonoBehaviour
 
         if (jsonFile != null)
         {
-            // JSON ÆÄÀÏ ³»¿ëÀ» ¹®ÀÚ¿­·Î ÀĞ¾î¿É´Ï´Ù.
+            // JSON íŒŒì¼ ë‚´ìš©ì„ ë¬¸ìì—´ë¡œ ì½ì–´ì˜µë‹ˆë‹¤.
             string jsonString = jsonFile.text;
 
-            // JSON ¹®ÀÚ¿­À» ÆÄ½ÌÇÏ¿© SongData °´Ã¼·Î º¯È¯ÇÕ´Ï´Ù.
+            // JSON ë¬¸ìì—´ì„ íŒŒì‹±í•˜ì—¬ SongData ê°ì²´ë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
             songData = JsonUtility.FromJson<SongData>(jsonString);
 
         }
@@ -158,10 +158,10 @@ public class MusicManager : MonoBehaviour
     }
     private Sprite LoadSpriteFromPath(string path)
     {
-        // ÀÌ¹ÌÁö ÆÄÀÏÀ» ·Îµå
+        // ì´ë¯¸ì§€ íŒŒì¼ì„ ë¡œë“œ
         Texture2D texture = Resources.Load<Texture2D>(path);
         if (!texture) Debug.Log("texture is null" + path);
-        // Texture2D¸¦ Sprite·Î º¯È¯
+        // Texture2Dë¥¼ Spriteë¡œ ë³€í™˜
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
         return sprite;
@@ -202,7 +202,7 @@ public class MusicManager : MonoBehaviour
         if (isTweening) return;
         if (isFirst) delete = 4; isFirst = false;
 
-        //delete º¯¼ö °ª ÁöÁ¤
+        //delete ë³€ìˆ˜ ê°’ ì§€ì •
         isRight = true;
         if (isLeft)
         {
@@ -212,13 +212,13 @@ public class MusicManager : MonoBehaviour
            
         }
 
-        // ÀÌµ¿ ÁßÀÓÀ» Ç¥½Ã
+        // ì´ë™ ì¤‘ì„ì„ í‘œì‹œ
         isTweening = true;
 
-        // »õ·Î¿î ÆĞ³Î »ı¼º
+        // ìƒˆë¡œìš´ íŒ¨ë„ ìƒì„±
         GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
 
-        //»õ·Î¿î ÆĞ³Î¿¡ Á¤º¸ ³Ö±â
+        //ìƒˆë¡œìš´ íŒ¨ë„ì— ì •ë³´ ë„£ê¸°
         for (int i = 0; i < 3; i++)
         {
             count--;
@@ -234,7 +234,7 @@ public class MusicManager : MonoBehaviour
         newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;//musicList[count].album;
 
        // QuestPanelList.transform.GetChild(count).GetChild(0).GetComponent<TextMeshProUGUI>().text);
-        // À½¾Ç ¹Ù²Ù±â
+        // ìŒì•… ë°”ê¾¸ê¸°
         for (int i = 0; i < 2; i++)
         {
             count++;
@@ -249,7 +249,7 @@ public class MusicManager : MonoBehaviour
         songAudio.Play();
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        //ÆĞ³Î ÀÌµ¿
+        //íŒ¨ë„ ì´ë™
         int movedPanels = 0;
         for (int i = 0; i <= 4; i++)
         {
@@ -334,12 +334,12 @@ public class MusicManager : MonoBehaviour
         if (isTweening) return;
         if (isFirst) delete = 0; isFirst = false;
 
-        // ÀÌµ¿ ÁßÀÓÀ» Ç¥½Ã
+        // ì´ë™ ì¤‘ì„ì„ í‘œì‹œ
         isTweening = true;
 
         int movedPanels = 0;
 
-        //delete º¯¼ö °ª ÁöÁ¤
+        //delete ë³€ìˆ˜ ê°’ ì§€ì •
       
         switch (countNext)
         {
@@ -369,16 +369,16 @@ public class MusicManager : MonoBehaviour
 
 
         isLeft = true;
-        if (isRight) //Á÷Àü¿¡ right ÀÌµ¿ÀÌ ÀÖ¾ú´Ù¸é
+        if (isRight) //ì§ì „ì— right ì´ë™ì´ ìˆì—ˆë‹¤ë©´
         {
             delete = 4;
             isRight = false;
             
         }
-        // »õ·Î¿î ÆĞ³Î »ı¼º
+        // ìƒˆë¡œìš´ íŒ¨ë„ ìƒì„±
         GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
 
-        //»õ·Î¿î ÆĞ³Î¿¡ Á¤º¸ ³Ö±â
+        //ìƒˆë¡œìš´ íŒ¨ë„ì— ì •ë³´ ë„£ê¸°
         for (int i = 0; i < 3; i++)
         {
             count++;
@@ -393,7 +393,7 @@ public class MusicManager : MonoBehaviour
 
         newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
 
-        // À½¾Ç ¹Ù²Ù±â
+        // ìŒì•… ë°”ê¾¸ê¸°
 
         for (int i = 0; i < 2; i++)
         {
@@ -411,7 +411,7 @@ public class MusicManager : MonoBehaviour
         Debug.Log("audio_file_path : " + songData.songs[count].audio_file_path);
 
 
-        //ÆĞ³Î ÀÌµ¿
+        //íŒ¨ë„ ì´ë™
         for (int i = 0; i <= 4; i++)
         {
 
@@ -480,7 +480,7 @@ public class MusicManager : MonoBehaviour
         {
             Debug.Log("i" + i + "position : " + position);
 
-            if (position == 4) //position : ¿Å±â±â Àü À§Ä¡
+            if (position == 4) //position : ì˜®ê¸°ê¸° ì „ ìœ„ì¹˜
             {
                 position = 0;
                 Debug.Log("i : " + i);
@@ -534,13 +534,13 @@ public class MusicManager : MonoBehaviour
     /*
     public void UpdateSongInfoMoveNext()
     {
-        //»õ·Î¿î°Å »ı¼º
+        //ìƒˆë¡œìš´ê±° ìƒì„±
         Instantiate(panelPrefab, questPanelPosition[0].position, Quaternion.identity, QuestPanelList.transform);
-        //»ı¼ºÇÑ°Å¿¡ Á¤º¸ ³Ö¾îÁÖ±â
-        //À½¾Ç ¹Ù²Ù±â
+        //ìƒì„±í•œê±°ì— ì •ë³´ ë„£ì–´ì£¼ê¸°
+        //ìŒì•… ë°”ê¾¸ê¸°
         count--;
         if (count < 0) count = musicList.Count - 1;
-        //¿·À¸·Î ÇÏ³ª¾¿ ¹Ğ±â
+        //ì˜†ìœ¼ë¡œ í•˜ë‚˜ì”© ë°€ê¸°
         for (int i = 0; i < 5; i++)
         {
             RectTransform changePosition = QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
@@ -550,22 +550,22 @@ public class MusicManager : MonoBehaviour
 
             if (rectTransform != null)
             {
-                // DOTWEENÀ» »ç¿ëÇÏ¿© ¾Ö´Ï¸ŞÀÌ¼Ç Àû¿ë
+                // DOTWEENì„ ì‚¬ìš©í•˜ì—¬ ì• ë‹ˆë©”ì´ì…˜ ì ìš©
                 rectTransform.DORotateQuaternion(changePosition.rotation, 1f);
                 rectTransform.DOAnchorPos3D(changePosition.anchoredPosition3D, 1f);
-                // RectTransformÀÇ À§Ä¡¸¦ º¯°æÇÒ ÇÊ¿ä ¾øÀ½
+                // RectTransformì˜ ìœ„ì¹˜ë¥¼ ë³€ê²½í•  í•„ìš” ì—†ìŒ
             }
             else
             {
                 Debug.LogError("RectTransform is null or destroyed.");
             }
         }
-        //»èÁ¦ÁöÁ¤
+        //ì‚­ì œì§€ì •
         // rightDelete = leftDelete;
-        //»èÁ¦
+        //ì‚­ì œ
         Debug.Log(QuestPanelList.transform.GetChild(rightDelete).name);
         Destroy(QuestPanelList.transform.GetChild(rightDelete).gameObject);
-        //»õ·Î¿î »èÁ¦ ÁöÁ¤
+        //ìƒˆë¡œìš´ ì‚­ì œ ì§€ì •
 //        if (rightDelete >= 5) rightDelete = 0;
   //      else rightDelete--;
 
