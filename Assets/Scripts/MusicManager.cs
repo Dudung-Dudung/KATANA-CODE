@@ -42,8 +42,10 @@ public class MusicManager : MonoBehaviour
     public TextMeshProUGUI artist;
 
     int countNext = 0;
-
+    int setActiveDelete = 0;
+    int setActiveTrue = 0;
     SongData songData;
+    
 
     private void Awake()
     {
@@ -124,6 +126,10 @@ public class MusicManager : MonoBehaviour
         Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
 
         UpdateSongInfo();
+
+        QuestPanelList.transform.GetChild(0).gameObject.SetActive(false);
+        QuestPanelList.transform.GetChild(4).gameObject.SetActive(false);
+
 
 
         // Resources 폴더에 있는 JSON 파일을 읽어옵니다.
@@ -242,13 +248,23 @@ public class MusicManager : MonoBehaviour
     public void UpdateSongInfoMoveNext()
     {
         if (isTweening) return;
-        if (isFirst) delete = 4; isFirst = false;
-
+        if (isFirst)
+        {
+            delete = 4;
+            setActiveDelete = 3;
+            setActiveTrue = 0;
+            isFirst = false;
+            QuestPanelList.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        
+        setActiveTrue = 4;
         //delete 변수 값 지정
         isRight = true;
         if (isLeft)
         {
+            setActiveTrue = delete;
             delete = 4;
+            setActiveDelete = 3;
             isLeft = false;
             countNext = 0;
            
@@ -257,8 +273,11 @@ public class MusicManager : MonoBehaviour
         // 이동 중임을 표시
         isTweening = true;
 
+        //패널 켜기..?
+       
         // 새로운 패널 생성
         GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
+        newPanel.SetActive(false);
 
         //새로운 패널에 정보 넣기
         for (int i = 0; i < 3; i++)
@@ -293,6 +312,8 @@ public class MusicManager : MonoBehaviour
         artist.text = songData.songs[count].artist;
         //패널 이동
         int movedPanels = 0;
+        QuestPanelList.transform.GetChild(setActiveTrue).gameObject.SetActive(true);
+        //QuestPanelList.transform.GetChild(setActiveDelete).gameObject.SetActive(false);
         for (int i = 0; i <= 4; i++)
         {
 
@@ -315,13 +336,17 @@ public class MusicManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     movedPanels++;
-
+                    
                     if (movedPanels == 4)
                     {
                         //  Debug.Log("delete : " + delete + " | " + QuestPanelList.transform.GetChild(delete).GetChild(0).GetComponent<TextMeshProUGUI>().text);
 
                         Destroy(QuestPanelList.transform.GetChild(delete).gameObject);
-                        if (delete > 0) delete--;
+                        if (delete > 0)
+                        {
+                            setActiveDelete = delete;
+                            delete--;
+                        }
 
                         isTweening = false;
                     }
@@ -374,37 +399,81 @@ public class MusicManager : MonoBehaviour
     public void UpdateSongInfoMovePre()
     {
         if (isTweening) return;
-        if (isFirst) delete = 0; isFirst = false;
+        if (isFirst)
+        {
+            delete = 0;
+            setActiveDelete = 1;
+            setActiveTrue = 4;
+            isFirst = false;
+            QuestPanelList.transform.GetChild(4).gameObject.SetActive(true);
+
+        }
 
         // 이동 중임을 표시
         isTweening = true;
 
         int movedPanels = 0;
 
+        //패널 키기..
+        setActiveTrue = 4;
         //delete 변수 값 지정
-      
+     
         switch (countNext)
         {
             case 4 :
-                if (delete > 0)delete--;
+                if (delete > 0)
+                {
+                    setActiveDelete = delete;
+                    delete--;
+                }
                // Debug.Log("case 4, delete : " + delete);
                 break;
             case 3:
-                if (delete == 4) delete = 3;
-                else if(delete == 3) delete = 2;
-                else { delete = 0; if(!isRight) countNext = 0; }
+                if (delete == 4)
+                {
+                    delete = 3; 
+                    setActiveDelete = 4;
+                }
+                else if (delete == 3)
+                {
+                    delete = 2;
+                    setActiveDelete = 3;
+                }
+                else 
+                { 
+                    delete = 0;
+                    setActiveDelete = 1;
+
+                    if (!isRight) countNext = 0; 
+                }
               //  Debug.Log("case 3, delete : " + delete);
                 break;
             case 2:
-                if (delete != 3) delete = 3;
-                else { delete = 0; countNext = 0; }
-              //  Debug.Log("case 2, delete : " + delete);
+                if (delete != 3)
+                {
+                    delete = 3;
+                    setActiveDelete = 4;
+                   // setActiveTrue = 2;
+                }
+                else 
+                { 
+                    delete = 0; 
+                    countNext = 0;
+                    setActiveDelete = 1;
+                 //   setActiveTrue = 4;
+
+                }
+                //  Debug.Log("case 2, delete : " + delete);
                 break;
             case 1: 
-                delete = 0; 
+                delete = 0;
+                setActiveDelete = 1;
+             //   setActiveTrue = 4;
                 break;
             case 0:
                 delete = 0;
+                setActiveDelete = 1;
+            //    setActiveTrue = 4;
                 break;
 
         }
@@ -415,10 +484,15 @@ public class MusicManager : MonoBehaviour
         {
             delete = 4;
             isRight = false;
+            setActiveDelete = 3;
+            setActiveTrue = 0;
             
         }
+
+        QuestPanelList.transform.GetChild(setActiveTrue).gameObject.SetActive(true);
         // 새로운 패널 생성
         GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
+        newPanel.SetActive(false);
 
         //새로운 패널에 정보 넣기
         for (int i = 0; i < 3; i++)
@@ -452,7 +526,8 @@ public class MusicManager : MonoBehaviour
 
         Debug.Log("audio_file_path : " + songData.songs[count].audio_file_path);
 
-
+        QuestPanelList.transform.GetChild(setActiveDelete).gameObject.SetActive(false);
+        
         //패널 이동
         for (int i = 0; i <= 4; i++)
         {
