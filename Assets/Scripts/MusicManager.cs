@@ -53,7 +53,7 @@ public class MusicManager : MonoBehaviour
             musicList.Add(new MusicData(audioClips[i], titles[i], artists[i], albums[i], 0));
 
         }*/
-
+        /*
         songAudio = GetComponent<AudioSource>();
 
         //Instantiate(panelPrefab, questPanelPosition[1], GameObject.Find("QuestPanelList").transform);
@@ -65,11 +65,12 @@ public class MusicManager : MonoBehaviour
         Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
         
           UpdateSongInfo();
-        
+        */
     }
 
     private void Start()
     {
+        /*
         // Resources 폴더에 있는 JSON 파일을 읽어옵니다.
         TextAsset jsonFile = Resources.Load<TextAsset>("MusicData");
 
@@ -93,7 +94,7 @@ public class MusicManager : MonoBehaviour
         else
         {
             Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
-        }
+        }*/
     }
     [System.Serializable]
     public class SongData
@@ -110,7 +111,48 @@ public class MusicManager : MonoBehaviour
         public string audio_file_path;
     }
    
-    
+    public void GameStart()
+    {
+        songAudio = GetComponent<AudioSource>();
+
+        //Instantiate(panelPrefab, questPanelPosition[1], GameObject.Find("QuestPanelList").transform);
+
+        Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[1].position, questPanelPosition[1].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[2].position, questPanelPosition[2].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[3].position, questPanelPosition[3].rotation, QuestPanelList.transform);
+        Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform);
+
+        UpdateSongInfo();
+
+
+        // Resources 폴더에 있는 JSON 파일을 읽어옵니다.
+        TextAsset jsonFile = Resources.Load<TextAsset>("MusicData");
+
+        if (jsonFile != null)
+        {
+            // JSON 파일 내용을 문자열로 읽어옵니다.
+            string jsonString = jsonFile.text;
+
+            // JSON 문자열을 파싱하여 SongData 객체로 변환합니다.
+            songData = JsonUtility.FromJson<SongData>(jsonString);
+
+            // SongData 객체를 사용합니다.
+            foreach (Song song in songData.songs)
+            {
+                Debug.Log("Title: " + song.title);
+                Debug.Log("Artist: " + song.artist);
+                Debug.Log("Cover Image Path: " + song.cover_image_path);
+                Debug.Log("Audio File Path: " + song.audio_file_path);
+            }
+        }
+        else
+        {
+            Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
+        }
+
+    }
+
     public void UpdateSongInfo()
     {
         Debug.Log("*************************");
