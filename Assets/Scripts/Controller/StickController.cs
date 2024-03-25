@@ -118,6 +118,11 @@ public class StickController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Cube_lt") && gameObject.tag == "Stick_Red")
         {
+            AudioSource.PlayClipAtPoint(soundEffect, transform.position);
+
+            particle.gameObject.transform.position = other.gameObject.transform.position;
+            particle.Stop();
+            particle.Play();
             if (state.isEnter == false)
             {
                 state.isEnter = true;
@@ -155,7 +160,10 @@ public class StickController : MonoBehaviour
             if(state.isEnter == false)
             {
 
-                
+                particle.gameObject.transform.position = other.gameObject.transform.position;
+                particle.Stop();
+                particle.Play();
+
                 state.isEnter = true;
                 timingManager.CheckTiming();
                 bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -200,9 +208,6 @@ public class StickController : MonoBehaviour
 
         if(hull != null)
         {
-
-            AudioSource.PlayClipAtPoint(soundEffect, transform.position);
-            particle.Play();
 
             GameObject uppderHull = hull.CreateUpperHull(target,crossSectionMaterial);
             SetupSliceComponent(uppderHull);

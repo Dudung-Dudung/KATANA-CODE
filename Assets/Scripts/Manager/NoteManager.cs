@@ -212,7 +212,7 @@ public class NoteManager : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
-        gameOverBtn.SetActive(true);
+       /* gameOverBtn.SetActive(true);*/
         GameClear();
 
         Button buttonComponent = gameOverBtn.GetComponent<Button>();
