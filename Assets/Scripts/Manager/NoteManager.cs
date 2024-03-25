@@ -32,7 +32,7 @@ public class NoteManager : MonoBehaviour
     [SerializeField] Transform RightNoteAppearLocation = null;
     [SerializeField] GameObject singleNotePrefab = null; // 프리팹 설정
     [SerializeField] GameObject doubleNotePrefab = null; // 프리팹 설정
-    [SerializeField] GameObject cubePrefab;
+/*    [SerializeField] GameObject cubePrefab;*/
 
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
@@ -223,10 +223,6 @@ public class NoteManager : MonoBehaviour
 
         // 텍스트 변경
         tmpText.text = "Game Over.. " + score.ToString();
-
-        
-
-
     }
 
     public void SetMainScene()
@@ -236,7 +232,7 @@ public class NoteManager : MonoBehaviour
 
     public void SceneMove()
     {
-/*        sceneMover.GetComponent<Fade>().StartFade();*/
+        sceneMover.GetComponent<Fade>().StartFade();
         Invoke("SetMainScene", 2f);
     }
 

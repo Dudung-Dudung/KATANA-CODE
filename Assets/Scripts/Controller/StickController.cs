@@ -35,6 +35,8 @@ public class StickController : MonoBehaviour
 
     public LayerMask sliceableLayer;
 
+    public AudioClip soundEffect;
+    public ParticleSystem particle;
     void Start()
     {
         initialPosition = transform.position;
@@ -112,28 +114,15 @@ public class StickController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        CubeState state = other.GetComponent<CubeState>();
+
         if (other.gameObject.CompareTag("Cube_lt") && gameObject.tag == "Stick_Red")
         {
-
-            /*            Rigidbody cubeRb = other.gameObject.GetComponent<Rigidbody>();*/
-            timingManager.CheckTiming();
-            bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
-
-            if (hasHit)
+            if (state.isEnter == false)
             {
-                GameObject target = hit.transform.gameObject;
-                Slice(target);
-                Destroy(other.gameObject);
-            }
-
-            //판정 안고쳐져서 일단 주석
-            /*else if (!hasHit)
-            {
-                Vector3 startRaycast = startSlicePoint.position;
-                Vector3 endRaycast = endSlicePoint.position;
-*//*                startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
-                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
-                hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
+                state.isEnter = true;
+                timingManager.CheckTiming();
+                bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
 
                 if (hasHit)
                 {
@@ -141,32 +130,35 @@ public class StickController : MonoBehaviour
                     Slice(target);
                     Destroy(other.gameObject);
                 }
-            }*/
 
+                //판정 안고쳐져서 일단 주석
+                /*else if (!hasHit)
+                {
+                    Vector3 startRaycast = startSlicePoint.position;
+                    Vector3 endRaycast = endSlicePoint.position;
+    *//*                startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
+                    endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
+                    hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
+
+                    if (hasHit)
+                    {
+                        GameObject target = hit.transform.gameObject;
+                        Slice(target);
+                        Destroy(other.gameObject);
+                    }
+                }*/
+            }
         }
 
         else if (other.gameObject.CompareTag("Cube_rt") && gameObject.tag == "Stick_Blue")
         {
-
-            /*            Rigidbody cubeRb = other.gameObject.GetComponent<Rigidbody>();*/
-            timingManager.CheckTiming();
-            bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
-
-            if (hasHit)
+            if(state.isEnter == false)
             {
-                GameObject target = hit.transform.gameObject;
-                Slice(target);
-                Destroy(other.gameObject);
-            }
 
-            // 판정 안고쳐져서 일단 주석
-/*            else if (!hasHit)
-            {
-                Vector3 startRaycast = startSlicePoint.position;
-                Vector3 endRaycast = endSlicePoint.position;
-                *//*startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
-                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
-                hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
+                
+                state.isEnter = true;
+                timingManager.CheckTiming();
+                bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
 
                 if (hasHit)
                 {
@@ -174,8 +166,24 @@ public class StickController : MonoBehaviour
                     Slice(target);
                     Destroy(other.gameObject);
                 }
-            }*/
 
+                // 판정 안고쳐져서 일단 주석
+                /*            else if (!hasHit)
+                            {
+                                Vector3 startRaycast = startSlicePoint.position;
+                                Vector3 endRaycast = endSlicePoint.position;
+                                *//*startRaycast.y -= 1f; // 시작점을 큐브의 경계에 더 가깝게 조정 (y 방향으로 -1)
+                                endRaycast.x += 1f;   // 끝점을 큐브의 경계에 더 가깝게 조정 (x 방향으로 +1)*//*
+                                hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
+
+                                if (hasHit)
+                                {
+                                    GameObject target = hit.transform.gameObject;
+                                    Slice(target);
+                                    Destroy(other.gameObject);
+                                }
+                            }*/
+            }
         }
     }
 
@@ -192,16 +200,15 @@ public class StickController : MonoBehaviour
 
         if(hull != null)
         {
+
+            AudioSource.PlayClipAtPoint(soundEffect, transform.position);
+            particle.Play();
+
             GameObject uppderHull = hull.CreateUpperHull(target,crossSectionMaterial);
             SetupSliceComponent(uppderHull);
 
             GameObject lowerHull = hull.CreateLowerHull(target,crossSectionMaterial);
             SetupSliceComponent(lowerHull);
-        }
-
-        else
-        {
-            Debug.Log("안짤렷음");
         }
     }
 

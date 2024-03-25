@@ -1036,7 +1036,6 @@ Transform:
   - {fileID: 482767605}
   - {fileID: 2115806489}
   - {fileID: 1482489178}
-  - {fileID: 1124282867}
   m_Father: {fileID: 922388578}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1204,9 +1203,17 @@ PrefabInstance:
       value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 576534630436914252, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 2837792828337339354, guid: 809c7b4aa122eed45aa2e25acdd0fadb, type: 3}
+    - target: {fileID: 576534630436914252, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
       propertyPath: planeDebug
       value: 
       objectReference: {fileID: 1244802992}
+    - target: {fileID: 576534630436914252, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
+      propertyPath: soundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
     - target: {fileID: 576534630436914252, guid: 0f65d77f16e2def4db5a7f0b388a9e71, type: 3}
       propertyPath: endSlicePoint
       value: 
@@ -1829,7 +1836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1075250731
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1955,11 +1962,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 815288938}
+    m_TransformParent: {fileID: 1482489178}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a53a30ff6470b4743a5f3febe43118da, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a53a30ff6470b4743a5f3febe43118da, type: 3}
       propertyPath: m_LocalScale.x
@@ -1991,11 +1998,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a53a30ff6470b4743a5f3febe43118da, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a53a30ff6470b4743a5f3febe43118da, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a53a30ff6470b4743a5f3febe43118da, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2085,9 +2092,17 @@ PrefabInstance:
       value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 5727287100960513388, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 2837792828337339354, guid: 809c7b4aa122eed45aa2e25acdd0fadb, type: 3}
+    - target: {fileID: 5727287100960513388, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
       propertyPath: planeDebug
       value: 
       objectReference: {fileID: 1907822786}
+    - target: {fileID: 5727287100960513388, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
+      propertyPath: soundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
     - target: {fileID: 5727287100960513388, guid: c10c71152420eeb4dac32663bf51975a, type: 3}
       propertyPath: endSlicePoint
       value: 
@@ -2622,6 +2637,7 @@ Transform:
   m_Children:
   - {fileID: 1244802992}
   - {fileID: 1324229202}
+  - {fileID: 1124282867}
   m_Father: {fileID: 815288938}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4338,7 +4354,7 @@ GameObject:
   - component: {fileID: 5628755500198678686}
   - component: {fileID: 5628755500198678684}
   - component: {fileID: 5628755500198678685}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: BadRect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4414,7 +4430,7 @@ GameObject:
   - component: {fileID: 5628755500268584998}
   - component: {fileID: 5628755500268584997}
   - component: {fileID: 5628755500268584996}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: NoteTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4454,7 +4470,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5628755500339622738}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: TimingRect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4533,7 +4549,7 @@ GameObject:
   - component: {fileID: 5628755500384664943}
   - component: {fileID: 5628755500384664942}
   - component: {fileID: 5628755500384664941}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: CenterFlame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4789,7 +4805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5628755501144218187}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: RightNoteAppearLocation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4845,7 +4861,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5628755501249630712}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: LeftNoteAppearLocation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4913,7 +4929,7 @@ GameObject:
   - component: {fileID: 5628755501265836885}
   - component: {fileID: 5628755501265836907}
   - component: {fileID: 5628755501265836884}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4991,9 +5007,9 @@ GameObject:
   - component: {fileID: 5628755501351907942}
   - component: {fileID: 5628755501351907941}
   - component: {fileID: 5628755501351907944}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Note
-  m_TagString: Note
+  m_TagString: Cube_rt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5015,7 +5031,6 @@ MonoBehaviour:
   RightNoteAppearLocation: {fileID: 5628755501144218187}
   singleNotePrefab: {fileID: 7736547319385112132, guid: 76c414211478f3b48a8ee6ba1afe948c, type: 3}
   doubleNotePrefab: {fileID: 7736547319385112132, guid: 085b6d2c9df42ed4087176ddd082220f, type: 3}
-  cubePrefab: {fileID: 4782495331452311101, guid: aca1b0fc1f905b446bdd3e99e517dc9f, type: 3}
   gameClearBtn: {fileID: 1295007202}
   gameOverBtn: {fileID: 1075250730}
   sceneMover: {fileID: 1770276155}
@@ -5046,8 +5061,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625f2f3223b472c4cb1eb9c7b669be91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cube_Lt: {fileID: 4782495331452311101, guid: aca1b0fc1f905b446bdd3e99e517dc9f, type: 3}
-  Cube_Rt: {fileID: 4782495331452311101, guid: 19ac2083e38947246a590b30cf1dd5a2, type: 3}
+  Cube_Lt: {fileID: 5683500385595549639, guid: aca1b0fc1f905b446bdd3e99e517dc9f, type: 3}
+  Cube_Rt: {fileID: 4117135293161024114, guid: 6a2ea55c9860f34438cb0cfe3a89864a, type: 3}
 --- !u!114 &5628755501351907943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5113,7 +5128,7 @@ GameObject:
   - component: {fileID: 5628755501592401086}
   - component: {fileID: 5628755501592401087}
   - component: {fileID: 5628755501592401084}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: PerfectRect
   m_TagString: Rect
   m_Icon: {fileID: 0}
@@ -5245,7 +5260,7 @@ GameObject:
   - component: {fileID: 5628755501867851441}
   - component: {fileID: 5628755501867851447}
   - component: {fileID: 5628755501867851440}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: GoodRect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5325,7 +5340,7 @@ GameObject:
   - component: {fileID: 5628755501930514249}
   - component: {fileID: 5628755501930514255}
   - component: {fileID: 5628755501930514248}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5409,7 +5424,7 @@ GameObject:
   - component: {fileID: 5628755501953474150}
   - component: {fileID: 5628755501953474148}
   - component: {fileID: 5628755501953474149}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: CoolRect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
