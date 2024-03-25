@@ -1,0 +1,18 @@
+{
+    "title" : "titanium-AlisiaBeats",
+    "length" : 90,
+    "noteCount" : 100000000,
+    "hitNoteCount" : 0,
+    "notes" :
+        [
+            {"time": 0, "type": "rt", "pos": 5},
+            
+            {"time": 0.66, "type": "rt", "pos": 5},
+
+            {"time": 1.8, "type": "rt", "pos": 5},
+            {"time": 2.1, "type": "rt", "pos": 5},
+            {"time": 2.26, "type": "rt", "pos": 5},
+            {"time": 2.53, "type": "rt", "pos": 5}
+            
+        ]
+}
