@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class NoteData
@@ -32,13 +32,15 @@ public class NoteManager : MonoBehaviour
     [SerializeField] Transform RightNoteAppearLocation = null;
     [SerializeField] GameObject singleNotePrefab = null; // 프리팹 설정
     [SerializeField] GameObject doubleNotePrefab = null; // 프리팹 설정
-    [SerializeField] GameObject cubePrefab;
+/*    [SerializeField] GameObject cubePrefab;*/
 
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
 
-    public Text gameClearBtnText;
-    public Text gameOverBtnText;
+/*    public Text gameClearBtnText;
+    public Text gameOverBtnText;*/
+
+    public GameObject sceneMover;
 
     public bool isGameOver = false; //게임 시간 지나고 ui 중복되는거 막기 위한 불리언 변수
 
@@ -210,7 +212,7 @@ public class NoteManager : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
-        gameOverBtn.SetActive(true);
+       /* gameOverBtn.SetActive(true);*/
         GameClear();
 
         Button buttonComponent = gameOverBtn.GetComponent<Button>();
@@ -220,9 +222,18 @@ public class NoteManager : MonoBehaviour
         TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
 
         // 텍스트 변경
-        tmpText.text = "Game Clear! " + score.ToString();
+        tmpText.text = "Game Over.. " + score.ToString();
+    }
 
+    public void SetMainScene()
+    {
+        SceneManager.LoadScene("TestMainScene");
+    }
 
+    public void SceneMove()
+    {
+        sceneMover.GetComponent<Fade>().StartFade();
+        Invoke("SetMainScene", 2f);
     }
 
 }
