@@ -13,7 +13,7 @@ public class CubeMovement : MonoBehaviour
 
     void Start()
     {
-        
+        //Debug.Log(Time.realtimeSinceStartup + "asd");
         /*// 큐브의 초기 위치를 설정
         startPosition = new Vector3(0, 1.5f, 30);
         // 목표 위치를 설정

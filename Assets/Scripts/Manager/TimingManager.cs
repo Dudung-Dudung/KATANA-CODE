@@ -51,6 +51,7 @@ public class TimingManager : MonoBehaviour
                         }*/
 
                         Debug.Log("Hit!!!!");
+                        Debug.Log(Time.realtimeSinceStartup);
                         boxNoteList.RemoveAt(i);
                         Destroy(t_note);
                     }
