@@ -33,6 +33,7 @@ public class HitTIme : MonoBehaviour
             if (IsStart)
             {
                 Debug.Log(count + " " + nowTime);
+                Debug.Log(other.transform.position);
                 count++;
             }
             
