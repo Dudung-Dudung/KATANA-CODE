@@ -5171,7 +5171,7 @@ MonoBehaviour:
   gameOverBtn: {fileID: 1075250730}
   sceneMover: {fileID: 1770276155}
   isGameOver: 0
-  notesJsonPath: Assets/Notes/notes.json
+  notesJsonPath: Assets/Notes/stylish-rock-beat-trailer-ComaStudio.json
   musicDataJsonPath: Assets/Notes/notes.json
   cubePositions:
   - {x: -1, y: 3, z: 30}

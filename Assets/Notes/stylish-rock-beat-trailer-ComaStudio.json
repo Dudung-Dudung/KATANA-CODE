@@ -10,9 +10,31 @@
             {"time": 0.66, "type": "rt", "pos": 5},
 
             {"time": 1.8, "type": "rt", "pos": 5},
-            {"time": 2.1, "type": "rt", "pos": 5},
+            {"time": 2.09, "type": "rt", "pos": 5},
             {"time": 2.26, "type": "rt", "pos": 5},
-            {"time": 2.53, "type": "rt", "pos": 5}
-            
+            {"time": 2.53, "type": "rt", "pos": 5},
+
+            {"time": 3.36, "type": "rt", "pos": 5},
+            {"time": 4.09, "type": "rt", "pos": 5},
+            {"time": 4.21, "type": "rt", "pos": 5},
+            {"time": 4.36, "type": "rt", "pos": 5},
+
+            {"time": 5.46, "type": "rt", "pos": 5},
+            {"time": 5.74, "type": "rt", "pos": 5},
+            {"time": 5.88, "type": "rt", "pos": 5},
+            {"time": 6.13, "type": "rt", "pos": 5},
+            {"time": 6.33, "type": "rt", "pos": 5},
+
+            {"time": 6.78, "type": "rt", "pos": 5},
+            {"time": 6.93, "type": "rt", "pos": 5},
+            {"time": 7.1, "type": "rt", "pos": 5},
+            {"time": 7.24, "type": "rt", "pos": 5},
+            {"time": 7.43, "type": "rt", "pos": 5},
+            {"time": 7.57, "type": "rt", "pos": 5},
+            {"time": 7.71, "type": "rt", "pos": 5},
+            {"time": 8.14, "type": "rt", "pos": 5},
+
+            {"time": 8.67, "type": "rt", "pos": 5},
+            {"time": 9.12, "type": "rt", "pos": 5}
         ]
 }
