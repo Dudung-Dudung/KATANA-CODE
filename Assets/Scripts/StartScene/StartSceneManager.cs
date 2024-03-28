@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class StartSceneManager : MonoBehaviour
 {
     public float startDelay;
-
+    public Transform Player;
     public static StartSceneManager instance;
 
     GameObject Warning;
@@ -32,7 +32,7 @@ public class StartSceneManager : MonoBehaviour
         Warning.GetComponent<Fade>().StartFade();
     }
 
-    //¾À ·Îµå¿ë
+    //ï¿½ï¿½ ï¿½Îµï¿½ï¿½
     public string nextScene;
     public void SetMainScene()
     {

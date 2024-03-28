@@ -3004,6 +3004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startDelay: 1.5
+  Player: {fileID: 1532433577}
   nextScene: TestMainScene
 --- !u!4 &2018812852
 Transform:
