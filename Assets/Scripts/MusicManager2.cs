@@ -131,6 +131,7 @@ public class MusicManager2 : MonoBehaviour
     }
     public void SongInfoNext() //패널들이 오른쪽으로 이동
     {
+        Debug.Log("SongInfoNext");
         //현재 곡을 새로 업데이트
         count--;
         if (count >= 0) count = songData.songs.Length - 1;
@@ -156,19 +157,21 @@ public class MusicManager2 : MonoBehaviour
         //count를 현재 곡에 맞춰주기
         count++;
         if (count >= songData.songs.Length) count = 0;
+        //이전에 다른 방향으로 이동한 경우
+        int destroy;
+        if (isPre) { destroy = 0; } else { destroy = 2; Debug.Log("edrms?"); isPre = false; }
+        //패널 destroy
+        Destroy(QuestPanelList.transform.GetChild(destroy).gameObject);
 
         //패널 이동
         DG.Tweening.Sequence sequence = DOTween.Sequence();
         for (int i = 0; i < 3; i++)
         {
+            Debug.Log("songData.songs[count].title : " + songData.songs[count].title);
             RectTransform rectTransform = QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
             sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x + 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
         }
-        //이전에 다른 방향으로 이동한 경우
-        int destroy;
-        if (isPre) { destroy = 0; } else { destroy = 2; isPre = false; }
-        //패널 destroy
-        Destroy(QuestPanelList.transform.GetChild(destroy).gameObject);
+        
 
     }
     public void SongInfoPre() //패널들이 왼쪽으로 이동
