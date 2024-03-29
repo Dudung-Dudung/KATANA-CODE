@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.TestTools;
+using UnityEngine.SceneManagement;
 
 public class MusicManager2 : MonoBehaviour
 {
@@ -261,4 +262,8 @@ public class MusicManager2 : MonoBehaviour
         isPre = true;
     }
 
+    public void NextScene()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
