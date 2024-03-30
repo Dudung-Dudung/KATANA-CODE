@@ -4635,6 +4635,7 @@ GameObject:
   - component: {fileID: 5628755500384664943}
   - component: {fileID: 5628755500384664942}
   - component: {fileID: 5628755500384664941}
+  - component: {fileID: 5628755500384664944}
   m_Layer: 6
   m_Name: CenterFlame
   m_TagString: Untagged
@@ -4690,7 +4691,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 51ecfd34e9df42a4a8fea1928ba67673, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6bb92199ac9954b4cb495ee715e9ef8f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4776,6 +4777,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5628755500384664944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5628755500384664939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e9c44f98b933d498b2b9e188e0e3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 5628755500384664943}
 --- !u!114 &5628755500731088420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5121,7 +5135,7 @@ MonoBehaviour:
   gameOverBtn: {fileID: 1075250730}
   sceneMover: {fileID: 1770276155}
   isGameOver: 0
-  notesJsonPath: Assets/Notes/notes.json
+  notesJsonPath: Assets/Notes/stylish-rock-beat-trailer-ComaStudio.json
   musicDataJsonPath: Assets/Notes/notes.json
   cubePositions:
   - {x: -1, y: 3, z: 30}

@@ -1,0 +1,60 @@
+{
+    "title" : "Electro-house-background-music-116-bpm",
+    "length" : 150,
+    "noteCount" : 0,
+    "hitNoteCount" : 0,
+    "notes" :
+        [
+            {"time": 0, "type": "rt", "pos": 0},
+
+            {"time": 8.75, "type": "rt", "pos": 5},
+            {"time": 9.25, "type": "rt", "pos": 4},
+            {"time": 10.25, "type": "rt", "pos": 0},
+            {"time": 10.5, "type": "rt", "pos": 0},
+            {"time": 10.75, "type": "rt", "pos": 0},
+
+            {"time": 11, "type": "rt", "pos": 5},
+            {"time": 11.5, "type": "rt", "pos": 4},
+            {"time": 12.25, "type": "rt", "pos": 0},
+            {"time": 12.5, "type": "rt", "pos": 0},
+            {"time": 12.75, "type": "rt", "pos": 0},
+
+            {"time": 13, "type": "rt", "pos": 5},
+            {"time": 13.5, "type": "rt", "pos": 4},
+            {"time": 14.25, "type": "rt", "pos": 0},
+            {"time": 14.5, "type": "rt", "pos": 0},
+            {"time": 14.75, "type": "rt", "pos": 0},
+
+            {"time": 15, "type": "rt", "pos": 5},
+            {"time": 15.5, "type": "rt", "pos": 4},
+            {"time": 16.25, "type": "rt", "pos": 0},
+            {"time": 16.5, "type": "rt", "pos": 0},
+            {"time": 16.75, "type": "rt", "pos": 0},
+
+            {"time": 17.35, "type": "rt", "pos": 5},
+            {"time": 17.85, "type": "rt", "pos": 4},
+            {"time": 18.45, "type": "rt", "pos": 0},
+            {"time": 18.7, "type": "rt", "pos": 0},
+            {"time": 18.95, "type": "rt", "pos": 0},
+
+            {"time": 19.35, "type": "rt", "pos": 5},
+            {"time": 19.85, "type": "rt", "pos": 4},
+            {"time": 20.45, "type": "rt", "pos": 0},
+            {"time": 20.7, "type": "rt", "pos": 0},
+            {"time": 20.95, "type": "rt", "pos": 0},
+
+            {"time": 21.25, "type": "rt", "pos": 5},
+            {"time": 21.75, "type": "rt", "pos": 4},
+            {"time": 22.45, "type": "rt", "pos": 0},
+            {"time": 22.70, "type": "rt", "pos": 0},
+            {"time": 22.95, "type": "rt", "pos": 0},
+
+            {"time": 23.25, "type": "rt", "pos": 5},
+            {"time": 23.75, "type": "rt", "pos": 4},
+            {"time": 24.45, "type": "rt", "pos": 0},
+            {"time": 24.70, "type": "rt", "pos": 0},
+            {"time": 24.95, "type": "rt", "pos": 0}
+
+            
+        ]
+}
