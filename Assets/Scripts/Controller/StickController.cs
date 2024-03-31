@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class StickController : MonoBehaviour
 {
@@ -37,12 +38,26 @@ public class StickController : MonoBehaviour
 
     public AudioClip soundEffect;
     public ParticleSystem particle;
+
+    private XRController xr;
+
+    //컨트롤러 진동
+    public float vibrationStrength = 0.5f;
+    public float vibrationDuration = 0.1f;
+
+
+
     void Start()
     {
         initialPosition = transform.position;
         timingManager = FindObjectOfType<TimingManager>();
- /*       Debug.Log(this.gameObject.tag);*/
+        /*       Debug.Log(this.gameObject.tag);*/
+
+        Debug.Log(OVRInput.GetConnectedControllers()+ " 디바이스"); // 연결된 컨트롤러 확인
+/*        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));*/
+
     }
+
 
     void Update()
     {
@@ -60,7 +75,7 @@ public class StickController : MonoBehaviour
     }
 
 
-    IEnumerator SwingStickLt()
+/*    IEnumerator SwingStickLt()
     {
         isSwingingLt = true;
         progress = 0f;
@@ -110,7 +125,7 @@ public class StickController : MonoBehaviour
         }
 
         isSwingingRt = false;
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -118,13 +133,14 @@ public class StickController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Cube_lt") && gameObject.tag == "Stick_Red")
         {
-            AudioSource.PlayClipAtPoint(soundEffect, transform.position);
+            AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
 
             particle.gameObject.transform.position = other.gameObject.transform.position;
             particle.Stop();
             particle.Play();
             if (state.isEnter == false)
             {
+/*                VibrateController();*/
                 state.isEnter = true;
                 timingManager.CheckTiming();
                 bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -133,7 +149,6 @@ public class StickController : MonoBehaviour
                 {
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
-                    Destroy(other.gameObject);
                 }
 
                 //판정 안고쳐져서 일단 주석
@@ -152,6 +167,8 @@ public class StickController : MonoBehaviour
                         Destroy(other.gameObject);
                     }
                 }*/
+
+                Destroy(other.gameObject);
             }
         }
 
@@ -159,7 +176,7 @@ public class StickController : MonoBehaviour
         {
             if(state.isEnter == false)
             {
-
+ /*               VibrateController();*/
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();
@@ -172,7 +189,6 @@ public class StickController : MonoBehaviour
                 {
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
-                    Destroy(other.gameObject);
                 }
 
                 // 판정 안고쳐져서 일단 주석
@@ -191,6 +207,8 @@ public class StickController : MonoBehaviour
                                     Destroy(other.gameObject);
                                 }
                             }*/
+
+                Destroy(other.gameObject);
             }
         }
     }
@@ -224,6 +242,28 @@ public class StickController : MonoBehaviour
         collider.convex = true;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
         Destroy(slicedObject, 3f);
+    }
+
+    private void VibrateController()
+    {
+        // OVRInput.GetConnectedControllers()를 사용하여 현재 연결된 컨트롤러를 확인할 수도 있습니다.
+        // 만약 왼쪽 컨트롤러만 진동을 주고 싶다면 다음과 같이 확인할 수 있습니다:
+        // if(OVRInput.GetConnectedControllers() == OVRInput.Controller.LTouch)
+
+        // 컨트롤러에 진동을 줍니다.
+        OVRInput.SetControllerVibration(vibrationStrength, vibrationStrength, OVRInput.Controller.Active);
+
+
+
+        // 일정 시간 후 진동을 멈춥니다.
+        Invoke("StopVibration", vibrationDuration);
+    }
+
+    // 진동을 멈추는 함수
+    private void StopVibration()
+    {
+        // 컨트롤러의 진동을 멈춥니다.
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.Active);
     }
 
 

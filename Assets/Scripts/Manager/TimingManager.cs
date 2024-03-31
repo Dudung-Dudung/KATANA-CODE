@@ -50,7 +50,7 @@ public class TimingManager : MonoBehaviour
                             Destroy(t_note);
                         }*/
 
-                        Debug.Log("Hit!!!!");
+/*                        Debug.Log("Hit!!!!");*/
                         boxNoteList.RemoveAt(i);
                         Destroy(t_note);
                     }
