@@ -164,18 +164,20 @@ public class MusicManager2 : MonoBehaviour
         //이전에 다른 방향으로 이동한 경우
         int destroy = 0;
 
-        if (isPre) 
-        { 
+        if (isPre)
+        {
             destroy = 2;
             isPre = false;
             isNextSecond = false;
-        } 
-        else if(isPreSecond)
+        }
+        else if (isPreSecond)
         {
             destroy = 1;
             isNextSecond = true;
             isPreSecond = false;
         }
+        else
+            isNextSecond = false;
             
         
          Debug.Log("destroy : " + destroy + "isPre : " + isPre + "isNextSecond : " + isNextSecond);
@@ -234,13 +236,14 @@ public class MusicManager2 : MonoBehaviour
             isNext = false;
             isPreSecond = false;
         }
-        else if(isNextSecond)
+        else if (isNextSecond)
         {
             destroy = 1;
             isPreSecond = true;
             isNextSecond = false;
-
         }
+        else
+            isPreSecond = false;
         
         Debug.Log("destroy : " + destroy + "isNext : " + isNext + "isNextSecond : " + isNextSecond);
 
