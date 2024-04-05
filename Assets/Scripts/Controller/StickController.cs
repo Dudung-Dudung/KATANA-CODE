@@ -39,21 +39,25 @@ public class StickController : MonoBehaviour
     public AudioClip soundEffect;
     public ParticleSystem particle;
 
-    private XRController xr;
+    private XRController xrController;
 
     //컨트롤러 진동
+    [Header ("Vibration")]
     public float vibrationStrength = 0.5f;
-    public float vibrationDuration = 0.1f;
-
-
-
+    public float vibrationDuration = 0.05f;
+    private bool isVibrationRunning = false;
+    private void Awake()
+    {
+        //컨트롤러 받아오기
+        xrController = transform.GetComponentInParent<XRController>();
+    }
     void Start()
     {
         initialPosition = transform.position;
         timingManager = FindObjectOfType<TimingManager>();
         /*       Debug.Log(this.gameObject.tag);*/
 
-        Debug.Log(OVRInput.GetConnectedControllers()+ " 디바이스"); // 연결된 컨트롤러 확인
+        //Debug.Log(OVRInput.GetConnectedControllers()+ " 디바이스"); // 연결된 컨트롤러 확인
 /*        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));*/
 
     }
@@ -167,7 +171,8 @@ public class StickController : MonoBehaviour
                         Destroy(other.gameObject);
                     }
                 }*/
-
+                // 진동
+                Vibrate();
                 Destroy(other.gameObject);
             }
         }
@@ -207,10 +212,12 @@ public class StickController : MonoBehaviour
                                     Destroy(other.gameObject);
                                 }
                             }*/
-
+                // 진동
+                Vibrate();
                 Destroy(other.gameObject);
             }
         }
+
     }
 
     public void Slice(GameObject target)
@@ -244,26 +251,21 @@ public class StickController : MonoBehaviour
         Destroy(slicedObject, 3f);
     }
 
-    private void VibrateController()
+    IEnumerator VibrateController()
     {
-        // OVRInput.GetConnectedControllers()를 사용하여 현재 연결된 컨트롤러를 확인할 수도 있습니다.
-        // 만약 왼쪽 컨트롤러만 진동을 주고 싶다면 다음과 같이 확인할 수 있습니다:
-        // if(OVRInput.GetConnectedControllers() == OVRInput.Controller.LTouch)
-
-        // 컨트롤러에 진동을 줍니다.
-        OVRInput.SetControllerVibration(vibrationStrength, vibrationStrength, OVRInput.Controller.Active);
-
-
-
-        // 일정 시간 후 진동을 멈춥니다.
-        Invoke("StopVibration", vibrationDuration);
+        isVibrationRunning = true;
+        xrController.SendHapticImpulse(vibrationStrength, vibrationDuration);
+        yield return new WaitForSeconds(vibrationDuration);
+        xrController.SendHapticImpulse(0.0f, 0.0f);
+        isVibrationRunning = false;
     }
 
-    // 진동을 멈추는 함수
-    private void StopVibration()
+    public void Vibrate()
     {
-        // 컨트롤러의 진동을 멈춥니다.
-        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.Active);
+        if (!isVibrationRunning)
+        {
+            StartCoroutine(VibrateController());
+        }
     }
 
 
