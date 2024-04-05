@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class StickController : MonoBehaviour
 {
@@ -37,6 +38,19 @@ public class StickController : MonoBehaviour
 
     public AudioClip soundEffect;
     public ParticleSystem particle;
+
+    [Header ("Vibration")]
+
+    public float vibrationDuration = 0.1f;
+    public float vibrationAmplitude = 0.5f;
+    private bool isVibrateRunning = false;
+    private XRController controller;
+
+
+    private void Awake()
+    {
+        controller = transform.GetComponentInParent<XRController>();
+    }
     void Start()
     {
         initialPosition = transform.position;
@@ -193,6 +207,8 @@ public class StickController : MonoBehaviour
                             }*/
             }
         }
+        // 일단 진동 작동함
+        OnContollerVibration();
     }
 
     public void Slice(GameObject target)
@@ -226,5 +242,25 @@ public class StickController : MonoBehaviour
         Destroy(slicedObject, 3f);
     }
 
+    public void OnContollerVibration()
+    {
+        if (!isVibrateRunning)
+        {
+            StartCoroutine(VibrateController());
+        }
+    }
+    private IEnumerator VibrateController()
+    {
+        isVibrateRunning = true;
+        // Trigger controller vibration
+        controller.SendHapticImpulse(vibrationAmplitude, vibrationDuration);
+
+        // Wait for the specified duration
+        yield return new WaitForSeconds(vibrationDuration);
+
+        // Stop controller vibration
+        controller.SendHapticImpulse(0, 0);
+        isVibrateRunning = false;
+    }
 
 }
