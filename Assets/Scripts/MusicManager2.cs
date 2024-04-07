@@ -23,7 +23,7 @@ public class MusicManager2 : MonoBehaviour
 
     private string MusicDataFile;
 
-    static int count = -1;
+    static int count = -2;
 
 
     int nextPoint = 0;
@@ -311,7 +311,7 @@ public class MusicManager2 : MonoBehaviour
         //패널 이동
         if (isTweening) return;
         DG.Tweening.Sequence sequence = DOTween.Sequence();
-        for (int i = 0; i < 5; i++)
+        for (int i = nextPoint - prevPoint; i < 5; i++)
         {
             RectTransform rectTransform = panel[nextPoint].GetComponent<RectTransform>();//QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
             //sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
@@ -364,7 +364,7 @@ public class MusicManager2 : MonoBehaviour
         //패널 이동
         if (isTweening) return;
         DG.Tweening.Sequence sequence = DOTween.Sequence();
-        for (int i = 0; i < 5; i++)
+        for (int i = nextPoint - prevPoint; i < 5; i++)
         {
             RectTransform rectTransform = panel[i].GetComponent<RectTransform>(); //QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
             //sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
