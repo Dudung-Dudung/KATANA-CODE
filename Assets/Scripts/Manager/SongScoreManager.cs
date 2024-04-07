@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
-// JSON µ¥ÀÌÅÍ¸¦ ´ãÀ» Å¬·¡½º
+// ê³¡ ì •ë³´ë“¤ ë“¤ê³  ì‡ëŠ” MusicData JSON ë°ì´í„°ë¥¼ ë‹´ì„ í´ë˜ìŠ¤
 [System.Serializable]
 public class SongData
 {
@@ -12,9 +12,10 @@ public class SongData
     public string cover_image_path;
     public string audio_file_path;
     public float score;
+    public string rank;
 }
 
-// JSON¿¡ ÀÇÇØ Á÷·ÄÈ­µÇ´Â °î ¸ñ·Ï Å¬·¡½º
+// JSONì— ì˜í•´ ì§ë ¬í™”ë˜ëŠ” ê³¡ ëª©ë¡ í´ë˜ìŠ¤
 [System.Serializable]
 public class SongList
 {
@@ -23,45 +24,47 @@ public class SongList
 
 public class SongScoreManager : MonoBehaviour
 {
-    // JSON ÆÄÀÏÀÇ °æ·Î
+    // JSON íŒŒì¼ì˜ ê²½ë¡œ
     public string songsJsonPath = "Assets/Resources/MusicData.json";
 
-    // °î ¸ñ·Ï
+    // ê³¡ ëª©ë¡
     public List<SongData> songs;
 
-    // Start ÇÔ¼ö¿¡¼­ È£ÃâÇÏ¿© ½ÇÇà
+    // Start í•¨ìˆ˜ì—ì„œ í˜¸ì¶œí•˜ì—¬ ì‹¤í–‰
     private void Start()
     {
-        // °î ¸ñ·Ï ·Îµå
+        // ê³¡ ëª©ë¡ ë¡œë“œ
         LoadSongs();
     }
 
-    // °î ¸ñ·Ï ·Îµå
+    // ê³¡ ëª©ë¡ ë¡œë“œ
     private void LoadSongs()
     {
-        // JSON ÆÄÀÏ¿¡¼­ µ¥ÀÌÅÍ ÀĞ±â
+        // JSON íŒŒì¼ì—ì„œ ë°ì´í„° ì½ê¸°
         string json = File.ReadAllText(songsJsonPath);
 
-        // JSON µ¥ÀÌÅÍ¸¦ SongList °´Ã¼·Î ¿ªÁ÷·ÄÈ­
+        // JSON ë°ì´í„°ë¥¼ SongList ê°ì²´ë¡œ ì—­ì§ë ¬í™”
         SongList songList = JsonUtility.FromJson<SongList>(json);
 
-        // °î ¸ñ·Ï ¼³Á¤
+        // ê³¡ ëª©ë¡ ì„¤ì •
         songs = songList.songs;
     }
 
-    // Æ¯Á¤ °îÀÇ Á¡¼ö °»½Å
-    public void UpdateScore(string songTitle, float newScore)
+    // íŠ¹ì • ê³¡ì˜ ì ìˆ˜ ê°±ì‹ 
+    public void UpdateSongState(string songTitle, float newScore, string newRank)
     {
-        // °î ¸ñ·Ï¿¡¼­ ÇØ´ç °î Ã£±â
+        // ê³¡ ëª©ë¡ì—ì„œ í•´ë‹¹ ê³¡ ì°¾ê¸°
         SongData songToUpdate = songs.Find(song => song.title == songTitle);
 
-        // ÇØ´ç °îÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+        // í•´ë‹¹ ê³¡ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
         if (songToUpdate != null)
         {
-            // Á¡¼ö °»½Å
+            // ì ìˆ˜ ê°±ì‹ 
             songToUpdate.score = newScore;
 
-            // JSON ÆÄÀÏ¿¡ º¯°æµÈ ³»¿ë ÀúÀå
+            songToUpdate.rank = newRank;
+
+            // JSON íŒŒì¼ì— ë³€ê²½ëœ ë‚´ìš© ì €ì¥
             SaveSongs();
         }
         else
@@ -70,19 +73,17 @@ public class SongScoreManager : MonoBehaviour
         }
     }
 
-    // JSON ÆÄÀÏ¿¡ °î ¸ñ·Ï ÀúÀå
+    // JSON íŒŒì¼ì— ê³¡ ëª©ë¡ ì €ì¥
     private void SaveSongs()
     {
-        // SongList °´Ã¼ »ı¼º ¹× °î ¸ñ·Ï ¼³Á¤
+        // SongList ê°ì²´ ìƒì„± ë° ê³¡ ëª©ë¡ ì„¤ì •
         SongList songList = new SongList();
         songList.songs = songs;
 
-        // SongList °´Ã¼¸¦ JSON Çü½ÄÀ¸·Î Á÷·ÄÈ­
+        // SongList ê°ì²´ë¥¼ JSON í˜•ì‹ìœ¼ë¡œ ì§ë ¬í™”
         string json = JsonUtility.ToJson(songList);
 
-        // JSON ÆÄÀÏ¿¡ ¾²±â
+        // JSON íŒŒì¼ì— ì“°ê¸°
         File.WriteAllText(songsJsonPath, json);
     }
 }
-
-

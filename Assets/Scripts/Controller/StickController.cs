@@ -24,7 +24,7 @@ public class StickController : MonoBehaviour
 
     TimingManager timingManager;
 
-    // ¸Ş½¬ ÀÚ¸£±â¿ë 
+    // ë©”ì‰¬ ìë¥´ê¸°ìš© 
     public Transform planeDebug;
     public GameObject target;
     public Transform startSlicePoint;
@@ -41,14 +41,25 @@ public class StickController : MonoBehaviour
 
     private XRController xrController;
 
-    //ÄÁÆ®·Ñ·¯ Áøµ¿
-    [Header ("Vibration")]
+    //ì»¨íŠ¸ë¡¤ëŸ¬ ì§„ë™
+    [Header("Vibration")]
     public float vibrationStrength = 0.5f;
     public float vibrationDuration = 0.05f;
     private bool isVibrationRunning = false;
+
+    //ë³´ìŠ¤í•œí…Œ ë‚ ì•„ê°ˆ ì˜¤ë¸Œì íŠ¸ ê´€ë ¨ ë³€ìˆ˜
+    public GameObject objectToLaunchPrefab; 
+    public Transform targetPos; //ë³´ìŠ¤ëª¹ ìœ„ì¹˜ 
+    public float launchForce = 100f;
+
+    //ë³´ë„ˆìŠ¤ ì ìˆ˜ ê³„ì‚°ìš©
+    public static int bonusScore = 0;
+
+
+
     private void Awake()
     {
-        //ÄÁÆ®·Ñ·¯ ¹Ş¾Æ¿À±â
+        //ì»¨íŠ¸ë¡¤ëŸ¬ ë°›ì•„ì˜¤ê¸°
         xrController = transform.GetComponentInParent<XRController>();
     }
     void Start()
@@ -57,79 +68,79 @@ public class StickController : MonoBehaviour
         timingManager = FindObjectOfType<TimingManager>();
         /*       Debug.Log(this.gameObject.tag);*/
 
-        //Debug.Log(OVRInput.GetConnectedControllers()+ " µğ¹ÙÀÌ½º"); // ¿¬°áµÈ ÄÁÆ®·Ñ·¯ È®ÀÎ
-/*        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));*/
+        //Debug.Log(OVRInput.GetConnectedControllers()+ " ë””ë°”ì´ìŠ¤"); // ì—°ê²°ëœ ì»¨íŠ¸ë¡¤ëŸ¬ í™•ì¸
+        /*        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));*/
 
     }
 
 
     void Update()
     {
-/*        if (Input.GetKeyDown(KeyCode.A) && !isSwingingLt && gameObject.tag == "Stick_Red")
+        /*        if (Input.GetKeyDown(KeyCode.A) && !isSwingingLt && gameObject.tag == "Stick_Red")
+                {
+                    targetAngle = -135f;
+                    StartCoroutine(SwingStickLt());
+                }
+
+                else if (Input.GetKeyDown(KeyCode.D) && !isSwingingRt && gameObject.tag == "Stick_Blue")
+                {
+                    targetAngle = 135f;
+                    StartCoroutine(SwingStickRt());
+                }*/
+    }
+
+
+    /*    IEnumerator SwingStickLt()
         {
-            targetAngle = -135f;
-            StartCoroutine(SwingStickLt());
+            isSwingingLt = true;
+            progress = 0f;
+
+            while (progress <= 1f)
+            {
+                progress += Time.deltaTime / swingTime * stickSpeed;
+
+                if (progress <= 0.5f)
+                {
+                    Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+                    transform.rotation = Quaternion.Lerp(Quaternion.identity, targetRotation, progress * 2);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
+                    transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 0f, targetAngle), targetRotation, (progress - 0.5f) * 2);
+                }
+
+                yield return null;
+            }
+
+            isSwingingLt = false;
         }
 
-        else if (Input.GetKeyDown(KeyCode.D) && !isSwingingRt && gameObject.tag == "Stick_Blue")
+        IEnumerator SwingStickRt()
         {
-            targetAngle = 135f;
-            StartCoroutine(SwingStickRt());
+            isSwingingRt = true;
+            progress = 0f;
+
+            while (progress <= 1f)
+            {
+                progress += Time.deltaTime / swingTime * stickSpeed;
+
+                if (progress <= 0.5f)
+                {
+                    Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+                    transform.rotation = Quaternion.Lerp(Quaternion.identity, targetRotation, progress * 2);
+                }
+                else
+                {
+                    Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
+                    transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 0f, targetAngle), targetRotation, (progress - 0.5f) * 2);
+                }
+
+                yield return null;
+            }
+
+            isSwingingRt = false;
         }*/
-    }
-
-
-/*    IEnumerator SwingStickLt()
-    {
-        isSwingingLt = true;
-        progress = 0f;
-
-        while (progress <= 1f)
-        {
-            progress += Time.deltaTime / swingTime * stickSpeed;
-
-            if (progress <= 0.5f)
-            {
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
-                transform.rotation = Quaternion.Lerp(Quaternion.identity, targetRotation, progress * 2);
-            }
-            else
-            {
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
-                transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 0f, targetAngle), targetRotation, (progress - 0.5f) * 2);
-            }
-
-            yield return null;
-        }
-
-        isSwingingLt = false;
-    }
-
-    IEnumerator SwingStickRt()
-    {
-        isSwingingRt = true;
-        progress = 0f;
-
-        while (progress <= 1f)
-        {
-            progress += Time.deltaTime / swingTime * stickSpeed;
-
-            if (progress <= 0.5f)
-            {
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
-                transform.rotation = Quaternion.Lerp(Quaternion.identity, targetRotation, progress * 2);
-            }
-            else
-            {
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
-                transform.rotation = Quaternion.Lerp(Quaternion.Euler(0f, 0f, targetAngle), targetRotation, (progress - 0.5f) * 2);
-            }
-
-            yield return null;
-        }
-
-        isSwingingRt = false;
-    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -137,14 +148,21 @@ public class StickController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Cube_lt") && gameObject.tag == "Stick_Red")
         {
-            AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
-
-            particle.gameObject.transform.position = other.gameObject.transform.position;
-            particle.Stop();
-            particle.Play();
             if (state.isEnter == false)
             {
-/*                VibrateController();*/
+                AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
+                particle.gameObject.transform.position = other.gameObject.transform.position;
+                particle.Stop();
+                particle.Play();
+
+                //ë…¸íŠ¸ ì³ë‚¸ ìœ„ì¹˜ë¶€í„° ë³´ìŠ¤ ìœ„ì¹˜ê¹Œì§€ ì˜¤ë¸Œì íŠ¸ ì˜ê¸°
+                LaunchObject(other.gameObject.transform.position, targetPos.position);
+
+                //ë³´ìŠ¤ ì¡ì•˜ìœ¼ë©´ ë³´ë„ˆìŠ¤ ì ìˆ˜ ê³„ì‚°í•˜ê¸°
+                if (BossStatus.isClear) bonusScore += 4;
+                NoteManager.songHitNoteCount += 1;
+                
+                /*                VibrateController();*/
                 state.isEnter = true;
                 timingManager.CheckTiming();
                 bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -154,24 +172,6 @@ public class StickController : MonoBehaviour
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
                 }
-
-                //ÆÇÁ¤ ¾È°íÃÄÁ®¼­ ÀÏ´Ü ÁÖ¼®
-                /*else if (!hasHit)
-                {
-                    Vector3 startRaycast = startSlicePoint.position;
-                    Vector3 endRaycast = endSlicePoint.position;
-    *//*                startRaycast.y -= 1f; // ½ÃÀÛÁ¡À» Å¥ºêÀÇ °æ°è¿¡ ´õ °¡±õ°Ô Á¶Á¤ (y ¹æÇâÀ¸·Î -1)
-                    endRaycast.x += 1f;   // ³¡Á¡À» Å¥ºêÀÇ °æ°è¿¡ ´õ °¡±õ°Ô Á¶Á¤ (x ¹æÇâÀ¸·Î +1)*//*
-                    hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
-
-                    if (hasHit)
-                    {
-                        GameObject target = hit.transform.gameObject;
-                        Slice(target);
-                        Destroy(other.gameObject);
-                    }
-                }*/
-                // Áøµ¿
                 Vibrate();
                 Destroy(other.gameObject);
             }
@@ -179,13 +179,20 @@ public class StickController : MonoBehaviour
 
         else if (other.gameObject.CompareTag("Cube_rt") && gameObject.tag == "Stick_Blue")
         {
-            if(state.isEnter == false)
+            if (state.isEnter == false)
             {
- /*               VibrateController();*/
+                AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();
 
+                //ë…¸íŠ¸ ì³ë‚¸ ìœ„ì¹˜ë¶€í„° ë³´ìŠ¤ ìœ„ì¹˜ê¹Œì§€ ì˜¤ë¸Œì íŠ¸ ì˜ê¸°
+                LaunchObject(other.gameObject.transform.position, targetPos.position);
+
+                //ë³´ìŠ¤ ì¡ì•˜ìœ¼ë©´ ë³´ë„ˆìŠ¤ ì ìˆ˜ ê³„ì‚°í•˜ê¸°
+                if (BossStatus.isClear) NoteManager.songHitNoteCount += 1;
+
+                /*               VibrateController();*/
                 state.isEnter = true;
                 timingManager.CheckTiming();
                 bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -195,49 +202,27 @@ public class StickController : MonoBehaviour
                     GameObject target = hit.transform.gameObject;
                     Slice(target);
                 }
-
-                // ÆÇÁ¤ ¾È°íÃÄÁ®¼­ ÀÏ´Ü ÁÖ¼®
-                /*            else if (!hasHit)
-                            {
-                                Vector3 startRaycast = startSlicePoint.position;
-                                Vector3 endRaycast = endSlicePoint.position;
-                                *//*startRaycast.y -= 1f; // ½ÃÀÛÁ¡À» Å¥ºêÀÇ °æ°è¿¡ ´õ °¡±õ°Ô Á¶Á¤ (y ¹æÇâÀ¸·Î -1)
-                                endRaycast.x += 1f;   // ³¡Á¡À» Å¥ºêÀÇ °æ°è¿¡ ´õ °¡±õ°Ô Á¶Á¤ (x ¹æÇâÀ¸·Î +1)*//*
-                                hasHit = Physics.Linecast(startRaycast, endRaycast, out RaycastHit hitt, sliceableLayer);
-
-                                if (hasHit)
-                                {
-                                    GameObject target = hit.transform.gameObject;
-                                    Slice(target);
-                                    Destroy(other.gameObject);
-                                }
-                            }*/
-                // Áøµ¿
                 Vibrate();
                 Destroy(other.gameObject);
             }
         }
-
     }
 
     public void Slice(GameObject target)
     {
-
-
-/*        Debug.Log(target.name + " ½½¶óÀÌ½º");*/
+        /*        Debug.Log(target.name + " ìŠ¬ë¼ì´ìŠ¤");*/
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeDebug.up);
 
-        if(hull != null)
+        if (hull != null)
         {
-
-            GameObject uppderHull = hull.CreateUpperHull(target,crossSectionMaterial);
+            GameObject uppderHull = hull.CreateUpperHull(target, crossSectionMaterial);
             SetupSliceComponent(uppderHull);
 
-            GameObject lowerHull = hull.CreateLowerHull(target,crossSectionMaterial);
+            GameObject lowerHull = hull.CreateLowerHull(target, crossSectionMaterial);
             SetupSliceComponent(lowerHull);
         }
     }
@@ -268,5 +253,22 @@ public class StickController : MonoBehaviour
         }
     }
 
+    void LaunchObject(Vector3 spawnPos, Vector3 targetPos)
+    {
+        GameObject newObject = Instantiate(objectToLaunchPrefab, spawnPos, Quaternion.identity);
+
+        Rigidbody rb = newObject.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            Vector3 launchDirection = targetPos.normalized;
+
+            rb.AddForce(launchDirection * launchForce, ForceMode.Impulse);
+        }
+        else
+        {
+            Debug.LogWarning("Rigidbody component not found on the object to launch!");
+        }
+    }
 
 }

@@ -26,7 +26,7 @@ public class NoteTime : MonoBehaviour
         {
             lines.AddRange(File.ReadAllLines(filePath));
             totallines = lines.Count;
-            Debug.Log("¶óÀÎ °¹¼ö : " +totallines);
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : " +totallines);
             exist = true;
         }
         writer = new StreamWriter(filePath, true);
