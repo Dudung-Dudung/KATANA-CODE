@@ -4195,7 +4195,7 @@ MonoBehaviour:
   QuestPanelList: {fileID: 721440520}
   title: {fileID: 576105915}
   artist: {fileID: 1271816180}
-  score: {fileID: 0}
+  score: {fileID: 742141497}
 --- !u!82 &702307155
 AudioSource:
   m_ObjectHideFlags: 0
