@@ -8,18 +8,22 @@ using Unity.VisualScripting;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 using Oculus.Interaction.PoseDetection;
+using System.Runtime.Serialization;
 
 public class MusicManager2 : MonoBehaviour
 {
 
     private List<MusicData> musicList = new List<MusicData>();
-    private List<GameObject> panel = new List<GameObject>();
+   // private List<GameObject> panel = new List<GameObject>();
+    LinkedList<GameObject> panel = new LinkedList<GameObject>();
+
 
     public List<RectTransform> questPanelPosition = new List<RectTransform>();
 
     public GameObject panelPrefab;
     public GameObject QuestPanelList;
     private AudioSource songAudio;
+    private int totalSongs;
 
     private string MusicDataFile;
 
@@ -59,6 +63,7 @@ public class MusicManager2 : MonoBehaviour
 
     public void GameStart()
     {
+
         songAudio = GetComponent<AudioSource>();
         /*
         //패널 생성
@@ -68,7 +73,7 @@ public class MusicManager2 : MonoBehaviour
         */
         for(int i = 0; i < 5; i++)
         {
-           panel.Add(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
+           panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
 
         }
         ReadJson("MusicData");
@@ -125,6 +130,9 @@ public class MusicManager2 : MonoBehaviour
         Debug.Log(songData.songs[count].title);
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
+
+        totalSongs = songData.songs.Length - 1;
+
     }
     private int AddNumber(int max, int count)
     {
@@ -162,7 +170,7 @@ public class MusicManager2 : MonoBehaviour
         songAudio.Play();
 
         //새로 생성된 패널에 패널에 넣을 곡 count update
-        count = SubNumber(songData.songs.Length - 1, count);
+        count = SubNumber(totalSongs, count);
 
         //child[2]번 위치에 패널 생성
         GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
@@ -171,7 +179,7 @@ public class MusicManager2 : MonoBehaviour
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
         newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
         //count를 현재 곡에 맞춰주기
-        count = AddNumber(songData.songs.Length - 1, count);
+        count = AddNumber(totalSongs, count);
         //이전에 다른 방향으로 이동한 경우
         int destroy = 0;
 
@@ -238,7 +246,7 @@ public class MusicManager2 : MonoBehaviour
         newPanel.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
 
         //count를 현재 곡에 맞춰주기
-        count = SubNumber(songData.songs.Length - 1,count);
+        count = SubNumber(totalSongs, count);
         //이전에 다른 방향으로 이동한 경우
         int destroy = 0;
         if (isNext)
@@ -277,11 +285,25 @@ public class MusicManager2 : MonoBehaviour
     }
     public void NextSong()
     {
+        //패널 이동
+        if (isTweening) return;
+        DG.Tweening.Sequence sequence = DOTween.Sequence();
+        foreach (GameObject obj in panel)
+        {
+            RectTransform rectTransform = obj.GetComponent<RectTransform>();//QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
+            //sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
+            DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x + 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
+              .OnComplete(() =>
+              {
+                  isTweening = false;
+
+              }));
+        }
         //패널 정보 업데이트
-        AddNumber(5, nextPoint);
-        AddNumber(5, prevPoint);
+        //AddNumber(5, nextPoint);
+        //AddNumber(5, prevPoint);
         //현재 곡을 새로 업데이트
-        count = SubNumber(songData.songs.Length - 1, count);
+        count = SubNumber(totalSongs, count);
         //현재 곡 정보 출력
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
@@ -290,50 +312,48 @@ public class MusicManager2 : MonoBehaviour
         songAudio.Play();
 
         //새로 생성된 패널에 패널에 넣을 곡 count update
-        count = SubNumber(songData.songs.Length - 1, count);
-        count = SubNumber(songData.songs.Length - 1, count);
+        count = SubNumber(totalSongs, count);
+        count = SubNumber(totalSongs, count);
 
         //child[2]번 위치에 패널 생성
-        GameObject panel_ = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
-        panel.Add(panel_);
+        panel.AddFirst(Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform));
         //GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform);
 
         //새로 만든 패널에 정보 넣기
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
-        panel[prevPoint].transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
+        panel.First.Value.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
         //count를 현재 곡에 맞춰주기
-        count = AddNumber(songData.songs.Length - 1, count);
-        count = AddNumber(songData.songs.Length - 1, count);
+        count = AddNumber(totalSongs, count);
+        count = AddNumber(totalSongs, count);
 
         //패널 삭제
-        Destroy(panel[nextPoint]);
+        Destroy(panel.Last.Value);
+        panel.RemoveLast();
 
+        
+    }
+
+    public void PrevSong()
+    {
         //패널 이동
         if (isTweening) return;
         DG.Tweening.Sequence sequence = DOTween.Sequence();
-        for (int i = nextPoint - prevPoint; i < 5; i++)
+        foreach (GameObject obj in panel)
         {
-            RectTransform rectTransform = panel[nextPoint].GetComponent<RectTransform>();//QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
+            RectTransform rectTransform = obj.GetComponent<RectTransform>();//QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
             //sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
-            DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x + 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
+            DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
               .OnComplete(() =>
               {
                   isTweening = false;
 
               }));
-            AddNumber(5, nextPoint);
         }
-        Destroy(panel[nextPoint]);// QuestPanelList.transform.GetChild(destroy).gameObject);
-
-    }
-
-    public void PrevSong()
-    {
         //현재 패널 정보 업데이트
         SubNumber(5, nextPoint);
         AddNumber(5, nextPoint);
         //현재 곡을 새로 업데이트
-        count = AddNumber(songData.songs.Length - 1, count);
+        count = AddNumber(totalSongs, count);
 
         //현재 곡 정보 출력
         title.text = songData.songs[count].title;
@@ -343,39 +363,32 @@ public class MusicManager2 : MonoBehaviour
         songAudio.Play();
 
         //패널에 넣을 새로운 곡 count update
-        count = AddNumber(songData.songs.Length - 1, count);
+        count = AddNumber(totalSongs, count);
+        count = AddNumber(totalSongs, count);
 
         //child[2]번 위치에 패널 생성
-        GameObject panel_ = Instantiate(panelPrefab, questPanelPosition[5].position, questPanelPosition[5].rotation, QuestPanelList.transform);
-        panel.Add(panel_);
+        panel.AddLast(Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform));
 
         //GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[2].position, questPanelPosition[2].rotation, QuestPanelList.transform);
 
         //새로 만든 패널에 정보 넣기
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
-        panel[nextPoint].transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
+        panel.Last.Value.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
 
         //count를 현재 곡에 맞춰주기
-        count = SubNumber(songData.songs.Length - 1, count);
+        count = SubNumber(totalSongs, count);
+        count = SubNumber(totalSongs, count);
+
 
         //패널 삭제
-        Destroy(panel[nextPoint]);
+        Destroy(panel.First.Value);
+        panel.RemoveFirst();
 
-        //패널 이동
-        if (isTweening) return;
-        DG.Tweening.Sequence sequence = DOTween.Sequence();
-        for (int i = nextPoint - prevPoint; i < 5; i++)
-        {
-            RectTransform rectTransform = panel[i].GetComponent<RectTransform>(); //QuestPanelList.transform.GetChild(i).GetComponent<RectTransform>();
-            //sequence.Join(sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)));
-            DG.Tweening.Sequence sequence1 = sequence.Join(rectTransform.DOAnchorPos3D(new Vector3(rectTransform.anchoredPosition3D.x - 650, y: rectTransform.anchoredPosition3D.y, rectTransform.anchoredPosition3D.z), 0.5f)
-              .OnComplete(() =>
-              {
-                  isTweening = false;
+        // 두 번째 요소를 첫 번째 요소로 이동
+        //GameObject newFirst = panel.First.Next.Value;
+        //panel.AddFirst(newFirst);
 
-              }));
-            SubNumber(5, nextPoint);
-        }
+        
     }
 
     public void NextScene()
