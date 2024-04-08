@@ -180,7 +180,7 @@ public class NoteManager : MonoBehaviour
             {
                 if (song.title == GameManager.songTitle)
                 {
-                    songScoreManager.UpdateSongState(song.title, score, rank);
+                    songScoreManager.UpdateSongState(song.title, score, rank , percentage);
                     break; 
                 }
             }

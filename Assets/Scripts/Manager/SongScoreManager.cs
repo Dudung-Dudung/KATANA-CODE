@@ -13,6 +13,7 @@ public class SongData
     public string audio_file_path;
     public float score;
     public string rank;
+    public float percentage;
 }
 
 // JSON에 의해 직렬화되는 곡 목록 클래스
@@ -51,7 +52,7 @@ public class SongScoreManager : MonoBehaviour
     }
 
     // 특정 곡의 점수 갱신
-    public void UpdateSongState(string songTitle, float newScore, string newRank)
+    public void UpdateSongState(string songTitle, float newScore, string newRank, float percentage)
     {
         // 곡 목록에서 해당 곡 찾기
         SongData songToUpdate = songs.Find(song => song.title == songTitle);
@@ -63,6 +64,7 @@ public class SongScoreManager : MonoBehaviour
             songToUpdate.score = newScore;
 
             songToUpdate.rank = newRank;
+            songToUpdate.percentage = percentage;
 
             // JSON 파일에 변경된 내용 저장
             SaveSongs();
