@@ -248,8 +248,8 @@ public class MusicManager2 : MonoBehaviour
 
     public void NextScene()
     {
-        GameManager.songTitle = count;
-        Debug.Log(GameManager.songTitle);
+        GameManager.songTitle = songData.songs[count].title;
+        Debug.Log(GameManager.songTitle + "현재 선택한 곡 이름 - MusicManager2");
         SceneManager.LoadScene(0);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static int songTitle;
+    public static string songTitle;
     public static GameManager instance;
 
     //public ParticleSystem effectPrefab;

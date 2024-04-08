@@ -45,7 +45,7 @@ public class NoteManager : MonoBehaviour
 
     public bool isGameOver = false; //게임 시간 지나고 ui 중복되는거 막기 위한 불리언 변수
 
-    public string notesJsonPath = "Assets/Notes/stylish-rock-beat-trailer-ComaStudio.json"; // JSON 파일의 경로
+    public string notesJsonPath; // JSON 파일의 경로
     public string musicDataJsonPath = "Assets/Resources/MusicData.json"; // JSON 파일의 경로
 
     [SerializeField] Vector3[] cubePositions;
@@ -81,7 +81,8 @@ public class NoteManager : MonoBehaviour
     {
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
-
+        notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";
+        Debug.Log(notesJsonPath + "json 파일 경로 - NoteManager.cs");
         LoadNotes();
     }
 
@@ -177,7 +178,7 @@ public class NoteManager : MonoBehaviour
         {
             foreach (SongData song in songScoreManager.songs)
             {
-                if (song.title == "titanium-AlisiaBeats")
+                if (song.title == GameManager.songTitle)
                 {
                     songScoreManager.UpdateSongState(song.title, score, rank);
                     break; 
