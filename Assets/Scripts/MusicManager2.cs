@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.Rendering.Universal;
 
 public class MusicManager2 : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class MusicManager2 : MonoBehaviour
     public TextMeshProUGUI title;
     public TextMeshProUGUI artist;
     public TextMeshProUGUI score;
+    public TextMeshProUGUI rank;
 
     SongData songData;
 
@@ -45,6 +47,7 @@ public class MusicManager2 : MonoBehaviour
         public string cover_image_path;
         public string audio_file_path;
         public string score;
+        public string rank;
     }
 
 
@@ -63,18 +66,18 @@ public class MusicManager2 : MonoBehaviour
     }
     private void ReadJson(string json)
     {
-        //json ÆÄÀÏ ÀĞ±â
+        //json íŒŒì¼ ì½ê¸°
         TextAsset jsonFile = Resources.Load<TextAsset>(json);
 
         if (jsonFile != null)
         {
-            // JSON ÆÄÀÏ ³»¿ëÀ» ¹®ÀÚ¿­·Î ÀĞ¾î¿É´Ï´Ù.
+            // JSON íŒŒì¼ ë‚´ìš©ì„ ë¬¸ìì—´ë¡œ ì½ì–´ì˜µë‹ˆë‹¤.
             string jsonString = jsonFile.text;
 
-            // JSON ¹®ÀÚ¿­À» ÆÄ½ÌÇÏ¿© SongData °´Ã¼·Î º¯È¯ÇÕ´Ï´Ù.
+            // JSON ë¬¸ìì—´ì„ íŒŒì‹±í•˜ì—¬ SongData ê°ì²´ë¡œ ë³€í™˜í•©ë‹ˆë‹¤.
             songData = JsonUtility.FromJson<SongData>(jsonString);
 
-            // SongData °´Ã¼¸¦ »ç¿ëÇÕ´Ï´Ù.
+            // SongData ê°ì²´ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.
             foreach (Song song in songData.songs)
             {
                 Debug.Log("Title: " + song.title);
@@ -85,7 +88,7 @@ public class MusicManager2 : MonoBehaviour
         }
         else
         {
-            Debug.LogError("JSON ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù: " + MusicDataFile);
+            Debug.LogError("JSON íŒŒì¼ì„ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + MusicDataFile);
         }
     }
     public void UpdateSongInfo()
@@ -99,20 +102,21 @@ public class MusicManager2 : MonoBehaviour
             if (count >= songData.songs.Length) count = 0;
             else if (count < 0) count = songData.songs.Length + count;
             Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
-            //ÀÌ¹ÌÁö º¯°æ
+            //ì´ë¯¸ì§€ ë³€ê²½
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
             count = AddNumber(songData.songs.Length - 1, count);
         }
         count = 0;
-        //°î º¯È¯
+        //ê³¡ ë³€í™˜
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
         songAudio.clip = musicClip;
         songAudio.Play();
         Debug.Log(songData.songs[count].title);
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        //score.text = songData.songs[count].score;
+        score.text = songData.songs[count].score;
+        rank.text = songData.songs[count].rank;
 
         totalSongs = songData.songs.Length - 1;
 
@@ -131,17 +135,17 @@ public class MusicManager2 : MonoBehaviour
     }
     private Sprite LoadSpriteFromPath(string path)
     {
-        // ÀÌ¹ÌÁö ÆÄÀÏÀ» ·Îµå
+        // ì´ë¯¸ì§€ íŒŒì¼ì„ ë¡œë“œ
         Texture2D texture = Resources.Load<Texture2D>(path);
         if (!texture) Debug.Log("texture is null" + path);
-        // Texture2D¸¦ Sprite·Î º¯È¯
+        // Texture2Dë¥¼ Spriteë¡œ ë³€í™˜
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
         return sprite;
     }
     public void NextSong()
     {
-        //ÆĞ³Î ÀÌµ¿
+        //íŒ¨ë„ ì´ë™
         if (isTweening) return;
         DG.Tweening.Sequence sequence = DOTween.Sequence();
         foreach (GameObject obj in panel)
@@ -155,41 +159,42 @@ public class MusicManager2 : MonoBehaviour
 
               }));
         }
-        //ÇöÀç °îÀ» »õ·Î ¾÷µ¥ÀÌÆ®
+        //í˜„ì¬ ê³¡ì„ ìƒˆë¡œ ì—…ë°ì´íŠ¸
         count = SubNumber(totalSongs, count);
-        //ÇöÀç °î Á¤º¸ Ãâ·Â
+        //í˜„ì¬ ê³¡ ì •ë³´ ì¶œë ¥
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        //score.text = songData.songs[count].score;
+        score.text = songData.songs[count].score;
+        rank.text = songData.songs[count].rank;
+
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
         songAudio.clip = musicClip;
         songAudio.Play();
 
-        //»õ·Î »ı¼ºµÈ ÆĞ³Î¿¡ ÆĞ³Î¿¡ ³ÖÀ» °î count update
+        //ìƒˆë¡œ ìƒì„±ëœ íŒ¨ë„ì— íŒ¨ë„ì— ë„£ì„ ê³¡ count update
         count = SubNumber(totalSongs, count);
         count = SubNumber(totalSongs, count);
 
-        //child[2]¹ø À§Ä¡¿¡ ÆĞ³Î »ı¼º
+        //child[2]ë²ˆ ìœ„ì¹˜ì— íŒ¨ë„ ìƒì„±
         panel.AddFirst(Instantiate(panelPrefab, questPanelPosition[0].position, questPanelPosition[0].rotation, QuestPanelList.transform));
 
-        //»õ·Î ¸¸µç ÆĞ³Î¿¡ Á¤º¸ ³Ö±â
+        //ìƒˆë¡œ ë§Œë“  íŒ¨ë„ì— ì •ë³´ ë„£ê¸°
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
         panel.First.Value.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
-        //count¸¦ ÇöÀç °î¿¡ ¸ÂÃçÁÖ±â
+        //countë¥¼ í˜„ì¬ ê³¡ì— ë§ì¶°ì£¼ê¸°
         count = AddNumber(totalSongs, count);
         count = AddNumber(totalSongs, count);
 
-        //ÆĞ³Î »èÁ¦
+        //íŒ¨ë„ ì‚­ì œ
         Destroy(panel.Last.Value);
         panel.RemoveLast();
 
-        
     }
 
     public void PrevSong()
     {
-        //ÆĞ³Î ÀÌµ¿
+        //íŒ¨ë„ ì´ë™
         if (isTweening) return;
         DG.Tweening.Sequence sequence = DOTween.Sequence();
         foreach (GameObject obj in panel)
@@ -203,44 +208,48 @@ public class MusicManager2 : MonoBehaviour
               }));
         }
        
-        //ÇöÀç °îÀ» »õ·Î ¾÷µ¥ÀÌÆ®
+        //í˜„ì¬ ê³¡ì„ ìƒˆë¡œ ì—…ë°ì´íŠ¸
         count = AddNumber(totalSongs, count);
 
-        //ÇöÀç °î Á¤º¸ Ãâ·Â
+        //í˜„ì¬ ê³¡ ì •ë³´ ì¶œë ¥
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        //score.text = songData.songs[count].score;
+        score.text = songData.songs[count].score;
+        rank.text = songData.songs[count].rank;
+
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
         songAudio.clip = musicClip;
         songAudio.Play();
 
-        //ÆĞ³Î¿¡ ³ÖÀ» »õ·Î¿î °î count update
+        //íŒ¨ë„ì— ë„£ì„ ìƒˆë¡œìš´ ê³¡ count update
         count = AddNumber(totalSongs, count);
         count = AddNumber(totalSongs, count);
 
-        //child[2]¹ø À§Ä¡¿¡ ÆĞ³Î »ı¼º
+        //child[2]ë²ˆ ìœ„ì¹˜ì— íŒ¨ë„ ìƒì„±
         panel.AddLast(Instantiate(panelPrefab, questPanelPosition[4].position, questPanelPosition[4].rotation, QuestPanelList.transform));
 
         //GameObject newPanel = Instantiate(panelPrefab, questPanelPosition[2].position, questPanelPosition[2].rotation, QuestPanelList.transform);
 
-        //»õ·Î ¸¸µç ÆĞ³Î¿¡ Á¤º¸ ³Ö±â
+        //ìƒˆë¡œ ë§Œë“  íŒ¨ë„ì— ì •ë³´ ë„£ê¸°
         Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
         panel.Last.Value.transform.GetChild(0).GetComponent<Image>().sprite = coverImage;
 
-        //count¸¦ ÇöÀç °î¿¡ ¸ÂÃçÁÖ±â
+        //countë¥¼ í˜„ì¬ ê³¡ì— ë§ì¶°ì£¼ê¸°
         count = SubNumber(totalSongs, count);
         count = SubNumber(totalSongs, count);
 
 
-        //ÆĞ³Î »èÁ¦
+        //íŒ¨ë„ ì‚­ì œ
         Destroy(panel.First.Value);
         panel.RemoveFirst();
-        
+
     }
 
     public void NextScene()
     {
+        GameManager.songTitle = count;
+        Debug.Log(GameManager.songTitle);
         SceneManager.LoadScene(0);
     }
 }
