@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static string songTitle;
+    public static int songCount;
     public static GameManager instance;
 
     //public ParticleSystem effectPrefab;

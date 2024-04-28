@@ -53,7 +53,7 @@ public class MusicManager2 : MonoBehaviour
 
     public void GameStart()
     {
-
+        count = GameManager.songCount;
         songAudio = GetComponent<AudioSource>();
         
         for(int i = 0; i < 5; i++)
@@ -99,15 +99,15 @@ public class MusicManager2 : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
 
-            if (count >= songData.songs.Length) count = 0;
-            else if (count < 0) count = songData.songs.Length + count;
+            //if (count >= songData.songs.Length) count = 0;
+            //else if (count < 0) count = songData.songs.Length + count;
             Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
             //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
             count = AddNumber(songData.songs.Length - 1, count);
         }
-        count = 0;
+        //count = 0;
         //곡 변환
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
         songAudio.clip = musicClip;
@@ -249,6 +249,7 @@ public class MusicManager2 : MonoBehaviour
     public void NextScene()
     {
         GameManager.songTitle = songData.songs[count].title;
+        GameManager.songCount = count;
         Debug.Log(GameManager.songTitle + "현재 선택한 곡 이름 - MusicManager2");
         SceneManager.LoadScene(0);
     }
