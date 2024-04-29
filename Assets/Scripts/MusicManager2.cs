@@ -24,7 +24,7 @@ public class MusicManager2 : MonoBehaviour
 
     private string MusicDataFile;
 
-    static int count = -2;
+    static int count = 0;
 
     public TextMeshProUGUI title;
     public TextMeshProUGUI artist;
@@ -53,7 +53,6 @@ public class MusicManager2 : MonoBehaviour
 
     public void GameStart()
     {
-        count = GameManager.songCount;
         songAudio = GetComponent<AudioSource>();
         
         for(int i = 0; i < 5; i++)
@@ -96,6 +95,11 @@ public class MusicManager2 : MonoBehaviour
         Debug.Log("*************************");
         Debug.Log("UpdateSongInfo");
 
+        totalSongs = songData.songs.Length - 1;
+        count = GameManager.songCount;
+        count = SubNumber(totalSongs, count);
+        count = SubNumber(totalSongs, count);
+        Debug.Log("songCount : " + count);
         for (int i = 0; i < 5; i++)
         {
 
@@ -105,21 +109,21 @@ public class MusicManager2 : MonoBehaviour
             //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
-            count = AddNumber(songData.songs.Length - 1, count);
+            if(i ==2)
+            {
+                AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
+                songAudio.clip = musicClip;
+                songAudio.Play();
+                title.text = songData.songs[count].title;
+                artist.text = songData.songs[count].artist;
+                score.text = songData.songs[count].score;
+                rank.text = songData.songs[count].rank;
+            }
+            count = AddNumber(totalSongs, count);
         }
-        //count = 0;
-        //곡 변환
-        AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
-        songAudio.clip = musicClip;
-        songAudio.Play();
-        Debug.Log(songData.songs[count].title);
-        title.text = songData.songs[count].title;
-        artist.text = songData.songs[count].artist;
-        score.text = songData.songs[count].score;
-        rank.text = songData.songs[count].rank;
-
-        totalSongs = songData.songs.Length - 1;
-
+        count = SubNumber(totalSongs, count);
+        count = SubNumber(totalSongs, count);
+        count = SubNumber(totalSongs, count);
     }
     private int AddNumber(int max, int count)
     {
