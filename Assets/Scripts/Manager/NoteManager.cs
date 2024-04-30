@@ -81,7 +81,19 @@ public class NoteManager : MonoBehaviour
     {
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
-        notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";
+
+        notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
+
+        Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
+        if (GameManager.songTitle != null)
+        {
+            notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";
+        }
+
+
+
+
+
         Debug.Log(notesJsonPath + "json 파일 경로 - NoteManager.cs");
         LoadNotes();
     }

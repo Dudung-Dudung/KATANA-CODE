@@ -36,7 +36,7 @@ public class StickController : MonoBehaviour
 
     public LayerMask sliceableLayer;
 
-    public AudioClip soundEffect;
+    public AudioSource soundEffect;
     public ParticleSystem particle;
 
     private XRController xrController;
@@ -66,6 +66,7 @@ public class StickController : MonoBehaviour
     {
         initialPosition = transform.position;
         timingManager = FindObjectOfType<TimingManager>();
+        soundEffect = GetComponent<AudioSource>(); 
         /*       Debug.Log(this.gameObject.tag);*/
 
         //Debug.Log(OVRInput.GetConnectedControllers()+ " 디바이스"); // 연결된 컨트롤러 확인
@@ -150,7 +151,7 @@ public class StickController : MonoBehaviour
         {
             if (state.isEnter == false)
             {
-                AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
+/*                soundEffect.Play();*/
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();
@@ -181,7 +182,7 @@ public class StickController : MonoBehaviour
         {
             if (state.isEnter == false)
             {
-                AudioSource.PlayClipAtPoint(soundEffect, gameObject.transform.position);
+/*                soundEffect.Play();*/
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();
