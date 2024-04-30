@@ -3336,11 +3336,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questPanelPosition:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 16843015}
+  - {fileID: 900121563}
+  - {fileID: 1898761181}
+  - {fileID: 1711313354}
+  - {fileID: 973815311}
   panelPrefab: {fileID: 3421999821491316425, guid: c4bd16c4feac7f54fa7081c077f6b339, type: 3}
   QuestPanelList: {fileID: 721440520}
   title: {fileID: 576105915}
