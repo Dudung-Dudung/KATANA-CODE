@@ -4,6 +4,7 @@ using System.Data.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class AudioMixerController : MonoBehaviour
@@ -13,7 +14,15 @@ public class AudioMixerController : MonoBehaviour
     [SerializeField] private AudioSource masterAudioSource;
     public TextMeshProUGUI VolumeValue;
 
-  
+
+    private void Start()
+    {
+        Debug.Log(masterAudioSlider.value);
+        masterAudioMixer.GetFloat("Master", out float volume);
+        Debug.Log(" volume" + volume);
+        masterAudioSlider.value = volume;
+        SetMasterVolume();
+    }
     public void SetMasterVolume()
     {
         float volume = masterAudioSlider.value;

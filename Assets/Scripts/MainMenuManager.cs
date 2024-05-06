@@ -7,23 +7,27 @@ using static MusicManager;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public GameObject songSelection; //²°´Ù Ä×´Ù ÇÒ main ui
-    public Image ARASAKAFillAmount; //µ¿±×¶ó¹Ì ÆÛ¼¾Æ® º¸¿©ÁÖ±â ¿ë
-    public TextMeshProUGUI ARASAKAPercent; //µ¿±×¶ó¹Ì ¼ıÀÚ
-    
-    public int ARASAKAClearPercentage = 0;
+    public GameObject songSelection; //ê»ë‹¤ ì¼°ë‹¤ í•  main ui
+    public Image ARASAKAFillAmount; //ë™ê·¸ë¼ë¯¸ í¼ì„¼íŠ¸ ë³´ì—¬ì£¼ê¸° ìš©
+    public TextMeshProUGUI ARASAKAPercent; //ë™ê·¸ë¼ë¯¸ ìˆ«ì
+    public MusicManager musicManager;
+    float ARASAKAClearPercentage;
+
+
     
     
     // Start is called before the first frame update
     void Start()
     {
-
+        songSelection.SetActive(false);
+        ARASAKAClearPercentage = (float)musicManager.isPassed / 5;
+        ARASAKAPercentage();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ARASAKAPercentage();
+        
     }
 
     public void StagePicker()
@@ -34,8 +38,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void ARASAKAPercentage()
     {
-        ARASAKAFillAmount.fillAmount = ARASAKAClearPercentage / 100f;
+        ARASAKAFillAmount.fillAmount = ARASAKAClearPercentage;
         
-        ARASAKAPercent.text = ARASAKAClearPercentage.ToString() + " %";
+        ARASAKAPercent.text = (ARASAKAClearPercentage * 100).ToString() + " %";
     }
 }
