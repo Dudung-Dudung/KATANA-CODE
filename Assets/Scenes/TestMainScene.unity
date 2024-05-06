@@ -2317,7 +2317,7 @@ RectTransform:
   - {fileID: 1828725663}
   - {fileID: 393421563}
   m_Father: {fileID: 1732446651}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3329,8 +3329,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5211566e268752f4f95f46511edb219e, type: 2}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 9a46d952f5739a54692004e7525d057d, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -7784,8 +7784,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1346588742}
-  - {fileID: 411861259}
   - {fileID: 2031474738}
+  - {fileID: 411861259}
   - {fileID: 911332143}
   - {fileID: 214765419}
   - {fileID: 901022865}
@@ -9737,7 +9737,7 @@ RectTransform:
   - {fileID: 1296305844}
   - {fileID: 193528658}
   m_Father: {fileID: 1732446651}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9757,6 +9757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentView: {fileID: 0}
+  songAudio: {fileID: 702307155}
 --- !u!114 &2031474740
 MonoBehaviour:
   m_ObjectHideFlags: 0

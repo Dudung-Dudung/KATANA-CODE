@@ -19,14 +19,15 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        songSelection.SetActive(false);
         ARASAKAClearPercentage = (float)musicManager.isPassed / 5;
-        Debug.Log("ARASAKAClearPercentage : " + ARASAKAClearPercentage);
+        ARASAKAPercentage();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ARASAKAPercentage();
+        
     }
 
     public void StagePicker()

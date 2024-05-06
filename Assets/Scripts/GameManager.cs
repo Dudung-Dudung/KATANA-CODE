@@ -8,10 +8,6 @@ public class GameManager : MonoBehaviour
     public static int songCount;
     public static GameManager instance;
 
-    //public ParticleSystem effectPrefab;
-
-   // public AudioClip effectAudio;
-    // Start is called before the first frame update
     private void Awake()
     {
         if (instance == null)
