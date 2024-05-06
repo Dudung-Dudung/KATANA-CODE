@@ -36,7 +36,12 @@ public class StickController : MonoBehaviour
 
     public LayerMask sliceableLayer;
 
+    public GameObject audioPrefab;
     public AudioSource soundEffect;
+    public AudioClip clip;
+
+
+
     public ParticleSystem particle;
 
     private XRController xrController;
@@ -66,12 +71,18 @@ public class StickController : MonoBehaviour
     {
         initialPosition = transform.position;
         timingManager = FindObjectOfType<TimingManager>();
-        soundEffect = GetComponent<AudioSource>(); 
+        /*        soundEffect = GetComponent<AudioSource>();*/
         /*       Debug.Log(this.gameObject.tag);*/
 
         //Debug.Log(OVRInput.GetConnectedControllers()+ " 디바이스"); // 연결된 컨트롤러 확인
         /*        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));*/
 
+        // 프리팹에서 AudioSource를 가져와서 생성합니다.
+        GameObject audioObject = Instantiate(audioPrefab, transform.position, Quaternion.identity);
+
+        // AudioSource를 가져옵니다.
+        soundEffect = audioObject.GetComponent<AudioSource>();
+        // AudioSource를 활성화하고 재생합니다.
     }
 
 
@@ -151,7 +162,8 @@ public class StickController : MonoBehaviour
         {
             if (state.isEnter == false)
             {
-/*                soundEffect.Play();*/
+                soundEffect.enabled = true;
+                soundEffect.Play();
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();
@@ -182,7 +194,8 @@ public class StickController : MonoBehaviour
         {
             if (state.isEnter == false)
             {
-/*                soundEffect.Play();*/
+                soundEffect.enabled = true;
+                soundEffect.Play();
                 particle.gameObject.transform.position = other.gameObject.transform.position;
                 particle.Stop();
                 particle.Play();

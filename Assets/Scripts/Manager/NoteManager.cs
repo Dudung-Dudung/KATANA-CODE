@@ -100,7 +100,7 @@ public class NoteManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(runningTime);
+        Debug.Log(runningTime + "곡 길이");
         StartCoroutine(StartTimer(runningTime));
     }
 
