@@ -10,8 +10,7 @@ public class BossStatus : MonoBehaviour
     public int startHp;
     public Slider hpSlider;
 
-    public Material damageMaterial; 
-    private Material originalMaterial; 
+    public GameObject bossHit; 
 
 
     void Start()
@@ -19,7 +18,6 @@ public class BossStatus : MonoBehaviour
         Debug.Log(NoteManager.songNoteCount + " 현재 노트 갯수");
         bossHp = NoteManager.songNoteCount * 70 / 100;
         startHp = NoteManager.songNoteCount * 70 / 100; ;
-        originalMaterial = GetComponent<Renderer>().material;
     }
 
     void Update()
@@ -45,8 +43,8 @@ public class BossStatus : MonoBehaviour
 
     IEnumerator DamageEffect()
     {
-        GetComponent<Renderer>().material = damageMaterial;
+        bossHit.SetActive(true);
         yield return new WaitForSeconds(0.2f);
-        GetComponent<Renderer>().material = originalMaterial;
+        bossHit.SetActive(false);
     }
 }
