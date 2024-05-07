@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PauseControl : MonoBehaviour
 {
     public bool IsPaused { set; get; } = false;
-    public AudioClip[] Clips;
+    public AudioSource audioSource;
 
     public Text CountDownDisplay;
     private float timer = 3.0f;
@@ -27,11 +27,13 @@ public class PauseControl : MonoBehaviour
     void Paused()
     {
         Time.timeScale = 0.0f;
+        audioSource.Pause();
     }
 
     void UnPaused()
     {
         Time.timeScale = 1.0f;
+        audioSource.UnPause();
     }
 
     public void CountDown()

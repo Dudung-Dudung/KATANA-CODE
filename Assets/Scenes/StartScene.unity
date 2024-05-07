@@ -340,6 +340,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3100431992515666802, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
+      propertyPath: ETA
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
 --- !u!1 &166319839
@@ -1236,6 +1240,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3100431992515666802, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
+      propertyPath: ETA
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
 --- !u!1 &960906912
@@ -1332,7 +1340,7 @@ MonoBehaviour:
   - {fileID: 1779843107}
   - {fileID: 1768510559}
   - {fileID: 1631471386}
-  delayTime: 2
+  delayTime: 1.5
   MainGague: {fileID: 1951899301}
 --- !u!224 &1028864078 stripped
 RectTransform:
@@ -2314,6 +2322,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3100431992515666802, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
+      propertyPath: ETA
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
 --- !u!1 &1675208620
@@ -3247,6 +3259,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3100431992515666802, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
+      propertyPath: ETA
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100431992515666802, guid: fba71a7c2b3654f44a438150e316155d, type: 3}
       propertyPath: value
       value: 0
       objectReference: {fileID: 0}
@@ -3263,6 +3279,18 @@ PrefabInstance:
       propertyPath: nextObj
       value: 
       objectReference: {fileID: 1951899301}
+    - target: {fileID: 8409830401680227714, guid: ddc022f0b8bb5f1468198c4e74cd7b34, type: 3}
+      propertyPath: fadeInTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409830401680227714, guid: ddc022f0b8bb5f1468198c4e74cd7b34, type: 3}
+      propertyPath: fadeOutTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409830401680227714, guid: ddc022f0b8bb5f1468198c4e74cd7b34, type: 3}
+      propertyPath: fadeDurationTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8409830401680227717, guid: ddc022f0b8bb5f1468198c4e74cd7b34, type: 3}
       propertyPath: m_Name
       value: Warning
