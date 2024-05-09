@@ -17,9 +17,9 @@ public class AudioMixerController : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(masterAudioSlider.value);
+        //Debug.Log(masterAudioSlider.value);
         masterAudioMixer.GetFloat("Master", out float volume);
-        Debug.Log(" volume" + volume);
+        //Debug.Log(" volume" + volume);
         masterAudioSlider.value = volume;
         SetMasterVolume();
     }

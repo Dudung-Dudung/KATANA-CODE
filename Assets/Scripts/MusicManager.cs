@@ -48,15 +48,11 @@ public class MusicManager : MonoBehaviour
         public string artist;
         public string cover_image_path;
         public string audio_file_path;
-        public string score;
+        public int score;
         public string rank;
         public string percentage;
     }
 
-    private void Awake()
-    {
-        ReadJson("MusicData");
-    }
     private void Start()
     {
         ReadJson("MusicData");
@@ -90,11 +86,12 @@ public class MusicManager : MonoBehaviour
             // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
             {
+                /*
                 Debug.Log("Title: " + song.title);
                 Debug.Log("Artist: " + song.artist);
                 Debug.Log("Cover Image Path: " + song.cover_image_path);
                 Debug.Log("Audio File Path: " + song.audio_file_path);
-               
+               */
                 if(float.Parse(song.percentage) >= 70f)
                 {
                     isPassed++;
@@ -123,7 +120,7 @@ public class MusicManager : MonoBehaviour
 
             //if (count >= songData.songs.Length) count = 0;
             //else if (count < 0) count = songData.songs.Length + count;
-            Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
+            //Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
             //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
@@ -134,7 +131,7 @@ public class MusicManager : MonoBehaviour
                 songAudio.Play();
                 title.text = songData.songs[count].title;
                 artist.text = songData.songs[count].artist;
-                score.text = songData.songs[count].score;
+                score.text = songData.songs[count].score.ToString();
                 rank.text = songData.songs[count].rank;
             }
             count = AddNumber(totalSongs, count);
@@ -186,7 +183,7 @@ public class MusicManager : MonoBehaviour
         //현재 곡 정보 출력
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        score.text = songData.songs[count].score;
+        score.text = songData.songs[count].score.ToString();
         rank.text = songData.songs[count].rank;
 
 
@@ -236,7 +233,7 @@ public class MusicManager : MonoBehaviour
         //현재 곡 정보 출력
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
-        score.text = songData.songs[count].score;
+        score.text = songData.songs[count].score.ToString();
         rank.text = songData.songs[count].rank;
 
 
