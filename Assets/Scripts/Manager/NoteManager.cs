@@ -201,8 +201,21 @@ public class NoteManager : MonoBehaviour
                     songScoreManager.UpdateSongState(song.title, score, rank , percentage);
                     break; 
                 }
+
+                else
+                {
+                    Debug.Log(GameManager.songTitle + "곡 제목 수정해라");
+                }
             }
         }
+
+        StartCoroutine(SceneMover());
+    }
+
+    IEnumerator SceneMover()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("TestMainScene");
     }
 
     IEnumerator StartTimer(float duration)

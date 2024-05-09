@@ -54,6 +54,7 @@ public class SongScoreManager : MonoBehaviour
     // 특정 곡의 점수 갱신
     public void UpdateSongState(string songTitle, float newScore, string newRank, float percentage)
     {
+        Debug.Log(songTitle + "곡 점수 갱신");
         // 곡 목록에서 해당 곡 찾기
         SongData songToUpdate = songs.Find(song => song.title == songTitle);
 

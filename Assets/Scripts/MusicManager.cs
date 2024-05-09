@@ -52,6 +52,11 @@ public class MusicManager : MonoBehaviour
         public string rank;
         public string percentage;
     }
+
+    private void Awake()
+    {
+        ReadJson("MusicData");
+    }
     private void Start()
     {
         ReadJson("MusicData");

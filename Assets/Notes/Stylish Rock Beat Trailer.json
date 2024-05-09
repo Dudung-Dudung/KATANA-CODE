@@ -1,5 +1,5 @@
 {
-    "title" : "stylish-rock-beat-trailer-ComaStudio",
+    "title" : "Stylish Rock Beat Trailer",
     "length" : 10,
     "noteCount" : 7,
     "hitNoteCount" : 0,
@@ -8,11 +8,11 @@
         [
             {"time": 0, "type": "rt", "pos": 4},
 
-            {"time": 0.76, "type": "lt", "pos": 4},
-            {"time": 1.8, "type": "rt", "pos": 4},
-            {"time": 2.09, "type": "lt", "pos": 4},
-            {"time": 2.19, "type": "lt", "pos": 4},
-            {"time": 2.24, "type": "lt", "pos": 4},
+            {"time": 0.76, "type": "lt", "pos": 8},
+            {"time": 1.8, "type": "rt", "pos": 8},
+            {"time": 2.09, "type": "lt", "pos": 8},
+            {"time": 2.19, "type": "lt", "pos": 8},
+            {"time": 2.24, "type": "lt", "pos": 8},
             {"time": 2.26, "type": "rt", "pos": 8}
         ]
 }
