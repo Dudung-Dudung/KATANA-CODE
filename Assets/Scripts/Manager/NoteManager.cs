@@ -57,10 +57,10 @@ public class NoteManager : MonoBehaviour
     float songLength = 0;
 
     [SerializeField] // 전체 노트 갯수
-    public static int songNoteCount;
+    public static float songNoteCount;
 
     [SerializeField] // 맞춘 노트 갯수
-    public static int songHitNoteCount;
+    public static float songHitNoteCount;
 
     public static int bonusScore; // 보너스 점수 
 
@@ -122,7 +122,7 @@ public class NoteManager : MonoBehaviour
         /*        songMissNoteCount = noteList.hitNoteCount;*/
         songHitNoteCount = 0;
         Debug.Log(songNoteCount);
-        Debug.Log(songHitNoteCount);
+        Debug.Log(songHitNoteCount + "맟춘 노트 갯수");
 
 
         foreach (NoteData noteData in noteList.notes)
@@ -178,11 +178,17 @@ public class NoteManager : MonoBehaviour
 
     public void GameClear()
     {
+
+
+        percentage = (BossStatus.bossclearhitcount + BossStatus.bosshitcount) / songNoteCount * 100f;
+        Debug.Log("클리어 결과 : " + BossStatus.bosshitcount + " " + BossStatus.bossclearhitcount + " " + songNoteCount);
+
+        Debug.Log("퍼센티지 : " + percentage);
+
         //여기 변경해서 점수 배율 조정 가능
-        score = StickController.bonusScore;
+        score = BossStatus.bossclearhitcount * 4;
         Debug.Log(score + " 최종 점수, 현재 노래의 score에 반영될거임");
 
-        percentage = songHitNoteCount / songNoteCount * 100f;
         CalculateRank();
 
         SongScoreManager songScoreManager = FindObjectOfType<SongScoreManager>();
@@ -257,6 +263,7 @@ public class NoteManager : MonoBehaviour
 
     public void SceneMove()
     {
+        Debug.Log("게임 종료 후 씬 이동");
         sceneMover.GetComponent<Fade>().StartFade();
         Invoke("SetMainScene", 2f);
     }

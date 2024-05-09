@@ -99,6 +99,8 @@ public class StickController : MonoBehaviour
                     targetAngle = 135f;
                     StartCoroutine(SwingStickRt());
                 }*/
+
+
     }
 
 
@@ -171,10 +173,7 @@ public class StickController : MonoBehaviour
                 //노트 쳐낸 위치부터 보스 위치까지 오브젝트 쏘기
                 LaunchObject(other.gameObject.transform.position, targetPos.position);
 
-                //보스 잡았으면 보너스 점수 계산하기
-                if (BossStatus.isClear) bonusScore += 4;
-                NoteManager.songHitNoteCount += 1;
-                
+
                 /*                VibrateController();*/
                 state.isEnter = true;
                 timingManager.CheckTiming();
@@ -202,9 +201,6 @@ public class StickController : MonoBehaviour
 
                 //노트 쳐낸 위치부터 보스 위치까지 오브젝트 쏘기
                 LaunchObject(other.gameObject.transform.position, targetPos.position);
-
-                //보스 잡았으면 보너스 점수 계산하기
-                if (BossStatus.isClear) NoteManager.songHitNoteCount += 1;
 
                 /*               VibrateController();*/
                 state.isEnter = true;
