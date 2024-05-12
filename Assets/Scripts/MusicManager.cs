@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Rendering.Universal;
+using OVRSimpleJSON;
+using static MusicManager;
 
 public class MusicManager : MonoBehaviour
 {
@@ -57,12 +59,16 @@ public class MusicManager : MonoBehaviour
     {
         ReadJson("MusicData");
     }
-
+    private void Update()
+    {
+        Debug.Log(Resources.Load<TextAsset>("MusicData"));
+    }
     public void GameStart()
     {
         songAudio = GetComponent<AudioSource>();
-        
-        for(int i = 0; i < 5; i++)
+        ReadJson("MusicData");
+
+        for (int i = 0; i < 5; i++)
         {
            panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
 
@@ -74,6 +80,7 @@ public class MusicManager : MonoBehaviour
         isPassed = 0;
         //json 파일 읽기
         TextAsset jsonFile = Resources.Load<TextAsset>(json);
+        Debug.Log(jsonFile.text);
 
         if (jsonFile != null)
         {
@@ -86,13 +93,15 @@ public class MusicManager : MonoBehaviour
             // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
             {
+                //Debug.Log("Title: " + song.title);
+               // Debug.Log("score: " + song.score);
+
                 /*
-                Debug.Log("Title: " + song.title);
                 Debug.Log("Artist: " + song.artist);
                 Debug.Log("Cover Image Path: " + song.cover_image_path);
                 Debug.Log("Audio File Path: " + song.audio_file_path);
                */
-                if(float.Parse(song.percentage) >= 70f)
+                if (float.Parse(song.percentage) >= 70f)
                 {
                     isPassed++;
                     Debug.Log("isPassed : " + isPassed);
@@ -109,6 +118,7 @@ public class MusicManager : MonoBehaviour
     {
         Debug.Log("*************************");
         Debug.Log("UpdateSongInfo");
+        //Debug.Log(Resources.Load<TextAsset>("MusicData"));
 
         totalSongs = songData.songs.Length - 1;
         count = GameManager.songCount;

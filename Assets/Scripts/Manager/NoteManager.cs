@@ -203,6 +203,8 @@ public class NoteManager : MonoBehaviour
                 {
                     songScoreManager.UpdateSongState(song.title, score, rank , percentage);
                     Debug.Log("점수 수정 반영됬음 - NoteManager");
+                    Debug.Log(Resources.Load<TextAsset>("MusicData"));
+
                     break; 
                 }
 
