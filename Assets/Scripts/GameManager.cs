@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
     public static string songTitle;
     public static int songCount;
     public static GameManager instance;

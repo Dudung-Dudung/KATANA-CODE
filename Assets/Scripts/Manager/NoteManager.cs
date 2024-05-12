@@ -87,7 +87,9 @@ public class NoteManager : MonoBehaviour
         Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
         if (GameManager.songTitle != null)
         {
-            notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";
+            /*notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";*/
+            //점수 반영하기 위해서 하드코딩 0512
+            notesJsonPath = "Assets/Notes/" + "Stylish Rock Beat Trailer" + ".json";
         }
 
 
@@ -196,9 +198,11 @@ public class NoteManager : MonoBehaviour
         {
             foreach (SongData song in songScoreManager.songs)
             {
-                if (song.title == GameManager.songTitle)
+                /*if (song.title == GameManager.songTitle)*/ //점수 반영용으로 하드코딩 0512
+                if (song.title == "Stylish Rock Beat Trailer")
                 {
                     songScoreManager.UpdateSongState(song.title, score, rank , percentage);
+                    Debug.Log("점수 수정 반영됬음 - NoteManager");
                     break; 
                 }
 
@@ -209,13 +213,7 @@ public class NoteManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(SceneMover());
-    }
-
-    IEnumerator SceneMover()
-    {
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene("TestMainScene");
+        Invoke("SetMainScene", 2f);
     }
 
     IEnumerator StartTimer(float duration)
@@ -271,12 +269,12 @@ public class NoteManager : MonoBehaviour
 
     public void SetMainScene()
     {
-        SceneManager.LoadScene("TestMainScene");
+        SceneManager.LoadScene("ScoreLoadScene");
     }
 
     public void SceneMove()
     {
-        Debug.Log("게임 종료 후 씬 이동");
+        Debug.Log("게임 종료 후 씬 이동!");
         sceneMover.GetComponent<Fade>().StartFade();
         Invoke("SetMainScene", 2f);
     }

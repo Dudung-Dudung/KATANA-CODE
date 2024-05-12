@@ -17,6 +17,9 @@ public class BossStatus : MonoBehaviour
 
     void Start()
     {
+        bosshitcount = 0;
+        bossclearhitcount = 0;
+        isClear = false;
         Debug.Log(NoteManager.songNoteCount + " 현재 노트 갯수");
         bossHp = (int)(NoteManager.songNoteCount * 70 / 100);
         Debug.Log(bossHp);
