@@ -46,7 +46,7 @@ public class NoteManager : MonoBehaviour
     public bool isGameOver = false; //게임 시간 지나고 ui 중복되는거 막기 위한 불리언 변수
 
     public string notesJsonPath; // JSON 파일의 경로
-    public string musicDataJsonPath = "Assets/Resources/MusicData.json"; // JSON 파일의 경로
+    public string musicDataJsonPath = "Assets/Jsons/MusicData.json"; // JSON 파일의 경로
 
     [SerializeField] Vector3[] cubePositions;
 
@@ -89,7 +89,7 @@ public class NoteManager : MonoBehaviour
         {
             /*notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";*/
             //점수 반영하기 위해서 하드코딩 0512
-            notesJsonPath = "Assets/Notes/" + "Stylish Rock Beat Trailer" + ".json";
+            notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
         }
 
 
@@ -249,7 +249,15 @@ public class NoteManager : MonoBehaviour
             TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
 
             // 텍스트 변경
-            tmpText.text = "Game Clear! " + "score : " + ((int)score).ToString() +" rank : "+ rank.ToString();
+            if (BossStatus.isClear)
+            {
+                tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
+            }
+
+            else if(BossStatus.isClear == false)
+            {
+                tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
+            }
         }
     }
 

@@ -62,7 +62,7 @@ public class MusicManager : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(Resources.Load<TextAsset>("MusicData"));
+/*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
     }
     public void GameStart()
     {

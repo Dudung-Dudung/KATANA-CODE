@@ -26,7 +26,7 @@ public class SongList
 public class SongScoreManager : MonoBehaviour
 {
     // JSON 파일의 경로
-    public string songsJsonPath = "Assets/Resources/MusicData.json";
+    public string songsJsonPath = "Assets/Jsons/MusicData.json";
 
     // 곡 목록
     public List<SongData> songs;

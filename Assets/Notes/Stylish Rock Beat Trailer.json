@@ -10,5 +10,31 @@
             "type": "rt",
             "pos": 4
         }
+        ,
+        {
+            "time": 0.66,
+            "type": "lt",
+            "pos": 4
+        },
+        {
+            "time": 1.8,
+            "type": "rt",
+            "pos": 4
+        },
+        {
+            "time": 2.53,
+            "type": "lt",
+            "pos": 4
+        },
+        {
+            "time": 2.76,
+            "type": "rt",
+            "pos": 4
+        },
+        {
+            "time": 2.99,
+            "type": "rt",
+            "pos": 4
+        }
     ]
 }
