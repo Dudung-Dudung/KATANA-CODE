@@ -258,7 +258,7 @@ public class NoteManager : MonoBehaviour
               //  clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
-                ProgressUI.text = percentage.ToString() + "%";
+                ProgressUI.text = ((int)(percentage)).ToString() + "%";
                 Debug.Log(percentage.ToString() +  "반영되는 퍼센티지");
 
                // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
@@ -269,7 +269,7 @@ public class NoteManager : MonoBehaviour
                 //clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
-                ProgressUI.text = percentage.ToString() + "%";
+                ProgressUI.text = ((int)(percentage)).ToString() + "%";
                 //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
             }
         }

@@ -3061,7 +3061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startDelay: 1.5
   Player: {fileID: 1532433577}
-  nextScene: TestMainScene
+  nextScene: CutScene
 --- !u!4 &2018812852
 Transform:
   m_ObjectHideFlags: 0

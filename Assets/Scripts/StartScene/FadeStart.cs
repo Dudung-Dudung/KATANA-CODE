@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class FadeStart : MonoBehaviour
 {
-    private Fade fade;
-    void Awake()
-    {
-        fade = this.GetComponent<Fade>();
-    }
+    public GameObject[] Fades;
+
     // Start is called before the first frame update
     void Start()
     {
-        fade.StartFade();
+        StartCoroutine(StartCutScene());
     }
+
+    IEnumerator StartCutScene()
+    {
+        foreach (var f in Fades)
+        {
+            f.SetActive(true);
+            f.GetComponent<Fade>().StartFade();
+            yield return null;
+
+            while (f.activeSelf)
+            {
+                yield return null;
+            }
+        }
+    }
+
 }
