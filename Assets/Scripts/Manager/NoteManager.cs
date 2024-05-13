@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using static MusicManager;
 
 [System.Serializable]
 public class NoteData
@@ -37,6 +38,10 @@ public class NoteManager : MonoBehaviour
 
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
+
+    public TextMeshProUGUI clearUI;
+    public TextMeshProUGUI rankUI;
+    public TextMeshProUGUI scoreUI;
 
     /*    public Text gameClearBtnText;
         public Text gameOverBtnText;*/
@@ -180,8 +185,6 @@ public class NoteManager : MonoBehaviour
 
     public void GameClear()
     {
-
-
         percentage = (BossStatus.bossclearhitcount + BossStatus.bosshitcount) / songNoteCount * 100f;
         Debug.Log("클리어 결과 : " + BossStatus.bosshitcount + " " + BossStatus.bossclearhitcount + " " + songNoteCount);
 
@@ -251,12 +254,18 @@ public class NoteManager : MonoBehaviour
             // 텍스트 변경
             if (BossStatus.isClear)
             {
-                tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
+                clearUI.text = "Game Clear!";
+                scoreUI.text = ((int)score).ToString();
+                rankUI.text = rank.ToString();
+               // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
             }
 
             else if(BossStatus.isClear == false)
             {
-                tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
+                clearUI.text = "Game Clear!";
+                scoreUI.text = ((int)score).ToString();
+                rankUI.text = rank.ToString();
+              //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
             }
         }
     }
@@ -292,7 +301,7 @@ public class NoteManager : MonoBehaviour
     //점수 계산용
     void CalculateRank()
     {
-
+        rankUI.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
         if (percentage >= 97)
         {
             rank = "SS";
@@ -308,16 +317,28 @@ public class NoteManager : MonoBehaviour
         else if (percentage >= 80)
         {
             rank = "A";
+            rankUI.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
+
+        }
+        else if (percentage >= 75)
+        {
+            rank = "B";
+            rankUI.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
+
         }
 
         else if (percentage >= 70)
         {
-            rank = "B";
+            rank = "C";
+            rankUI.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
+
         }
 
         else
         {
             rank = "F";
+            rankUI.color = new Color(57 / 255f, 57 / 255f, 57 / 255f);
+
         }
 
         Debug.Log("랭크: " + rank);

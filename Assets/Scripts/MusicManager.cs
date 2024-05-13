@@ -147,6 +147,17 @@ public class MusicManager : MonoBehaviour
                 score.text = songData.songs[count].score.ToString();
                 rank.text = songData.songs[count].rank;
                 percentage.text = songData.songs[count].percentage.ToString() + " %";
+
+                rank.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
+                if (songData.songs[count].rank == "A")
+                    rank.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
+                else if (songData.songs[count].rank == "B")
+                    rank.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
+                else if (songData.songs[count].rank == "C")
+                    rank.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
+                else if (songData.songs[count].rank == "F")
+                    rank.color = new Color(57 / 255f, 57 / 255f, 57 / 255f);
+
             }
             count = AddNumber(totalSongs, count);
         }
@@ -201,6 +212,16 @@ public class MusicManager : MonoBehaviour
         rank.text = songData.songs[count].rank;
         percentage.text = songData.songs[count].percentage.ToString() + " %";
 
+        rank.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
+        if (songData.songs[count].rank == "A")
+            rank.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
+        else if (songData.songs[count].rank == "B")
+            rank.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
+        else if (songData.songs[count].rank == "C")
+            rank.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
+        else if (songData.songs[count].rank == "F")
+            rank.color = new Color(57 / 255f, 57 / 255f, 57 / 255f);
+
 
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
@@ -250,9 +271,18 @@ public class MusicManager : MonoBehaviour
         title.text = songData.songs[count].title;
         artist.text = songData.songs[count].artist;
         score.text = songData.songs[count].score.ToString();
-        rank.text = songData.songs[count].rank;
         percentage.text = songData.songs[count].percentage.ToString() + " %";
+        rank.text = songData.songs[count].rank;
 
+        rank.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
+        if (songData.songs[count].rank == "A")
+            rank.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
+        else if (songData.songs[count].rank == "B")
+            rank.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
+        else if (songData.songs[count].rank == "C")
+            rank.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
+        else if (songData.songs[count].rank == "F")
+            rank.color = new Color(57 / 255f, 57 / 255f, 57 / 255f); ;
 
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
