@@ -39,9 +39,10 @@ public class NoteManager : MonoBehaviour
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
 
-    public TextMeshProUGUI clearUI;
     public TextMeshProUGUI rankUI;
     public TextMeshProUGUI scoreUI;
+    public TextMeshProUGUI ProgressUI;
+
 
     /*    public Text gameClearBtnText;
         public Text gameOverBtnText;*/
@@ -254,18 +255,20 @@ public class NoteManager : MonoBehaviour
             // 텍스트 변경
             if (BossStatus.isClear)
             {
-                clearUI.text = "Game Clear!";
+              //  clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
+                ProgressUI.text = percentage.ToString();
                // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
             }
 
             else if(BossStatus.isClear == false)
             {
-                clearUI.text = "Game Clear!";
+                //clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
-              //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
+                ProgressUI.text = percentage.ToString();
+                //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
             }
         }
     }
