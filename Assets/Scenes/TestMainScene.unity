@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.04365709, g: 0.044818856, b: 0.05955075, a: 1}
+  m_IndirectSpecularColor: {r: 0.043560747, g: 0.04494225, b: 0.05917211, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8520,8 +8520,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -72.4, y: 45.8}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -65.90779, y: 45.8}
+  m_SizeDelta: {x: 212.9844, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1882071834
 MonoBehaviour:
@@ -8543,7 +8543,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC544\uB77C\uC0AC\uCE74"
+  m_text: EdenCorp
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c686e8d26b18d6d4eaf319bc38e559a3, type: 2}
   m_sharedMaterial: {fileID: -7513343747129749113, guid: c686e8d26b18d6d4eaf319bc38e559a3, type: 2}
