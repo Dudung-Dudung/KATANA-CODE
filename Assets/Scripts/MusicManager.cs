@@ -34,6 +34,7 @@ public class MusicManager : MonoBehaviour
     public TextMeshProUGUI artist;
     public TextMeshProUGUI score;
     public TextMeshProUGUI rank;
+    public TextMeshProUGUI percentage;
 
     SongData songData;
 
@@ -52,12 +53,12 @@ public class MusicManager : MonoBehaviour
         public string audio_file_path;
         public int score;
         public string rank;
-        public string percentage;
+        public int percentage;
     }
 
     private void Start()
     {
-        ReadJson("MusicData");
+        ReadJson("Assets/Jsons/MusicData.json");
     }
     private void Update()
     {
@@ -66,7 +67,7 @@ public class MusicManager : MonoBehaviour
     public void GameStart()
     {
         songAudio = GetComponent<AudioSource>();
-        ReadJson("MusicData");
+        ReadJson("Assets/Jsons/MusicData.json");
 
         for (int i = 0; i < 5; i++)
         {
@@ -79,16 +80,18 @@ public class MusicManager : MonoBehaviour
     {
         isPassed = 0;
         //json 파일 읽기
-        TextAsset jsonFile = Resources.Load<TextAsset>(json);
-        Debug.Log(jsonFile.text);
+        //TextAsset jsonFile = Resources.Load<TextAsset>(json);
+       // TextAsset jsonFile = Resources.Load<TextAsset>(json);
+        string jsonFile = System.IO.File.ReadAllText(json);
+        Debug.Log(jsonFile);
 
         if (jsonFile != null)
         {
             // JSON 파일 내용을 문자열로 읽어옵니다.
-            string jsonString = jsonFile.text;
+           // string jsonString = jsonFile.text;
 
             // JSON 문자열을 파싱하여 SongData 객체로 변환합니다.
-            songData = JsonUtility.FromJson<SongData>(jsonString);
+            songData = JsonUtility.FromJson<SongData>(jsonFile);
 
             // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
@@ -101,7 +104,7 @@ public class MusicManager : MonoBehaviour
                 Debug.Log("Cover Image Path: " + song.cover_image_path);
                 Debug.Log("Audio File Path: " + song.audio_file_path);
                */
-                if (float.Parse(song.percentage) >= 70f)
+                if (song.percentage >= 70f)
                 {
                     isPassed++;
                     Debug.Log("isPassed : " + isPassed);
@@ -143,6 +146,7 @@ public class MusicManager : MonoBehaviour
                 artist.text = songData.songs[count].artist;
                 score.text = songData.songs[count].score.ToString();
                 rank.text = songData.songs[count].rank;
+                percentage.text = songData.songs[count].percentage.ToString() + " %";
             }
             count = AddNumber(totalSongs, count);
         }
@@ -195,6 +199,8 @@ public class MusicManager : MonoBehaviour
         artist.text = songData.songs[count].artist;
         score.text = songData.songs[count].score.ToString();
         rank.text = songData.songs[count].rank;
+        percentage.text = songData.songs[count].percentage.ToString() + " %";
+
 
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
@@ -245,6 +251,8 @@ public class MusicManager : MonoBehaviour
         artist.text = songData.songs[count].artist;
         score.text = songData.songs[count].score.ToString();
         rank.text = songData.songs[count].rank;
+        percentage.text = songData.songs[count].percentage.ToString() + " %";
+
 
 
         AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
