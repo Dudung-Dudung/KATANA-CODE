@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using static MusicManager;
 using UnityEngine.Networking;
+using Meta.WitAi.Json;
+
 
 [System.Serializable]
 public class NoteData
@@ -78,7 +80,7 @@ public class NoteManager : MonoBehaviour
         CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
 
         // Android에서 JSON 파일 경로 설정
-        notesJsonPath = Path.Combine(Application.persistentDataPath, "Stylish Rock Beat Trailer.json");
+        notesJsonPath = Path.Combine(Application.persistentDataPath,"Stylish Rock Beat Trailer.json");
         musicDataJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
 
         Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
