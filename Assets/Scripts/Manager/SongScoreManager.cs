@@ -66,8 +66,11 @@ public class SongScoreManager : MonoBehaviour
         {
             SongList songList = new SongList { songs = songs };
             string json = JsonUtility.ToJson(songList);
+            songsJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
             File.WriteAllText(songsJsonPath, json);
-            Path.Combine(Application.persistentDataPath, "database.json");
+            
+            Debug.Log("ㅇㅂㅇ" + File.ReadAllText(songsJsonPath));
+            //Path.Combine(Application.persistentDataPath, "database.json");
             Debug.Log("Songs saved successfully.");
         }
         catch (IOException e)

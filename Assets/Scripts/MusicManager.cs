@@ -66,6 +66,7 @@ public class MusicManager : MonoBehaviour
     {
         StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json"));
         StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("Stylish Rock Beat Trailer.json"));
+    
     }
     private void Update()
     {
@@ -88,13 +89,17 @@ public class MusicManager : MonoBehaviour
     {
         isPassed = 0;
         string filePath = Path.Combine(Application.persistentDataPath, json);
+        Debug.Log("ㅇㅂㅇ" + File.ReadAllText(filePath));
 
         if (File.Exists(filePath))
         {
             string jsonFile = File.ReadAllText(filePath);
-            songData = JsonConvert.DeserializeObject<SongData>(jsonFile);
+            songData = JsonUtility.FromJson<SongData>(jsonFile);
+            //songData = JsonConvert.DeserializeObject<SongData>(jsonFile);
             foreach (Song song in songData.songs)
             {
+                Debug.Log("score" + song.score);
+                Debug.Log("title" + song.title);
                 if (song.percentage >= 70f)
                 {
                     isPassed++;
@@ -164,6 +169,7 @@ public class MusicManager : MonoBehaviour
                 score.text = songData.songs[count].score.ToString();
                 rank.text = songData.songs[count].rank;
                 percentage.text = songData.songs[count].percentage.ToString() + " %";
+                Debug.Log(songData.songs[count].percentage + " %");
 
                 rank.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
                 if (songData.songs[count].rank == "A")
