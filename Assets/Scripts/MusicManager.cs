@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -10,7 +11,8 @@ using UnityEngine.Rendering.Universal;
 using OVRSimpleJSON;
 using static MusicManager;
 using Meta.WitAi.Json;
-using System.IO;
+using UnityEngine.Networking;
+
 
 public class MusicManager : MonoBehaviour
 {
@@ -37,6 +39,7 @@ public class MusicManager : MonoBehaviour
     public TextMeshProUGUI score;
     public TextMeshProUGUI rank;
     public TextMeshProUGUI percentage;
+    public TextMeshProUGUI test;
 
     SongData songData;
 
@@ -58,10 +61,14 @@ public class MusicManager : MonoBehaviour
         public int percentage;
     }
 
-    
+
+    void Awake()
+    {
+        StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json"));
+    }
     private void Update()
     {
-/*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
+        /*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
     }
     public void GameStart()
     {
@@ -70,7 +77,7 @@ public class MusicManager : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-           panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
+            panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
 
         }
         UpdateSongInfo();
@@ -79,38 +86,62 @@ public class MusicManager : MonoBehaviour
     private void ReadJson(string json)
     {
         isPassed = 0;
-        //json 파일 읽기
         string filePath = Path.Combine(Application.persistentDataPath, json);
 
         if (File.Exists(filePath))
         {
             string jsonFile = File.ReadAllText(filePath);
             songData = JsonConvert.DeserializeObject<SongData>(jsonFile);
-            // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
             {
                 if (song.percentage >= 70f)
                 {
                     isPassed++;
                     Debug.Log("isPassed : " + isPassed);
+                    test.text += isPassed + "\n";
                 }
             }
         }
         else
         {
-            string sourcePath = "Assets/Jsons/MusicData.json";
-            File.Copy(sourcePath, filePath);
-            if (File.Exists(filePath))
-                Debug.LogError("File not found: " + filePath);
+            Debug.LogError("PersistentDataPath에서 " + json + " 파일을 찾을 수 없습니다.");
+            test.text += json + "\n";
+        }
+
+       
+    }
+
+
+    private IEnumerator CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
+        string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(destinationPath))
+        {
+            UnityWebRequest request = UnityWebRequest.Get(streamingAssetsPath);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                File.WriteAllBytes(destinationPath, request.downloadHandler.data);
+                Debug.Log(fileName + " 파일이 복사되었습니다.");
+            }
             else
-                Debug.Log("파일 생성 성공!");
+            {
+                Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 가져오는 데 실패했습니다: " + request.error);
+            }
+        }
+        else
+        {
+            Debug.Log(fileName + " 파일이 이미 존재합니다.");
         }
     }
+
     public void UpdateSongInfo()
     {
         Debug.Log("*************************");
         Debug.Log("UpdateSongInfo");
-        //Debug.Log(Resources.Load<TextAsset>("MusicData"));
 
         totalSongs = songData.songs.Length - 1;
         count = GameManager.songCount;
@@ -120,13 +151,9 @@ public class MusicManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
 
-            //if (count >= songData.songs.Length) count = 0;
-            //else if (count < 0) count = songData.songs.Length + count;
-            //Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
-            //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
-            if(i ==2)
+            if (i == 2)
             {
                 AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
                 songAudio.clip = musicClip;
@@ -252,7 +279,7 @@ public class MusicManager : MonoBehaviour
 
               }));
         }
-       
+
         //현재 곡을 새로 업데이트
         count = AddNumber(totalSongs, count);
 
