@@ -9,6 +9,8 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Rendering.Universal;
 using OVRSimpleJSON;
 using static MusicManager;
+using System.IO;
+using UnityEngine.Networking;
 
 public class MusicManager : MonoBehaviour
 {
@@ -58,8 +60,16 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        ReadJson("Assets/Jsons/MusicData.json");
+        // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
+#if UNITY_ANDROID
+        MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
+#else
+    MusicDataFile = "Assets/Jsons/MusicData.json";
+#endif
+
+        ReadJson(MusicDataFile);
     }
+
     private void Update()
     {
 /*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
@@ -67,15 +77,24 @@ public class MusicManager : MonoBehaviour
     public void GameStart()
     {
         songAudio = GetComponent<AudioSource>();
-        ReadJson("Assets/Jsons/MusicData.json");
+
+        // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
+#if UNITY_ANDROID
+        MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
+#else
+    MusicDataFile = "Assets/Jsons/MusicData.json";
+#endif
+
+        ReadJson(MusicDataFile);
 
         for (int i = 0; i < 5; i++)
         {
-           panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
-
+            panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
         }
         UpdateSongInfo();
     }
+
+
     private void ReadJson(string json)
     {
         isPassed = 0;
@@ -318,6 +337,31 @@ public class MusicManager : MonoBehaviour
         GameManager.songTitle = songData.songs[count].title;
         GameManager.songCount = count;
         Debug.Log(GameManager.songTitle + "현재 선택한 곡 이름 - MusicManager2");
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("BasicScene");
     }
+
+    private IEnumerator LoadAndroidJson(string path, System.Action<string> result)
+    {
+        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, path);
+        string jsonContent;
+
+        using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(www.error);
+                jsonContent = null;
+            }
+            else
+            {
+                jsonContent = www.downloadHandler.text;
+            }
+        }
+
+        result(jsonContent);
+    }
+
+
 }

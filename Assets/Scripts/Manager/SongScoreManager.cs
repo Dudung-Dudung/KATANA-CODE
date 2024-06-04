@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
-
 // 곡 정보들 들고 잇는 MusicData JSON 데이터를 담을 클래스
 [System.Serializable]
 public class SongData
@@ -26,7 +25,7 @@ public class SongList
 public class SongScoreManager : MonoBehaviour
 {
     // JSON 파일의 경로
-    public string songsJsonPath = "Assets/Jsons/MusicData.json";
+    public string songsJsonPath;
 
     // 곡 목록
     public List<SongData> songs;
@@ -34,6 +33,9 @@ public class SongScoreManager : MonoBehaviour
     // Start 함수에서 호출하여 실행
     private void Start()
     {
+        // Android에서 JSON 파일 경로 설정
+        songsJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
+
         // 곡 목록 로드
         LoadSongs();
     }
