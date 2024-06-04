@@ -22,13 +22,12 @@ public class Fade : MonoBehaviour
 
     private CanvasGroup fade;
 
-    [Header("È­¸é ÀüÈ¯")]
+    [Header("È­ï¿½ï¿½ ï¿½ï¿½È¯")]
     public GameObject beforeObj;
     public GameObject nextObj;
     private void Awake()
     {
-        fade = this.GetComponent<CanvasGroup>();
-        
+        fade = this.GetComponent<CanvasGroup>();  
     }
     public void StartFade()
     {

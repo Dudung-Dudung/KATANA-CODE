@@ -76,7 +76,7 @@ public class NoteManager : MonoBehaviour
     [SerializeField]
     string rank;
     [SerializeField]
-    float percentage;
+    int percentage;
 
 
 
@@ -186,7 +186,7 @@ public class NoteManager : MonoBehaviour
 
     public void GameClear()
     {
-        percentage = (BossStatus.bossclearhitcount + BossStatus.bosshitcount) / songNoteCount * 100f;
+        percentage = (int)((int)(BossStatus.bossclearhitcount + BossStatus.bosshitcount) / songNoteCount * 100f);
         Debug.Log("클리어 결과 : " + BossStatus.bosshitcount + " " + BossStatus.bossclearhitcount + " " + songNoteCount);
 
         Debug.Log("퍼센티지 : " + percentage);
@@ -258,16 +258,18 @@ public class NoteManager : MonoBehaviour
               //  clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
-                ProgressUI.text = percentage.ToString();
+                ProgressUI.text = (percentage + "%").ToString();
+                Debug.Log(percentage.ToString() +  "반영되는 퍼센티지");
+
                // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
             }
 
-            else if(BossStatus.isClear == false)
+            else
             {
                 //clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
-                ProgressUI.text = percentage.ToString();
+                ProgressUI.text = (percentage + "%").ToString();
                 //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
             }
         }
@@ -291,7 +293,7 @@ public class NoteManager : MonoBehaviour
 
     public void SetMainScene()
     {
-        SceneManager.LoadScene("ScoreLoadScene");
+        SceneManager.LoadScene("TestMainScene");
     }
 
     public void SceneMove()
