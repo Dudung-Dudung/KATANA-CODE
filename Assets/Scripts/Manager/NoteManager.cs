@@ -81,8 +81,6 @@ public class NoteManager : MonoBehaviour
         notesJsonPath = Path.Combine(Application.persistentDataPath, "Stylish Rock Beat Trailer.json");
         musicDataJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
 
-        
-
         Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
         if (GameManager.songTitle != null)
         {
