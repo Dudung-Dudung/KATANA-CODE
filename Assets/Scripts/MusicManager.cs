@@ -10,6 +10,9 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Rendering.Universal;
 using OVRSimpleJSON;
 using static MusicManager;
+using Meta.WitAi.Json;
+using UnityEngine.Networking;
+
 
 public class MusicManager : MonoBehaviour
 {
@@ -37,8 +40,6 @@ public class MusicManager : MonoBehaviour
     public TextMeshProUGUI rank;
     public TextMeshProUGUI percentage;
 
-    public TextMeshProUGUI PathText;
-
     SongData songData;
 
     [System.Serializable]
@@ -59,17 +60,14 @@ public class MusicManager : MonoBehaviour
         public int percentage;
     }
 
-    private void Awake()
-    {
-        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
-    }
-    private void Start()
-    {
 
+    void Awake()
+    {
+        StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json"));
     }
     private void Update()
     {
-
+        /*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
     }
     public void GameStart()
     {
@@ -83,18 +81,16 @@ public class MusicManager : MonoBehaviour
         }
         UpdateSongInfo();
     }
+
     private void ReadJson(string json)
     {
         isPassed = 0;
+        string filePath = Path.Combine(Application.persistentDataPath, json);
 
-        string jsonFile = File.ReadAllText(json);
-        Debug.Log(jsonFile);
-
-        if (jsonFile != null)
+        if (File.Exists(filePath))
         {
-
-            songData = JsonUtility.FromJson<SongData>(jsonFile);
-
+            string jsonFile = File.ReadAllText(filePath);
+            songData = JsonConvert.DeserializeObject<SongData>(jsonFile);
             foreach (Song song in songData.songs)
             {
                 if (song.percentage >= 70f)
@@ -102,30 +98,38 @@ public class MusicManager : MonoBehaviour
                     isPassed++;
                     Debug.Log("isPassed : " + isPassed);
                 }
-
             }
         }
         else
         {
-            Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
+            Debug.LogError("PersistentDataPath에서 " + json + " 파일을 찾을 수 없습니다.");
         }
     }
 
-    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+
+    private IEnumerator CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
     {
         string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
-        if (File.Exists(streamingAssetsPath))
+        string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(destinationPath))
         {
-            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
-            if (!File.Exists(destinationPath))
+            UnityWebRequest request = UnityWebRequest.Get(streamingAssetsPath);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
             {
-                File.Copy(streamingAssetsPath, destinationPath);
+                File.WriteAllBytes(destinationPath, request.downloadHandler.data);
                 Debug.Log(fileName + " 파일이 복사되었습니다.");
+            }
+            else
+            {
+                Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 가져오는 데 실패했습니다: " + request.error);
             }
         }
         else
         {
-            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+            Debug.Log(fileName + " 파일이 이미 존재합니다.");
         }
     }
 
@@ -330,6 +334,6 @@ public class MusicManager : MonoBehaviour
         GameManager.songTitle = songData.songs[count].title;
         GameManager.songCount = count;
         Debug.Log(GameManager.songTitle + "현재 선택한 곡 이름 - MusicManager2");
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("BasicScene");
     }
 }
