@@ -32,13 +32,17 @@ public class SongScoreManager : MonoBehaviour
     // 곡 목록
     public List<SongData> songs;
 
+    private void Awake()
+    {
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
+    }
+
     // Start 함수에서 호출하여 실행
     private void Start()
     {
         CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
         // Android에서 JSON 파일 경로 설정
         songsJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
-
         // 곡 목록 로드
         LoadSongs();
     }
