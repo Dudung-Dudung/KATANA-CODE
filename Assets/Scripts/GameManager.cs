@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public void GameQuit()
     {
         Application.Quit();
+        OVRManager.PlatformUIConfirmQuit();
     }
 
 }

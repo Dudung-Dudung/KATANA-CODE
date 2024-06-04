@@ -61,11 +61,10 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
-#if UNITY_ANDROID
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
         MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
-#else
-    MusicDataFile = "Assets/Jsons/MusicData.json";
-#endif
+
+
 
         ReadJson(MusicDataFile);
     }
@@ -79,11 +78,7 @@ public class MusicManager : MonoBehaviour
         songAudio = GetComponent<AudioSource>();
 
         // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
-#if UNITY_ANDROID
         MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
-#else
-    MusicDataFile = "Assets/Jsons/MusicData.json";
-#endif
 
         ReadJson(MusicDataFile);
 
@@ -98,31 +93,16 @@ public class MusicManager : MonoBehaviour
     private void ReadJson(string json)
     {
         isPassed = 0;
-        //json 파일 읽기
-        //TextAsset jsonFile = Resources.Load<TextAsset>(json);
-       // TextAsset jsonFile = Resources.Load<TextAsset>(json);
         string jsonFile = System.IO.File.ReadAllText(json);
         Debug.Log(jsonFile);
 
         if (jsonFile != null)
         {
-            // JSON 파일 내용을 문자열로 읽어옵니다.
-           // string jsonString = jsonFile.text;
-
-            // JSON 문자열을 파싱하여 SongData 객체로 변환합니다.
             songData = JsonUtility.FromJson<SongData>(jsonFile);
 
-            // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
             {
-                //Debug.Log("Title: " + song.title);
-               // Debug.Log("score: " + song.score);
 
-                /*
-                Debug.Log("Artist: " + song.artist);
-                Debug.Log("Cover Image Path: " + song.cover_image_path);
-                Debug.Log("Audio File Path: " + song.audio_file_path);
-               */
                 if (song.percentage >= 70f)
                 {
                     isPassed++;
@@ -136,6 +116,26 @@ public class MusicManager : MonoBehaviour
             Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
         }
     }
+
+    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
+        if (File.Exists(streamingAssetsPath))
+        {
+            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+            if (!File.Exists(destinationPath))
+            {
+                File.Copy(streamingAssetsPath, destinationPath);
+                Debug.Log(fileName + " 파일이 복사되었습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+        }
+    }
+
+
     public void UpdateSongInfo()
     {
         Debug.Log("*************************");

@@ -73,13 +73,14 @@ public class NoteManager : MonoBehaviour
     {
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
+        CopyJsonFromStreamingAssetsToPersistentDataPath("Stylish Rock Beat Trailer.json");
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
 
         // Android에서 JSON 파일 경로 설정
         notesJsonPath = Path.Combine(Application.persistentDataPath, "Stylish Rock Beat Trailer.json");
         musicDataJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
 
-        CopyJsonFromStreamingAssetsToPersistentDataPath("Stylish Rock Beat Trailer.json");
-        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
+        
 
         Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
         if (GameManager.songTitle != null)
