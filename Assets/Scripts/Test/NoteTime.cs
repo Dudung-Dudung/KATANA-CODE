@@ -20,16 +20,16 @@ public class NoteTime : MonoBehaviour
     void Start()
     {
         audioClip = audioSource.clip;
-        Debug.Log(audioClip.name);
+/*        Debug.Log(audioClip.name);
         filePath = "Assets/Notes/NoteTime/" + audioClip.name + ".csv";
         if (File.Exists(filePath))
         {
             lines.AddRange(File.ReadAllLines(filePath));
             totallines = lines.Count;
-            Debug.Log("���� ���� : " +totallines);
+            Debug.Log("���� ���� : " + totallines);
             exist = true;
         }
-        writer = new StreamWriter(filePath, true);
+        writer = new StreamWriter(filePath, true);*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
