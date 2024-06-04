@@ -35,22 +35,22 @@ public class TimingManager : MonoBehaviour
 
                     if (note != null)
                     {
-/*                        if (note.direction == BaseNote.NoteDirection.Left)
-                        {
-                            // Left ³ëÆ®¿Í »óÈ£ÀÛ¿ëÇÏ´Â ÄÚµå
-                            Debug.Log("Left Hit");
-                            boxNoteList.RemoveAt(i);
-                            Destroy(t_note);
-                        }
-                        else if (note.direction == BaseNote.NoteDirection.Right)
-                        {
-                            // Right ³ëÆ®¿Í »óÈ£ÀÛ¿ëÇÏ´Â ÄÚµå
-                            Debug.Log("Right Hit");
-                            boxNoteList.RemoveAt(i);
-                            Destroy(t_note);
-                        }*/
+                        /*                        if (note.direction == BaseNote.NoteDirection.Left)
+                                                {
+                                                    // Left ë…¸íŠ¸ì™€ ìƒí˜¸ì‘ìš©í•˜ëŠ” ì½”ë“œ
+                                                    Debug.Log("Left Hit");
+                                                    boxNoteList.RemoveAt(i);
+                                                    Destroy(t_note);
+                                                }
+                                                else if (note.direction == BaseNote.NoteDirection.Right)
+                                                {
+                                                    // Right ë…¸íŠ¸ì™€ ìƒí˜¸ì‘ìš©í•˜ëŠ” ì½”ë“œ
+                                                    Debug.Log("Right Hit");
+                                                    boxNoteList.RemoveAt(i);
+                                                    Destroy(t_note);
+                                                }*/
 
-                        Debug.Log("Hit!!!!");
+                        /*                        Debug.Log("Hit!!!!");*/
                         boxNoteList.RemoveAt(i);
                         Destroy(t_note);
                     }

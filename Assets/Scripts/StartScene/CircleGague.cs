@@ -40,6 +40,8 @@ public class CircleGague : MonoBehaviour
     {
         currentValue = Fill.fillAmount * 100;
         Persent.text = string.Format("{0:F0}%", currentValue);
+        Vector3 lookDirection = StartSceneManager.instance.Player.position - transform.position;
+        transform.LookAt(transform.position - lookDirection);
     }
 
     public void FillGague()

@@ -8,7 +8,7 @@ public class NoteTimer : MonoBehaviour
     {
             if (collision.CompareTag("Note"))
             {
-                Debug.Log(Time.time); // е╔╨Й Ё╞╬ф©ю╢б ╪с╣╣ ╠╦го╠Б©К 
+                Debug.Log(Time.time); // К┘╦М┼╦К·▒ К▀©Л²─ Л▀°Й╟└
             }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using static MusicManager;
 
 [System.Serializable]
 public class NoteData
@@ -21,6 +22,7 @@ public class NoteList
     public float length;
     public int noteCount;
     public int hitNoteCount;
+    public string rank;
 }
 
 public class NoteManager : MonoBehaviour
@@ -30,22 +32,27 @@ public class NoteManager : MonoBehaviour
 
     [SerializeField] Transform LeftNoteAppearLocation = null;
     [SerializeField] Transform RightNoteAppearLocation = null;
-    [SerializeField] GameObject singleNotePrefab = null; // ÇÁ¸®ÆÕ ¼³Á¤
-    [SerializeField] GameObject doubleNotePrefab = null; // ÇÁ¸®ÆÕ ¼³Á¤
-/*    [SerializeField] GameObject cubePrefab;*/
+    [SerializeField] GameObject singleNotePrefab = null; // í”„ë¦¬íŒ¹ ì„¤ì •
+    [SerializeField] GameObject doubleNotePrefab = null; // í”„ë¦¬íŒ¹ ì„¤ì •
+    /*    [SerializeField] GameObject cubePrefab;*/
 
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
 
-/*    public Text gameClearBtnText;
-    public Text gameOverBtnText;*/
+    public TextMeshProUGUI rankUI;
+    public TextMeshProUGUI scoreUI;
+    public TextMeshProUGUI ProgressUI;
+
+
+    /*    public Text gameClearBtnText;
+        public Text gameOverBtnText;*/
 
     public GameObject sceneMover;
 
-    public bool isGameOver = false; //°ÔÀÓ ½Ã°£ Áö³ª°í ui Áßº¹µÇ´Â°Å ¸·±â À§ÇÑ ºÒ¸®¾ğ º¯¼ö
+    public bool isGameOver = false; //ê²Œì„ ì‹œê°„ ì§€ë‚˜ê³  ui ì¤‘ë³µë˜ëŠ”ê±° ë§‰ê¸° ìœ„í•œ ë¶ˆë¦¬ì–¸ ë³€ìˆ˜
 
-    public string notesJsonPath = "Assets/Notes/notes.json"; // JSON ÆÄÀÏÀÇ °æ·Î
-    public string musicDataJsonPath = "Assets/Resources/MusicData.json"; // JSON ÆÄÀÏÀÇ °æ·Î
+    public string notesJsonPath; // JSON íŒŒì¼ì˜ ê²½ë¡œ
+    public string musicDataJsonPath = "Assets/Jsons/MusicData.json"; // JSON íŒŒì¼ì˜ ê²½ë¡œ
 
     [SerializeField] Vector3[] cubePositions;
 
@@ -55,14 +62,22 @@ public class NoteManager : MonoBehaviour
     [SerializeField]
     float songLength = 0;
 
-    [SerializeField] // ÀüÃ¼ ³ëÆ® °¹¼ö
-    public static int songNoteCount;
+    [SerializeField] // ì „ì²´ ë…¸íŠ¸ ê°¯ìˆ˜
+    public static float songNoteCount;
 
-    [SerializeField] // ¸ÂÃá ³ëÆ® °¹¼ö
-    public static int songMissNoteCount;
+    [SerializeField] // ë§ì¶˜ ë…¸íŠ¸ ê°¯ìˆ˜
+    public static float songHitNoteCount;
+
+    public static int bonusScore; // ë³´ë„ˆìŠ¤ ì ìˆ˜ 
 
     [SerializeField]
     float score = 0f;
+
+    [SerializeField]
+    string rank;
+    [SerializeField]
+    int percentage;
+
 
 
     private float runningTime = 0f;
@@ -73,21 +88,36 @@ public class NoteManager : MonoBehaviour
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
 
+        notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
+
+        Debug.Log(GameManager.songTitle + " í˜„ì¬ ê²Œì„ë§¤ë‹ˆì €ì—ì„œ ë„˜ì–´ì˜¨ ê°’");
+        if (GameManager.songTitle != null)
+        {
+            /*notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";*/
+            //ì ìˆ˜ ë°˜ì˜í•˜ê¸° ìœ„í•´ì„œ í•˜ë“œì½”ë”© 0512
+            notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
+        }
+
+
+
+
+
+        Debug.Log(notesJsonPath + "json íŒŒì¼ ê²½ë¡œ - NoteManager.cs");
         LoadNotes();
     }
 
     private void Start()
     {
-        Debug.Log(runningTime);
+        Debug.Log(runningTime + "ê³¡ ê¸¸ì´");
         StartCoroutine(StartTimer(runningTime));
     }
 
     private void Update()
     {
-        if((songMissNoteCount >= songNoteCount / 2) && !isGameOver )
+/*        if ((songMissNoteCount >= songNoteCount / 2) && !isGameOver)
         {
             GameOver();
-        }
+        }*/
     }
 
     void LoadNotes()
@@ -97,9 +127,10 @@ public class NoteManager : MonoBehaviour
 
         runningTime = noteList.length;
         songNoteCount = noteList.noteCount;
-        songMissNoteCount = noteList.hitNoteCount;
+        /*        songMissNoteCount = noteList.hitNoteCount;*/
+        songHitNoteCount = 0;
         Debug.Log(songNoteCount);
-        Debug.Log(songMissNoteCount);
+        Debug.Log(songHitNoteCount + "ë§Ÿì¶˜ ë…¸íŠ¸ ê°¯ìˆ˜");
 
 
         foreach (NoteData noteData in noteList.notes)
@@ -112,14 +143,14 @@ public class NoteManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        CreateNote(type,pos);
+        CreateNote(type, pos);
     }
 
     void CreateNote(string type, int pos)
     {
         GameObject t_note = null;
 
-        // Å¸ÀÔ¿¡ µû¶ó ´Ù¸¥ ÇÁ¸®ÆÕ »ç¿ë
+        // íƒ€ì…ì— ë”°ë¼ ë‹¤ë¥¸ í”„ë¦¬íŒ¹ ì‚¬ìš©
         if (type == "lt")
         {
             t_note = Instantiate(singleNotePrefab, LeftNoteAppearLocation.position, Quaternion.identity);
@@ -151,27 +182,44 @@ public class NoteManager : MonoBehaviour
         }
     }
 
-    //°ÔÀÓ Å¬¸®¾î, ¿À¹ö½Ã ¶ç¿ì´Â ui¿ë
+    //ê²Œì„ í´ë¦¬ì–´, ì˜¤ë²„ì‹œ ë„ìš°ëŠ” uiìš©
 
     public void GameClear()
     {
-        score = ((float)songNoteCount - songMissNoteCount) / songNoteCount * 100f;
-        Debug.Log(score);
+        percentage = (int)((int)(BossStatus.bossclearhitcount + BossStatus.bosshitcount) / songNoteCount * 100f);
+        Debug.Log("í´ë¦¬ì–´ ê²°ê³¼ : " + BossStatus.bosshitcount + " " + BossStatus.bossclearhitcount + " " + songNoteCount);
 
-        // SongScoreManager¸¦ Ã£°Å³ª ¿¬°áÇÕ´Ï´Ù.
+        Debug.Log("í¼ì„¼í‹°ì§€ : " + percentage);
+
+        //ì—¬ê¸° ë³€ê²½í•´ì„œ ì ìˆ˜ ë°°ìœ¨ ì¡°ì • ê°€ëŠ¥
+        score = BossStatus.bossclearhitcount * 4;
+        Debug.Log(score + " ìµœì¢… ì ìˆ˜, í˜„ì¬ ë…¸ë˜ì˜ scoreì— ë°˜ì˜ë ê±°ì„");
+
+        CalculateRank();
+
         SongScoreManager songScoreManager = FindObjectOfType<SongScoreManager>();
         if (songScoreManager != null)
         {
-            // °î ¸ñ·ÏÀ» ¼øÈ¸ÇÏ¿© ÇØ´ç °îÀ» Ã£°í Á¡¼ö¸¦ °»½ÅÇÕ´Ï´Ù.
             foreach (SongData song in songScoreManager.songs)
             {
-                if (song.title == "Do You Want To Build A Snowman")
+                /*if (song.title == GameManager.songTitle)*/ //ì ìˆ˜ ë°˜ì˜ìš©ìœ¼ë¡œ í•˜ë“œì½”ë”© 0512
+                if (song.title == "Stylish Rock Beat Trailer")
                 {
-                    songScoreManager.UpdateScore(song.title, score);
-                    break; // ¿øÇÏ´Â °îÀ» Ã£¾ÒÀ¸¹Ç·Î ·çÇÁ Á¾·á
+                    songScoreManager.UpdateSongState(song.title, score, rank , percentage);
+                    Debug.Log("ì ìˆ˜ ìˆ˜ì • ë°˜ì˜ë¬ìŒ - NoteManager");
+                    Debug.Log(Resources.Load<TextAsset>("MusicData"));
+
+                    break; 
+                }
+
+                else
+                {
+                    Debug.Log(GameManager.songTitle + "ê³¡ ì œëª© ìˆ˜ì •í•´ë¼");
                 }
             }
         }
+
+        Invoke("SetMainScene", 2f);
     }
 
     IEnumerator StartTimer(float duration)
@@ -181,12 +229,12 @@ public class NoteManager : MonoBehaviour
 
         while (runningTime < duration)
         {
-            yield return null; // ÇÑ ÇÁ·¹ÀÓ ´ë±â
-            runningTime += Time.deltaTime; // °æ°ú ½Ã°£ ¾÷µ¥ÀÌÆ®
+            yield return null; // í•œ í”„ë ˆì„ ëŒ€ê¸°
+            runningTime += Time.deltaTime; // ê²½ê³¼ ì‹œê°„ ì—…ë°ì´íŠ¸
         }
 
-        // Å¸ÀÓ¾Æ¿ô ¹ß»ı
-        Debug.Log("Å¸ÀÓ¾Æ¿ô");
+        // íƒ€ì„ì•„ì›ƒ ë°œìƒ
+        Debug.Log("íƒ€ì„ì•„ì›ƒ");
         GameFinish();
         isRunning = false;
     }
@@ -201,29 +249,47 @@ public class NoteManager : MonoBehaviour
 
             Button buttonComponent = gameClearBtn.GetComponent<Button>();
 
-            // Button ÄÄÆ÷³ÍÆ®·ÎºÎÅÍ Text ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿È
+            // Button ì»´í¬ë„ŒíŠ¸ë¡œë¶€í„° Text ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜´
             TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
 
-            // ÅØ½ºÆ® º¯°æ
-            tmpText.text = "Game Clear! " + score.ToString();
+            // í…ìŠ¤íŠ¸ ë³€ê²½
+            if (BossStatus.isClear)
+            {
+              //  clearUI.text = "Game Clear!";
+                scoreUI.text = ((int)score).ToString();
+                rankUI.text = rank.ToString();
+                ProgressUI.text = (percentage + "%").ToString();
+                Debug.Log(percentage.ToString() +  "ë°˜ì˜ë˜ëŠ” í¼ì„¼í‹°ì§€");
+
+               // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
+            }
+
+            else
+            {
+                //clearUI.text = "Game Clear!";
+                scoreUI.text = ((int)score).ToString();
+                rankUI.text = rank.ToString();
+                ProgressUI.text = (percentage + "%").ToString();
+                //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
+            }
         }
     }
 
-    public void GameOver()
+/*    public void GameOver()
     {
         isGameOver = true;
-       /* gameOverBtn.SetActive(true);*/
+        *//* gameOverBtn.SetActive(true);*//*
         GameClear();
 
         Button buttonComponent = gameOverBtn.GetComponent<Button>();
 
-        // Button ÄÄÆ÷³ÍÆ®·ÎºÎÅÍ Text ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿È
+        // Button ì»´í¬ë„ŒíŠ¸ë¡œë¶€í„° Text ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜´
 
         TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
 
-        // ÅØ½ºÆ® º¯°æ
+        // í…ìŠ¤íŠ¸ ë³€ê²½
         tmpText.text = "Game Over.. " + score.ToString();
-    }
+    }*/
 
     public void SetMainScene()
     {
@@ -232,8 +298,55 @@ public class NoteManager : MonoBehaviour
 
     public void SceneMove()
     {
+        Debug.Log("ê²Œì„ ì¢…ë£Œ í›„ ì”¬ ì´ë™!");
         sceneMover.GetComponent<Fade>().StartFade();
         Invoke("SetMainScene", 2f);
+    }
+
+    //ì ìˆ˜ ê³„ì‚°ìš©
+    void CalculateRank()
+    {
+        rankUI.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
+        if (percentage >= 97)
+        {
+            rank = "SS";
+        }
+        else if (percentage >= 95)
+        {
+            rank = "S+";
+        }
+        else if (percentage >= 90)
+        {
+            rank = "S";
+        }
+        else if (percentage >= 80)
+        {
+            rank = "A";
+            rankUI.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
+
+        }
+        else if (percentage >= 75)
+        {
+            rank = "B";
+            rankUI.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
+
+        }
+
+        else if (percentage >= 70)
+        {
+            rank = "C";
+            rankUI.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
+
+        }
+
+        else
+        {
+            rank = "F";
+            rankUI.color = new Color(57 / 255f, 57 / 255f, 57 / 255f);
+
+        }
+
+        Debug.Log("ë­í¬: " + rank);
     }
 
 }

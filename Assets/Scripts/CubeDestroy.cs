@@ -9,8 +9,6 @@ public class CubeDestroy : MonoBehaviour
         if(other.gameObject.tag == "Cube_lt" || other.gameObject.tag == "Cube_rt")
         {
             Destroy(other.gameObject);
-            NoteManager.songMissNoteCount += 1;
-            Debug.Log(NoteManager.songMissNoteCount + " ≥ı√∆Ω¿¥œ¥Ÿ");
         }
     }
 }
