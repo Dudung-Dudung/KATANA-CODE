@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using static MusicManager;
+using UnityEngine.Networking;
 
 [System.Serializable]
 public class NoteData
@@ -93,21 +94,31 @@ public class NoteManager : MonoBehaviour
     }
 
 
-    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    private IEnumerator CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
     {
         string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
-        if (File.Exists(streamingAssetsPath))
+        string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(destinationPath))
         {
-            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
-            if (!File.Exists(destinationPath))
+            UnityWebRequest request = UnityWebRequest.Get(streamingAssetsPath);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
             {
-                File.Copy(streamingAssetsPath, destinationPath);
+                File.WriteAllBytes(destinationPath, request.downloadHandler.data);
                 Debug.Log(fileName + " 파일이 복사되었습니다.");
             }
+
+            else
+            {
+                Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 가져오는 데 실패했습니다: " + request.error);
+            }
         }
+
         else
         {
-            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+            Debug.Log(fileName + " 파일이 이미 존재합니다.");
         }
     }
 

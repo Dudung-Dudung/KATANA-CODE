@@ -142,7 +142,6 @@ public class MusicManager : MonoBehaviour
     {
         Debug.Log("*************************");
         Debug.Log("UpdateSongInfo");
-        //Debug.Log(Resources.Load<TextAsset>("MusicData"));
 
         totalSongs = songData.songs.Length - 1;
         count = GameManager.songCount;
@@ -152,10 +151,6 @@ public class MusicManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
 
-            //if (count >= songData.songs.Length) count = 0;
-            //else if (count < 0) count = songData.songs.Length + count;
-            //Debug.Log("count : " + count + " i : " + i + " tltle : " + songData.songs[count].title);
-            //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
             if (i == 2)
