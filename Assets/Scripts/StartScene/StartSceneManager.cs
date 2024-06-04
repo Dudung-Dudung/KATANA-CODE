@@ -38,4 +38,9 @@ public class StartSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene(nextScene);
     }
+
+    public void SetMainScene(string nextScene)
+    {
+        SceneManager.LoadScene(nextScene);
+    }
 }

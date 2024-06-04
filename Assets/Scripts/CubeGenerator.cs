@@ -13,7 +13,7 @@ public class CubeGenerator : MonoBehaviour
         CubeMovement cubeMovement = cube.GetComponent<CubeMovement>();
         if (cubeMovement != null)
         {
-            // Å¥ºêÀÇ ½ÃÀÛ À§Ä¡¿Í ¸ñÇ¥ À§Ä¡¸¦ ¼³Á¤
+            // íë¸Œì˜ ì‹œì‘ ìœ„ì¹˜ì™€ ëª©í‘œ ìœ„ì¹˜ë¥¼ ì„¤ì •
             cubeMovement.SetCubeMovement(position, position - new Vector3(0, 0, 37));
         }
     }
@@ -24,7 +24,7 @@ public class CubeGenerator : MonoBehaviour
         CubeMovement cubeMovement = cube.GetComponent<CubeMovement>();
         if (cubeMovement != null)
         {
-            // Å¥ºêÀÇ ½ÃÀÛ À§Ä¡¿Í ¸ñÇ¥ À§Ä¡¸¦ ¼³Á¤
+            // íë¸Œì˜ ì‹œì‘ ìœ„ì¹˜ì™€ ëª©í‘œ ìœ„ì¹˜ë¥¼ ì„¤ì •
             cubeMovement.SetCubeMovement(position, position - new Vector3(0, 0, 37));
         }
     }

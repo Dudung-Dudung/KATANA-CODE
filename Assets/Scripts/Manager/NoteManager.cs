@@ -28,13 +28,11 @@ public class NoteList
 public class NoteManager : MonoBehaviour
 {
     public int bpm = 0;
-    /*double currentTime = 0d;*/
 
     [SerializeField] Transform LeftNoteAppearLocation = null;
     [SerializeField] Transform RightNoteAppearLocation = null;
-    [SerializeField] GameObject singleNotePrefab = null; // 프리팹 설정
-    [SerializeField] GameObject doubleNotePrefab = null; // 프리팹 설정
-    /*    [SerializeField] GameObject cubePrefab;*/
+    [SerializeField] GameObject singleNotePrefab = null;
+    [SerializeField] GameObject doubleNotePrefab = null;
 
     public GameObject gameClearBtn;
     public GameObject gameOverBtn;
@@ -43,42 +41,30 @@ public class NoteManager : MonoBehaviour
     public TextMeshProUGUI scoreUI;
     public TextMeshProUGUI ProgressUI;
 
-
-    /*    public Text gameClearBtnText;
-        public Text gameOverBtnText;*/
-
     public GameObject sceneMover;
 
-    public bool isGameOver = false; //게임 시간 지나고 ui 중복되는거 막기 위한 불리언 변수
+    public bool isGameOver = false;
 
-    public string notesJsonPath; // JSON 파일의 경로
-    public string musicDataJsonPath = "Assets/Jsons/MusicData.json"; // JSON 파일의 경로
+    public string notesJsonPath;
+    public string musicDataJsonPath;
 
     [SerializeField] Vector3[] cubePositions;
 
     TimingManager timingManager;
     CubeGenerator cubeGenerator;
 
-    [SerializeField]
-    float songLength = 0;
+    [SerializeField] float songLength = 0;
 
-    [SerializeField] // 전체 노트 갯수
-    public static float songNoteCount;
+    [SerializeField] public static float songNoteCount;
 
-    [SerializeField] // 맞춘 노트 갯수
-    public static float songHitNoteCount;
+    [SerializeField] public static float songHitNoteCount;
 
-    public static int bonusScore; // 보너스 점수 
+    public static int bonusScore;
 
-    [SerializeField]
-    float score = 0f;
+    [SerializeField] float score = 0f;
 
-    [SerializeField]
-    string rank;
-    [SerializeField]
-    int percentage;
-
-
+    [SerializeField] string rank;
+    [SerializeField] int percentage;
 
     private float runningTime = 0f;
     private bool isRunning = false;
@@ -87,24 +73,44 @@ public class NoteManager : MonoBehaviour
     {
         timingManager = GetComponent<TimingManager>();
         cubeGenerator = FindObjectOfType<CubeGenerator>();
+        CopyJsonFromStreamingAssetsToPersistentDataPath("Stylish Rock Beat Trailer.json");
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
 
-        notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
+        // Android에서 JSON 파일 경로 설정
+        notesJsonPath = Path.Combine(Application.persistentDataPath, "Stylish Rock Beat Trailer.json");
+        musicDataJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
+
+        
 
         Debug.Log(GameManager.songTitle + " 현재 게임매니저에서 넘어온 값");
         if (GameManager.songTitle != null)
         {
-            /*notesJsonPath = "Assets/Notes/" + GameManager.songTitle + ".json";*/
-            //점수 반영하기 위해서 하드코딩 0512
-            notesJsonPath = "Assets/Notes/Stylish Rock Beat Trailer.json";
+            notesJsonPath = Path.Combine(Application.persistentDataPath, "Stylish Rock Beat Trailer.json");
         }
-
-
-
-
 
         Debug.Log(notesJsonPath + "json 파일 경로 - NoteManager.cs");
         LoadNotes();
     }
+
+
+    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
+        if (File.Exists(streamingAssetsPath))
+        {
+            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+            if (!File.Exists(destinationPath))
+            {
+                File.Copy(streamingAssetsPath, destinationPath);
+                Debug.Log(fileName + " 파일이 복사되었습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+        }
+    }
+
 
     private void Start()
     {
@@ -114,35 +120,35 @@ public class NoteManager : MonoBehaviour
 
     private void Update()
     {
-/*        if ((songMissNoteCount >= songNoteCount / 2) && !isGameOver)
-        {
-            GameOver();
-        }*/
     }
 
     void LoadNotes()
     {
-        string json = System.IO.File.ReadAllText(notesJsonPath);
-        NoteList noteList = JsonUtility.FromJson<NoteList>(json);
-
-        runningTime = noteList.length;
-        songNoteCount = noteList.noteCount;
-        /*        songMissNoteCount = noteList.hitNoteCount;*/
-        songHitNoteCount = 0;
-        Debug.Log(songNoteCount);
-        Debug.Log(songHitNoteCount + "맟춘 노트 갯수");
-
-
-        foreach (NoteData noteData in noteList.notes)
+        if (File.Exists(notesJsonPath))
         {
-            StartCoroutine(CreateNoteDelayed(noteData.time, noteData.type, noteData.pos));
+            string json = File.ReadAllText(notesJsonPath);
+            NoteList noteList = JsonUtility.FromJson<NoteList>(json);
+
+            runningTime = noteList.length;
+            songNoteCount = noteList.noteCount;
+            songHitNoteCount = 0;
+            Debug.Log(songNoteCount);
+            Debug.Log(songHitNoteCount + "맞춘 노트 갯수");
+
+            foreach (NoteData noteData in noteList.notes)
+            {
+                StartCoroutine(CreateNoteDelayed(noteData.time, noteData.type, noteData.pos));
+            }
+        }
+        else
+        {
+            Debug.LogError("노트 JSON 파일을 찾을 수 없습니다: " + notesJsonPath);
         }
     }
 
     IEnumerator CreateNoteDelayed(float time, string type, int pos)
     {
         yield return new WaitForSeconds(time);
-
         CreateNote(type, pos);
     }
 
@@ -150,7 +156,6 @@ public class NoteManager : MonoBehaviour
     {
         GameObject t_note = null;
 
-        // 타입에 따라 다른 프리팹 사용
         if (type == "lt")
         {
             t_note = Instantiate(singleNotePrefab, LeftNoteAppearLocation.position, Quaternion.identity);
@@ -167,11 +172,7 @@ public class NoteManager : MonoBehaviour
             t_note.transform.SetParent(this.transform);
             timingManager.boxNoteList.Add(t_note);
         }
-
     }
-
-
-
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -182,7 +183,7 @@ public class NoteManager : MonoBehaviour
         }
     }
 
-    //게임 클리어, 오버시 띄우는 ui용
+   
 
     public void GameClear()
     {
@@ -191,7 +192,6 @@ public class NoteManager : MonoBehaviour
 
         Debug.Log("퍼센티지 : " + percentage);
 
-        //여기 변경해서 점수 배율 조정 가능
         score = BossStatus.bossclearhitcount * 4;
         Debug.Log(score + " 최종 점수, 현재 노래의 score에 반영될거임");
 
@@ -202,16 +202,14 @@ public class NoteManager : MonoBehaviour
         {
             foreach (SongData song in songScoreManager.songs)
             {
-                /*if (song.title == GameManager.songTitle)*/ //점수 반영용으로 하드코딩 0512
                 if (song.title == "Stylish Rock Beat Trailer")
                 {
-                    songScoreManager.UpdateSongState(song.title, score, rank , percentage);
+                    songScoreManager.UpdateSongState(song.title, score, rank, percentage);
                     Debug.Log("점수 수정 반영됬음 - NoteManager");
                     Debug.Log(Resources.Load<TextAsset>("MusicData"));
 
-                    break; 
+                    break;
                 }
-
                 else
                 {
                     Debug.Log(GameManager.songTitle + "곡 제목 수정해라");
@@ -229,16 +227,14 @@ public class NoteManager : MonoBehaviour
 
         while (runningTime < duration)
         {
-            yield return null; // 한 프레임 대기
-            runningTime += Time.deltaTime; // 경과 시간 업데이트
+            yield return null;
+            runningTime += Time.deltaTime;
         }
 
-        // 타임아웃 발생
         Debug.Log("타임아웃");
         GameFinish();
         isRunning = false;
     }
-
 
     public void GameFinish()
     {
@@ -248,48 +244,23 @@ public class NoteManager : MonoBehaviour
             GameClear();
 
             Button buttonComponent = gameClearBtn.GetComponent<Button>();
-
-            // Button 컴포넌트로부터 Text 컴포넌트를 가져옴
             TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
 
-            // 텍스트 변경
             if (BossStatus.isClear)
             {
-              //  clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
                 ProgressUI.text = (percentage + "%").ToString();
-                Debug.Log(percentage.ToString() +  "반영되는 퍼센티지");
-
-               // tmpText.text = "Game Clear!\n" + "score : " + ((int)score).ToString() + "\n" + "rank : "+ rank.ToString();
+                Debug.Log(percentage.ToString() + " 반영되는 퍼센티지");
             }
-
             else
             {
-                //clearUI.text = "Game Clear!";
                 scoreUI.text = ((int)score).ToString();
                 rankUI.text = rank.ToString();
                 ProgressUI.text = (percentage + "%").ToString();
-                //  tmpText.text = "Game Over...\n" + "score : " + ((int)score).ToString() + "\n" + "rank : " + rank.ToString();
             }
         }
     }
-
-/*    public void GameOver()
-    {
-        isGameOver = true;
-        *//* gameOverBtn.SetActive(true);*//*
-        GameClear();
-
-        Button buttonComponent = gameOverBtn.GetComponent<Button>();
-
-        // Button 컴포넌트로부터 Text 컴포넌트를 가져옴
-
-        TextMeshProUGUI tmpText = buttonComponent.GetComponentInChildren<TextMeshProUGUI>();
-
-        // 텍스트 변경
-        tmpText.text = "Game Over.. " + score.ToString();
-    }*/
 
     public void SetMainScene()
     {
@@ -303,7 +274,6 @@ public class NoteManager : MonoBehaviour
         Invoke("SetMainScene", 2f);
     }
 
-    //점수 계산용
     void CalculateRank()
     {
         rankUI.color = new Color(35 / 255f, 248 / 255f, 248 / 255f);
@@ -323,30 +293,23 @@ public class NoteManager : MonoBehaviour
         {
             rank = "A";
             rankUI.color = new Color(57 / 255f, 174 / 255f, 174 / 255f);
-
         }
         else if (percentage >= 75)
         {
             rank = "B";
             rankUI.color = new Color(84 / 255f, 129 / 255f, 129 / 255f);
-
         }
-
         else if (percentage >= 70)
         {
             rank = "C";
             rankUI.color = new Color(135 / 255f, 135 / 255f, 135 / 255f);
-
         }
-
         else
         {
             rank = "F";
             rankUI.color = new Color(57 / 255f, 57 / 255f, 57 / 255f);
-
         }
 
         Debug.Log("랭크: " + rank);
     }
-
 }
