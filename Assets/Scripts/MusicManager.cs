@@ -65,6 +65,7 @@ public class MusicManager : MonoBehaviour
     void Awake()
     {
         StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json"));
+        StartCoroutine(CopyJsonFromStreamingAssetsToPersistentDataPath("Stylish Rock Beat Trailer.json"));
     }
     private void Update()
     {
