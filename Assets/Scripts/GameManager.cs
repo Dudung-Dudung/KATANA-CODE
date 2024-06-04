@@ -23,10 +23,9 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-   
+    [System.Obsolete]
     public void GameQuit()
     {
-        Application.Quit();
         OVRManager.PlatformUIConfirmQuit();
     }
 

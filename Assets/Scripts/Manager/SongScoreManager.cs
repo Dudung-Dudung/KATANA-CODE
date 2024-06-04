@@ -33,6 +33,7 @@ public class SongScoreManager : MonoBehaviour
     // Start 함수에서 호출하여 실행
     private void Start()
     {
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
         // Android에서 JSON 파일 경로 설정
         songsJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
 
@@ -90,5 +91,23 @@ public class SongScoreManager : MonoBehaviour
 
         // JSON 파일에 쓰기
         File.WriteAllText(songsJsonPath, json);
+    }
+
+    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
+        if (File.Exists(streamingAssetsPath))
+        {
+            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+            if (!File.Exists(destinationPath))
+            {
+                File.Copy(streamingAssetsPath, destinationPath);
+                Debug.Log(fileName + " 파일이 복사되었습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+        }
     }
 }
