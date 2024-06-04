@@ -61,20 +61,20 @@ public class MusicManager : MonoBehaviour
 
     private void Awake()
     {
-        CopyJsonFromStreamingAssetsToPersistentDataPath("Assets/Jsons/MusicData.json");
+        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
     }
     private void Start()
     {
-        //ReadJson("Assets/Jsons/MusicData.json");
+
     }
     private void Update()
     {
-        /*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
+
     }
     public void GameStart()
     {
         songAudio = GetComponent<AudioSource>();
-        ReadJson("Assets/Jsons/MusicData.json");
+        ReadJson("MusicData.json");
 
         for (int i = 0; i < 5; i++)
         {
@@ -87,7 +87,7 @@ public class MusicManager : MonoBehaviour
     {
         isPassed = 0;
 
-        string jsonFile = System.IO.File.ReadAllText(json);
+        string jsonFile = File.ReadAllText(json);
         Debug.Log(jsonFile);
 
         if (jsonFile != null)
