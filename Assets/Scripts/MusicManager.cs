@@ -9,8 +9,8 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Rendering.Universal;
 using OVRSimpleJSON;
 using static MusicManager;
+using Meta.WitAi.Json;
 using System.IO;
-using UnityEngine.Networking;
 
 public class MusicManager : MonoBehaviour
 {
@@ -58,51 +58,74 @@ public class MusicManager : MonoBehaviour
         public int percentage;
     }
 
-    private void Start()
-    {
-        // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
-        CopyJsonFromStreamingAssetsToPersistentDataPath("MusicData.json");
-        MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
-
-
-
-        ReadJson(MusicDataFile);
-    }
 
     private void Update()
     {
-/*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
+        /*        Debug.Log(Resources.Load<TextAsset>("MusicData"));*/
     }
     public void GameStart()
     {
         songAudio = GetComponent<AudioSource>();
-
-        // 안드로이드에서는 파일 경로가 다르기 때문에 수정이 필요합니다.
-        MusicDataFile = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
-
-        ReadJson(MusicDataFile);
+        ReadJson("MusicData.json");
 
         for (int i = 0; i < 5; i++)
         {
             panel.AddLast(Instantiate(panelPrefab, questPanelPosition[i].position, questPanelPosition[i].rotation, QuestPanelList.transform));
+
         }
         UpdateSongInfo();
     }
 
-
     private void ReadJson(string json)
     {
         isPassed = 0;
-        string jsonFile = System.IO.File.ReadAllText(json);
+        //json 파일 읽기
+        //TextAsset jsonFile = Resources.Load<TextAsset>(json);
+        // TextAsset jsonFile = Resources.Load<TextAsset>(json);
+        // string jsonFile = System.IO.File.ReadAllText(json);
+        string filePath = Path.Combine(Application.persistentDataPath, json);
+
+        if (File.Exists(filePath))
+        {
+            string jsonFile = File.ReadAllText(filePath);
+            JsonConvert.DeserializeObject<Song>(jsonFile);
+            // SongData 객체를 사용합니다.
+            foreach (Song song in songData.songs)
+            {
+                if (song.percentage >= 70f)
+                {
+                    isPassed++;
+                    Debug.Log("isPassed : " + isPassed);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + filePath);
+            //   return default(T);
+        }
+        /*
         Debug.Log(jsonFile);
 
         if (jsonFile != null)
         {
+            // JSON 파일 내용을 문자열로 읽어옵니다.
+           // string jsonString = jsonFile.text;
+
+            // JSON 문자열을 파싱하여 SongData 객체로 변환합니다.
             songData = JsonUtility.FromJson<SongData>(jsonFile);
 
+            // SongData 객체를 사용합니다.
             foreach (Song song in songData.songs)
             {
+                //Debug.Log("Title: " + song.title);
+               // Debug.Log("score: " + song.score);
 
+                /*
+                Debug.Log("Artist: " + song.artist);
+                Debug.Log("Cover Image Path: " + song.cover_image_path);
+                Debug.Log("Audio File Path: " + song.audio_file_path);
+               
                 if (song.percentage >= 70f)
                 {
                     isPassed++;
@@ -114,28 +137,8 @@ public class MusicManager : MonoBehaviour
         else
         {
             Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
-        }
+        }*/
     }
-
-    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
-    {
-        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
-        if (File.Exists(streamingAssetsPath))
-        {
-            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
-            if (!File.Exists(destinationPath))
-            {
-                File.Copy(streamingAssetsPath, destinationPath);
-                Debug.Log(fileName + " 파일이 복사되었습니다.");
-            }
-        }
-        else
-        {
-            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
-        }
-    }
-
-
     public void UpdateSongInfo()
     {
         Debug.Log("*************************");
@@ -156,7 +159,7 @@ public class MusicManager : MonoBehaviour
             //이미지 변경
             Sprite coverImage = LoadSpriteFromPath(songData.songs[count].cover_image_path);
             QuestPanelList.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = coverImage;
-            if(i ==2)
+            if (i == 2)
             {
                 AudioClip musicClip = Resources.Load<AudioClip>(songData.songs[count].audio_file_path);
                 songAudio.clip = musicClip;
@@ -282,7 +285,7 @@ public class MusicManager : MonoBehaviour
 
               }));
         }
-       
+
         //현재 곡을 새로 업데이트
         count = AddNumber(totalSongs, count);
 
@@ -339,29 +342,4 @@ public class MusicManager : MonoBehaviour
         Debug.Log(GameManager.songTitle + "현재 선택한 곡 이름 - MusicManager2");
         SceneManager.LoadScene("BasicScene");
     }
-
-    private IEnumerator LoadAndroidJson(string path, System.Action<string> result)
-    {
-        string jsonFilePath = Path.Combine(Application.streamingAssetsPath, path);
-        string jsonContent;
-
-        using (UnityWebRequest www = UnityWebRequest.Get(jsonFilePath))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError(www.error);
-                jsonContent = null;
-            }
-            else
-            {
-                jsonContent = www.downloadHandler.text;
-            }
-        }
-
-        result(jsonContent);
-    }
-
-
 }
