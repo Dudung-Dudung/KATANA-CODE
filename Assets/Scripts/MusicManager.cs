@@ -79,10 +79,6 @@ public class MusicManager : MonoBehaviour
     private void ReadJson(string json)
     {
         isPassed = 0;
-        //json 파일 읽기
-        //TextAsset jsonFile = Resources.Load<TextAsset>(json);
-        // TextAsset jsonFile = Resources.Load<TextAsset>(json);
-        // string jsonFile = System.IO.File.ReadAllText(json);
         string filePath = Path.Combine(Application.persistentDataPath, json);
 
         if (File.Exists(filePath))
@@ -101,7 +97,8 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            string sourcePath = "Assets/Jsons/MusicData.json";
+
+            string sourcePath = Path.Combine(Application.streamingAssetsPath, "MusicData.json");
             File.Copy(sourcePath, filePath);
             if (File.Exists(filePath))
                 Debug.LogError("File not found: " + filePath);
@@ -109,42 +106,26 @@ public class MusicManager : MonoBehaviour
                 Debug.Log("파일 생성 성공!");
             //   return default(T);
         }
+    }
 
-        /*
-        Debug.Log(jsonFile);
-
-        if (jsonFile != null)
+    void CopyJsonFromStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, fileName);
+        if (File.Exists(streamingAssetsPath))
         {
-            // JSON 파일 내용을 문자열로 읽어옵니다.
-           // string jsonString = jsonFile.text;
-
-            // JSON 문자열을 파싱하여 SongData 객체로 변환합니다.
-            songData = JsonUtility.FromJson<SongData>(jsonFile);
-
-            // SongData 객체를 사용합니다.
-            foreach (Song song in songData.songs)
+            string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+            if (!File.Exists(destinationPath))
             {
-                //Debug.Log("Title: " + song.title);
-               // Debug.Log("score: " + song.score);
-
-                /*
-                Debug.Log("Artist: " + song.artist);
-                Debug.Log("Cover Image Path: " + song.cover_image_path);
-                Debug.Log("Audio File Path: " + song.audio_file_path);
-               
-                if (song.percentage >= 70f)
-                {
-                    isPassed++;
-                    Debug.Log("isPassed : " + isPassed);
-                }
-
+                File.Copy(streamingAssetsPath, destinationPath);
+                Debug.Log(fileName + " 파일이 복사되었습니다.");
             }
         }
         else
         {
-            Debug.LogError("JSON 파일을 읽을 수 없습니다: " + MusicDataFile);
-        }*/
+            Debug.LogError("StreamingAssets에서 " + fileName + " 파일을 찾을 수 없습니다.");
+        }
     }
+
     public void UpdateSongInfo()
     {
         Debug.Log("*************************");
