@@ -39,6 +39,7 @@ public class MusicManager : MonoBehaviour
     public TextMeshProUGUI score;
     public TextMeshProUGUI rank;
     public TextMeshProUGUI percentage;
+    public TextMeshProUGUI test;
 
     SongData songData;
 
@@ -97,13 +98,17 @@ public class MusicManager : MonoBehaviour
                 {
                     isPassed++;
                     Debug.Log("isPassed : " + isPassed);
+                    test.text += isPassed + "\n";
                 }
             }
         }
         else
         {
             Debug.LogError("PersistentDataPath에서 " + json + " 파일을 찾을 수 없습니다.");
+            test.text += json + "\n";
         }
+
+       
     }
 
 
