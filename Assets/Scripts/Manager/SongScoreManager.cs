@@ -62,32 +62,20 @@ public class SongScoreManager : MonoBehaviour
 
     public void SaveSongs()
     {
-        StartCoroutine(SaveSongsCoroutine());
-    }
-
-    private IEnumerator SaveSongsCoroutine()
-    {
-        SongList songList = new SongList { songs = songs };
-        string json = JsonUtility.ToJson(songList);
-
-        byte[] jsonToBytes = System.Text.Encoding.UTF8.GetBytes(json);
-
-        string destinationPath = "file://" + songsJsonPath;
-
-        UnityWebRequest request = new UnityWebRequest(destinationPath, "PUT");
-        request.uploadHandler = new UploadHandlerRaw(jsonToBytes);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
+        try
         {
-            Debug.Log("Songs saved successfully to: " + songsJsonPath);
+            SongList songList = new SongList { songs = songs };
+            string json = JsonUtility.ToJson(songList);
+            songsJsonPath = Path.Combine(Application.persistentDataPath, "MusicData.json");
+            File.WriteAllText(songsJsonPath, json);
+            
+            Debug.Log("ㅇㅂㅇ" + File.ReadAllText(songsJsonPath));
+            //Path.Combine(Application.persistentDataPath, "database.json");
+            Debug.Log("Songs saved successfully.");
         }
-        else
+        catch (IOException e)
         {
-            Debug.LogError("Failed to save songs: " + request.error);
+            Debug.LogError("Failed to save songs: " + e.Message);
         }
     }
 
